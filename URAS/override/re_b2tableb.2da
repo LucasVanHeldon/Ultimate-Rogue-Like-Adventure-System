@@ -1,0 +1,20 @@
+2DA V2.0                                                                                          
+                                                                                                  
+      ResRef               Minimum  Maximum  Treasure              TableLength 
+0     ****                 ****     ****     ****                  16
+1      NW_GOBLINA           4        8        		t0                    
+2      NW_GOBLINB           4        8        		t0                    
+3      NW_HOBGOBLIN001      4       8        		t0                    
+4	NW_ORCA			4		8		t0		
+5	NW_ORCB			4		8		t0
+6	NW_BTLFIRE		4		12		t0
+7	NW_SPIDGIANT		1		4		t0
+8	NW_OGRE01		1		2	t0
+9	NW_OGRE02		1		2	t0
+10	NW_BANDIT001		4		6	t0
+11	NW_BANDIT002		4		6	t0
+12     NW_BLACKBEAR           1        2        t0                    
+13	NW_WOLF			1	4	t0
+14	NW_COUGAR		1	2	t0
+15	NW_RATDIRE001	3	8	t0
+16	X3_SPITCOBRA001	1	1	t0
