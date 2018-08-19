@@ -496,18 +496,18 @@ void LeaveCorpse()
     //SET YOUR LOOTABLE CORPSES PREFERENCES HERE ///////////////
                                                                                                                                //
     int nUseLootable =   TRUE;             // Set this to FALSE if you want disable the lootable corpse functionality          //
-    int nMoveEquipped =  FALSE;            // Set this to FALSE if you don't want to move Equipped items to the corpse         //
+    int nMoveEquipped =  TRUE;            // Set this to FALSE if you don't want to move Equipped items to the corpse         //
     int nCopyArmour  =   FALSE;             // This will use the ResRef to create a copy of the armour/helmet                   //
-    int nMoveArmour  =   FALSE;             // Setting this TRUE will just move the armour/helmet (Naked NPCs)                  //
-    int nDropWeapons =   FALSE;             // This will use the ResRef for dropping the weapons on the ground                  //
-    int nMoveWeapons =   FALSE;             // Setting this TRUE will just move the weapons to the Lootable Object              //
-    int nUseBlood =      FALSE;             // Set this to TRUE if you want a Bloodspot to appear under the corpse and have     //
+    int nMoveArmour  =   TRUE;             // Setting this TRUE will just move the armour/helmet (Naked NPCs)                  //
+    int nDropWeapons =   TRUE;             // This will use the ResRef for dropping the weapons on the ground                  //
+    int nMoveWeapons =   TRUE;             // Setting this TRUE will just move the weapons to the Lootable Object              //
+    int nUseBlood =      TRUE;             // Set this to TRUE if you want a Bloodspot to appear under the corpse and have     //
                                            //   "gibs" when a corpse is destroyed.  Undead/constructs/elementals won't leave a //
                                            //   Bloodspot or gib.                                                              //
     int nTinyBlood =     FALSE;             // Set this to FALSE if you don't want Tiny-sized creatures (rats, bats, etc.) to   //
                                            //   leave a Bloodspot, scorch mark, or small flame.  They will still "gib"         //
                                            //   normally.  Only applies if nUseBlood = TRUE.                                   //
-    int nUseFlame =      FALSE;             // Set this to TRUE if you want a scorch mark or a small flame (which burns out     //
+    int nUseFlame =      TRUE;             // Set this to TRUE if you want a scorch mark or a small flame (which burns out     //
                                            //   after 10-120 seconds, and is replaced by a scorch mark) to appear if 1/3 or    //
                                            //   more of the damage which killed the creature was fire or electrical.  Scorch   //
                                            //   mark or flame will appear instead of Bloodspot.  If the total fire or          //

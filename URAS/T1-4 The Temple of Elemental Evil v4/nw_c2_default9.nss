@@ -16,61 +16,7 @@
 #include "inc_templates0"
 
 int bOC = FALSE;
-void RunOnce(object o)
-{
-    int isOk = FALSE;
-    string s = GetName(GetArea(OBJECT_SELF));
 
-    // spawn the difficulty wizard into the module
-    if(FindSubString(s,"Kendrack") != -1)
-    {
-        if(!GetLocalInt(GetModule(),"bDiffWiz"))
-        {
-            SetLocalInt(GetModule(),"bDiffWiz",1);
-            CreateObject(OBJECT_TYPE_CREATURE,"lomendir",GetLocation(GetWaypointByTag("NW_HENCHMAN_BAR")));
-        }
-    }
-    else if(FindSubString(s,"Hall of Justice") != -1)
-    {
-        if(!GetLocalInt(GetModule(),"bDiffWiz"))
-        {
-            SetLocalInt(GetModule(),"bDiffWiz",1);
-            // there isn't really a great spot for him in this area...
-            CreateObject(OBJECT_TYPE_CREATURE,"lomendir",GetLocation(GetWaypointByTag("NIGHT_M1Q1ACitizen01")));
-        }
-    }
-    else if(FindSubString(s,"Ritual Chamber") != -1)
-    {
-        if(!GetLocalInt(GetModule(),"bDiffWiz"))
-        {
-            SetLocalInt(GetModule(),"bDiffWiz",1);
-            CreateObject(OBJECT_TYPE_CREATURE,"lomendir",GetLocation(GetWaypointByTag("NW_HENCHMAN_BAR")));
-        }
-    }
-
-    // check port llast, and generally don't spawn in houses and inns
-    if(FindSubString(s,"House")==-1 &&
-       FindSubString(s,"Barn") == -1 &&
-       FindSubString(s,"Port") == -1 &&
-       FindSubString(s,"Llast") == -1 &&
-       FindSubString(s,"Jax") == -1 &&
-       FindSubString(s,"Inn") == -1 &&
-       FindSubString(s,"Tavern") == -1 &&
-       // at this moment no random encounters in chapter 1
-       FindSubString(s,"City Core") == -1 &&
-       FindSubString(s,"Blacklake") == -1 &&
-       FindSubString(s,"Docks") == -1 &&
-       FindSubString(s,"Peninsula") == -1 &&
-       // Don't let them spawn in Lord Nasher's place in 1e
-       FindSubString(s,"Ritual Chamber") == -1) isOk = TRUE;
-
-    if(isOk)
-    {
-        CreateObject(OBJECT_TYPE_PLACEABLE,"randomencounters",GetLocation(o));
-    }
-    SetLocalInt(GetArea(o),"bRunOnce",1);
-
-}
 
 int IsAberration(object oTarget)
 {
@@ -199,64 +145,63 @@ object ModifyArmor(object oItem)
     oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_METAL1,color1);
     oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_METAL2,color2);
 
-    if(GetItemACValue(oItem) > 0)
-    {
-        oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LBICEP,X2_IP_ARMORTYPE_RANDOM,TRUE);
-        oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LFOOT,X2_IP_ARMORTYPE_RANDOM,TRUE);
-        oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LFOREARM,X2_IP_ARMORTYPE_RANDOM,TRUE);
-        oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LHAND,X2_IP_ARMORTYPE_RANDOM,TRUE);
-        oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LSHIN,X2_IP_ARMORTYPE_RANDOM,TRUE);
-        oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LSHOULDER,X2_IP_ARMORTYPE_RANDOM,TRUE);
-        oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LTHIGH,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LBICEP,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LFOOT,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LFOREARM,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LHAND,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LSHIN,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LSHOULDER,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LTHIGH,X2_IP_ARMORTYPE_RANDOM,TRUE);
 
-        int nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LTHIGH);
-        object oOld = oItem;
-        oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RTHIGH,nPart);
-        DestroyObject(oOld);
+    int nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LTHIGH);
+    object oOld = oItem;
+    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RTHIGH,nPart);
+    DestroyObject(oOld);
 
-        oOld = oItem;
-        nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LBICEP);
-        oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RBICEP,nPart);
-        DestroyObject(oOld);
+    oOld = oItem;
+    nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LBICEP);
+    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RBICEP,nPart);
+    DestroyObject(oOld);
 
-        oOld = oItem;
-        nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LFOOT);
-        oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RFOOT,nPart);
-        DestroyObject(oOld);
+    oOld = oItem;
+    nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LFOOT);
+    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RFOOT,nPart);
+    DestroyObject(oOld);
 
-        oOld = oItem;
-        nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LFOREARM);
-        oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RFOREARM,nPart);
-        DestroyObject(oOld);
+    oOld = oItem;
+    nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LFOREARM);
+    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RFOREARM,nPart);
+    DestroyObject(oOld);
 
-        oOld = oItem;
-        nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LHAND);
-        oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RHAND,nPart);
-        DestroyObject(oOld);
+    oOld = oItem;
+    nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LHAND);
+    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RHAND,nPart);
+    DestroyObject(oOld);
 
-        oOld = oItem;
-        nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LSHIN);
-        oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RSHIN,nPart);
-        DestroyObject(oOld);
+    oOld = oItem;
+    nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LSHIN);
+    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RSHIN,nPart);
+    DestroyObject(oOld);
 
-        oOld = oItem;
-        nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LSHOULDER);
-        oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RSHOULDER,nPart);
-        DestroyObject(oOld);
+    oOld = oItem;
+    nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LSHOULDER);
+    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RSHOULDER,nPart);
+    DestroyObject(oOld);
 
-        oOld = oItem;
-        nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LTHIGH);
-        oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RTHIGH,nPart);
-        DestroyObject(oOld);
+    oOld = oItem;
+    nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LTHIGH);
+    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RTHIGH,nPart);
+    DestroyObject(oOld);
 
 
-        //oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_TORSO,X2_IP_ARMORTYPE_RANDOM,TRUE);
-        //oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_ROBE,X2_IP_ARMORTYPE_RANDOM,TRUE);
-        //oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_BELT,X2_IP_ARMORTYPE_RANDOM,TRUE);
-        //oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_NECK,X2_IP_ARMORTYPE_RANDOM,TRUE);
-        //oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_PELVIS,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    }
-    else
+    //oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_TORSO,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    //oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_ROBE,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    //oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_BELT,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    //oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_NECK,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    //oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_PELVIS,X2_IP_ARMORTYPE_RANDOM,TRUE);
+
+    // chance it will be a robe.
+    if(GetItemACValue(oItem) == 0 && d6() < 2)
     {
         oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_ROBE,X2_IP_ARMORTYPE_RANDOM,TRUE);
     }
@@ -720,16 +665,52 @@ void Upgrade()
 
     if( (d == 0 && d20()==1) || (d == 1 && d10() == 1) || (d==2 && d6()==1) )
         TemplateType();
-    else
-        UpgradeCompiler();
 
+
+    if(d6() == 1)
+    {
+        effect eEffect = EffectSkillIncrease(SKILL_USE_MAGIC_DEVICE,20+GetHitDice(OBJECT_SELF));
+        ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+        int i;
+        for(i = 0; i < d6(); i++)
+        {
+            switch(d2())
+            {
+            case 1: CreateArcaneScroll(OBJECT_SELF,OBJECT_SELF); break;
+            case 2: CreateDivineScroll(OBJECT_SELF,OBJECT_SELF); break;
+            }
+        }
+        for(i = 0; i < 3; i++)
+        {
+
+            object oitem;
+            switch(d3())
+            {
+            case 1:
+            oitem = MMP_GenerateWand();
+            SetDroppableFlag(oitem,FALSE);
+            break;
+            case 2:
+            oitem = MMP_GenerateStaff();
+            SetDroppableFlag(oitem,FALSE);
+            break;
+            case 3:
+            oitem = MMP_GenerateRod();
+            SetDroppableFlag(oitem,FALSE);
+            break;
+            }
+        }
+
+    }
 
     if(GetStandardFactionReputation(STANDARD_FACTION_HOSTILE,OBJECT_SELF) > 75)
     {
-        if(GetStringLeft(GetName(OBJECT_SELF),8) == "Champion")
-            SetName(OBJECT_SELF,"Super " + GetName(OBJECT_SELF));
-        else
-            SetName(OBJECT_SELF,"Elite " + GetName(OBJECT_SELF));
+        if(d10() == 1)
+        {
+            UpgradeCompiler();
+            SetName(OBJECT_SELF,"(Elite) " + GetName(OBJECT_SELF));
+        }
     }
 
 }
@@ -750,6 +731,7 @@ object ModifyWeapon(object oWeapon)
 {
 
     object oItem = oWeapon;
+    object old = oWeapon;
     oItem=    IPGetModifiedWeapon(oItem,ITEM_APPR_WEAPON_COLOR_BOTTOM,X2_IP_ARMORTYPE_RANDOM,TRUE);
     oItem=    IPGetModifiedWeapon(oItem,ITEM_APPR_WEAPON_COLOR_TOP,X2_IP_ARMORTYPE_RANDOM,TRUE);
     oItem=    IPGetModifiedWeapon(oItem,ITEM_APPR_WEAPON_MODEL_BOTTOM,X2_IP_ARMORTYPE_RANDOM,TRUE);
@@ -757,8 +739,12 @@ object ModifyWeapon(object oWeapon)
     oItem=    IPGetModifiedWeapon(oItem,ITEM_APPR_WEAPON_MODEL_TOP,X2_IP_ARMORTYPE_RANDOM,TRUE);
 
     object o = CopyItem(oItem,oObject);
-    DestroyObject(oItem);
-    oItem = o;
+    if(GetIsObjectValid(o))
+    {
+        DestroyObject(oItem);
+        oItem = o;
+    }
+    else oItem = old;
     return oItem;
 }
 
@@ -766,8 +752,25 @@ object ModifyShield(object oShield)
 {
     object oldItem=oShield;
     object oItem= CopyItemAndModify(oShield, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(255));
-    if(GetIsObjectValid(oItem)) DestroyObject(oldItem);
+    if(GetIsObjectValid(oItem))
+    {
+        DestroyObject(oldItem);
+    }
+    else oItem = oldItem;
+
     return oItem;
+}
+
+int NumAlliesNearby()
+{
+    object oC = GetFirstObjectInShape(SHAPE_SPHERE,30.0,GetLocation(OBJECT_SELF));
+    int n = 0;
+    while(GetIsObjectValid(oC))
+    {
+        if(GetIsFriend(oC)) n++;
+        oC = GetNextObjectInShape(SHAPE_SPHERE,30.0,GetLocation(OBJECT_SELF));
+    }
+    return n;
 }
 
 void main()
@@ -781,6 +784,14 @@ void main()
     {
         SetLocalInt(OBJECT_SELF,"bForceLvlUp",1);
         SetLocalInt(OBJECT_SELF,"X2_NAME_RANDOM",1);
+        // don't spawn too many creatures
+        if(NumAlliesNearby() < 6)
+            CreateObject(OBJECT_TYPE_CREATURE,"enc_minions",GetLocation(OBJECT_SELF));
+    }
+    else if(d10() == 1 && GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) == 100)
+    {
+        if(NumAlliesNearby() < 6)
+            CreateObject(OBJECT_TYPE_CREATURE,"enc_minions",GetLocation(OBJECT_SELF));
     }
 
     /* Creature size templates need alot of work.
@@ -931,7 +942,8 @@ void main()
                 rt != RACIAL_TYPE_VERMIN &&
                 rt != RACIAL_TYPE_BEAST &&
                 rt != RACIAL_TYPE_CONSTRUCT &&
-                rt != RACIAL_TYPE_OOZE )
+                rt != RACIAL_TYPE_OOZE &&
+                rt != RACIAL_TYPE_UNDEAD)
             {
                 //SendMessageToPC(GetFirstPC(),"Lutes");
                 iChestLevel = GetCharacterLevel(OBJECT_SELF);
@@ -994,15 +1006,7 @@ void main()
     SetSpawnInCondition(NW_FLAG_SPELL_CAST_AT_EVENT);
     SetSpawnInCondition(NW_FLAG_PERCIEVE_EVENT);
 
-    if(bOC==1)
-    {
-        if(GetLocalInt(GetArea(OBJECT_SELF),"bRunOnce")==0)
-            DelayCommand(0.1,RunOnce(OBJECT_SELF));
 
-        // correct the names of objects which have their name in cep260.tlk (can't inject it)
-        if(GetTag(OBJECT_SELF) == "ZEP_OWLBEAR")
-            SetName(OBJECT_SELF,"Owlbear");
-    }
 
 }
 

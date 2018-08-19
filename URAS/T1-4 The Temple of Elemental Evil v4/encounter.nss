@@ -4,7 +4,32 @@
 
 void Fill(int nCR,object o = OBJECT_SELF);
 
-/// calcs num monsters of CR for party of 4 at EL
+float CalcNumFromELCR(int el, float CR);
+
+// walk the table the other way, to find maximum CR before difficulty adjustments.
+float CalcCR(int ECL)
+{
+
+    if(ECL <= 0) ECL = 1;
+    float CR = 0.5;
+
+    float n =  IntToFloat(ECL) / (CR);
+    float nMin = 999999.0;
+    float rCR = CR;
+    while(n > 1.0)
+    {
+        if(CR < 1.0) CR = CR + 0.5;
+        else CR = CR + 1.0;
+        n =  IntToFloat(ECL) / (CR);
+        if(n < nMin && n >= 1.0) { nMin = n; rCR = CR; }
+        else break;
+    }
+
+    return rCR;
+}
+
+
+/// calcs num monsters of CR for party of 4 at EL from table in DMG
 float CalcNumFromELCR(int el, float CR)
 {
 
@@ -16,7 +41,7 @@ float CalcNumFromELCR(int el, float CR)
         n=n+1.0;
 
     int difficulty = GetLocalInt(GetModule(),"difficulty");
-    if(difficulty == -2) n = n / 4;
+    if(difficulty <= -2) n = n / 4;
     else if(difficulty == -1) n = n / 2;
     else if(difficulty == 1) n = n + n/2;
     else if(difficulty == 2) n = 2*n;
@@ -58,7 +83,9 @@ void PopulateVars(object oC,int CR,string list)
 
 }
 
-int CalcEL(object oC)
+// this computes average of all nearby PCs, which I think is actually ECL, not EL.
+
+int CalcEL_nearby(object oC)
 {
     object oX = GetFirstObjectInShape(SHAPE_SPHERE,120.0,GetLocation(oC));
     int total = 0;
@@ -78,10 +105,36 @@ int CalcEL(object oC)
     return total/cnt;
 }
 
+// compute average difficult of all PCs, in party or not.
+// since this is mainly a solo/single party mod.
+int CalcEL(object oC)
+{
+    object oX = GetFirstPC();
+    int total = 0;
+    int cnt = 0;
+
+    while(GetIsObjectValid(oX))
+    {
+        if(GetIsEnemy(oX,oC) || GetIsPC(oX))
+        {
+            total += GetCharacterLevel(oX);
+            cnt++;
+        }
+        oX = GetNextPC();
+    }
+    //SendMessageToPC(GetFirstPC(),"total="+IntToString(total)+",cnt="+IntToString(cnt));
+    if(cnt == 0) return 0;
+    return total/cnt;
+}
+
+
 void ENC_Spawner(object oS, int EL, float CR, int dontlvl=0)
 {
+    CR += GetLocalFloat(GetModule(),"fCR");
+
     int   num = FloatToInt(CalcNumFromELCR(EL,CR));
     int   nCR = FloatToInt(CR);
+
     int i;
     string sTag;
     int d = GetLocalInt(GetModule(),"difficulty");
@@ -150,10 +203,9 @@ void ENC_Spawner(object oS, int EL, float CR, int dontlvl=0)
 void Spawn(object oS=OBJECT_SELF)
 {
     int   EL = CalcEL(oS)+GetLocalInt(GetModule(),"difficulty");
-        //GetLocalInt(GetObjectByTag("EL_VARS"),"nEncLvl");
     if(EL < 0) EL = 0;
-    float CR = IntToFloat(EL);
-    CR += GetLocalFloat(GetModule(),"fCR");
+    float CR = CalcCR(EL);
+
     if(CR == 0.0) CR = 0.5;
 
 
@@ -172,7 +224,7 @@ void SpawnCR(float CR, int difMod=-4, object oS=OBJECT_SELF)
 {
     int   EL = CalcEL(oS)+GetLocalInt(GetModule(),"difficulty")+difMod;
     if(EL < 0) return;
-    CR += GetLocalFloat(GetModule(),"fCR");
+
 
     ENC_Spawner(oS,EL,CR);
 
