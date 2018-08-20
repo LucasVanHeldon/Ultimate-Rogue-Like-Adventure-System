@@ -688,7 +688,8 @@ void ApplyEnchantments(struct sEnchantments Enchants)
 {
     object oItem = Enchants.oItem;
 
-    //PrintEnchants(Enchants);
+    // remove all properties before adding new ones
+    IPRemoveAllItemProperties(oItem,DURATION_TYPE_PERMANENT);
 
     if(Enchants.iAttackBonus > 0)
     {

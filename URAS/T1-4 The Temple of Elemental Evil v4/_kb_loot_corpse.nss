@@ -496,11 +496,12 @@ void LeaveCorpse()
     //SET YOUR LOOTABLE CORPSES PREFERENCES HERE ///////////////
                                                                                                                                //
     int nUseLootable =   TRUE;             // Set this to FALSE if you want disable the lootable corpse functionality          //
-    int nMoveEquipped =  TRUE;            // Set this to FALSE if you don't want to move Equipped items to the corpse         //
+    // unfortunatley it will drop items that shouldn't drop, like monster's specal weapons.
+    int nMoveEquipped =  FALSE;            // Set this to FALSE if you don't want to move Equipped items to the corpse         //
     int nCopyArmour  =   FALSE;             // This will use the ResRef to create a copy of the armour/helmet                   //
-    int nMoveArmour  =   TRUE;             // Setting this TRUE will just move the armour/helmet (Naked NPCs)                  //
-    int nDropWeapons =   TRUE;             // This will use the ResRef for dropping the weapons on the ground                  //
-    int nMoveWeapons =   TRUE;             // Setting this TRUE will just move the weapons to the Lootable Object              //
+    int nMoveArmour  =   FALSE;             // Setting this TRUE will just move the armour/helmet (Naked NPCs)                  //
+    int nDropWeapons =   FALSE;             // This will use the ResRef for dropping the weapons on the ground                  //
+    int nMoveWeapons =   FALSE;             // Setting this TRUE will just move the weapons to the Lootable Object              //
     int nUseBlood =      TRUE;             // Set this to TRUE if you want a Bloodspot to appear under the corpse and have     //
                                            //   "gibs" when a corpse is destroyed.  Undead/constructs/elementals won't leave a //
                                            //   Bloodspot or gib.                                                              //

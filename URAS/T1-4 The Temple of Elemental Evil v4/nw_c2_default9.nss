@@ -17,6 +17,24 @@
 
 int bOC = FALSE;
 
+void PersonalSpellBook()
+{
+    struct sItemInfo info;
+    info.sBluePrint = "lutes_spells";
+    info.oItem = CreateItemOnObject("lutes_spells",oObject);
+    object oldItem=info.oItem;
+    info.oItem= CopyItemAndModify(info.oItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(255));
+    if(GetIsObjectValid(info.oItem)) DestroyObject(oldItem);
+
+    int i;
+    for(i = 0; i < iChestLevel*2; i++)
+    {
+        EnchantSpellBook(info);
+    }
+    SetName(info.oItem,"Spell Book");
+}
+
+
 
 int IsAberration(object oTarget)
 {
@@ -75,7 +93,8 @@ int IsCleric(object oTarget)
     int i=1;
     for(i = 1; i < 4; i++)
     {
-        if(GetClassByPosition(i,oTarget) == CLASS_TYPE_CLERIC)
+        if(GetClassByPosition(i,oTarget) == CLASS_TYPE_CLERIC ||
+           GetClassByPosition(i,oTarget) == CLASS_TYPE_DRUID)
             return TRUE;
     }
     return FALSE;
@@ -138,10 +157,21 @@ object ModifyArmor(object oItem)
     int color1=Random(64);
     int color2=Random(64);
     int color3=Random(64);
+
     oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_CLOTH1,color1);
     oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_CLOTH2,color2);
+    // fashion power, gaudy
+    if(d10()==1) {
+        color1 = Random(64);
+        color2 = Random(64);
+    }
     oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_LEATHER1,color1);
     oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_LEATHER2,color2);
+    if(d10()==1) {
+        color1 = Random(64);
+        color2 = Random(64);
+    }
+
     oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_METAL1,color1);
     oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_METAL2,color2);
 
@@ -324,7 +354,8 @@ void EnhanceItems()
 
 
     oWeapon = GetItemInSlot(INVENTORY_SLOT_CWEAPON_R);
-
+    // do this in case a weapon is generated that the creature can't use
+    object oCopy   = CopyItem(oWeapon,OBJECT_SELF);
     if(GetIsObjectValid(oWeapon))
     {
         iteminfo.oItem = oWeapon;
@@ -738,13 +769,11 @@ object ModifyWeapon(object oWeapon)
     oItem=    IPGetModifiedWeapon(oItem,ITEM_APPR_WEAPON_MODEL_MIDDLE,X2_IP_ARMORTYPE_RANDOM,TRUE);
     oItem=    IPGetModifiedWeapon(oItem,ITEM_APPR_WEAPON_MODEL_TOP,X2_IP_ARMORTYPE_RANDOM,TRUE);
 
-    object o = CopyItem(oItem,oObject);
-    if(GetIsObjectValid(o))
+    if(GetIsObjectValid(oItem))
     {
-        DestroyObject(oItem);
-        oItem = o;
+        DestroyObject(old);
     }
-    else oItem = old;
+
     return oItem;
 }
 
@@ -756,7 +785,6 @@ object ModifyShield(object oShield)
     {
         DestroyObject(oldItem);
     }
-    else oItem = oldItem;
 
     return oItem;
 }
@@ -962,6 +990,14 @@ void main()
             }
         }
     }
+
+    if(IsMagicUser(OBJECT_SELF) || IsCleric(OBJECT_SELF))
+    {
+        oObject = OBJECT_SELF;
+        iChestLevel = GetCharacterLevel(OBJECT_SELF);
+        PersonalSpellBook();
+    }
+
     object oArmor = GetItemInSlot(INVENTORY_SLOT_CHEST);
     if(GetIsObjectValid(oArmor))
     {

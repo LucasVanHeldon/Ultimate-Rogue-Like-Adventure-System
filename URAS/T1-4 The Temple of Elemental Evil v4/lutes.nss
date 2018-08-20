@@ -33,38 +33,74 @@ void Lutes(object oTarget)
     int nGold = Random(100*iChestLevel);
 
     // distribution modify this as you see fit.
-    int nGems=          d100() <= ChanceGems? d3():0;
-    int nJewls=         d100() <= ChanceJewelry?d2():0;
-    int nMagic=         d100() <= ChanceMagic?d2():0;
+    int nGems= 0;
+    int nJewls=0;
+    int nMagic=0;
     int nMisc2 = 0;
-    int nWeapon=        d100() <= ChanceWeapon?d2():0;
-    int nArmor=         d100() <= ChanceArmor?1:0;
-    int nAScrolls=      d100() <= ChanceArcaneScrolls?d3():0;
-    int nDScrolls=      d100() <= ChanceDivineScrolls?d3():0;
-    int nPotions=       d100() <= ChancePotions?d3():0;
-    int nShield=        d100() <= ChanceShield? 1:0;
-    int nHelmet=        d100() <= ChanceHelmet? 1:0;
-    int nMisc=          d100() <= ChanceMisc? d3():0;
-    int nPoison=        d100() <= ChancePoison?d3():0;
-    int nMiscMagic=     d100() <= ChanceMiscMagic?0:0;
-    int nRanged =       d100() <= ChanceRangedWeapon?1:0;
+    int nWeapon=0;
+    int nArmor=0;
+    int nAScrolls=0;
+    int nDScrolls=0;
+    int nPotions=0;
+    int nShield=0;
+    int nHelmet=0;
+    int nMisc=0;
+    int nPoison=0;
+    int nMiscMagic=0;
+    int nRanged =0;
 
-    int nAmmo=          d100() <= ChanceAmmo?1:0;
-    int nGrenades=      d100() <= ChanceGrenades?d3():0;
-    int nBooks =        d100() <= ChanceBooks?1:0;
-    int nWands =        d100() <= ChanceWands?1:0;
-    int nRods =         d100() <= ChanceRods?1:0;
-    int nStaff=         d100() <= ChanceStaffs?1:0;
-    int nRings =        d100() <= ChanceRings?1:0;
-    int nAmulets =      d100() <= ChanceAmulet?1:0;
-    int nBoots =        d100() <= ChanceBoots?1:0;
-    int nBracer =       d100() <= ChanceBracer?1:0;
-    int nBelt =         d100() <= ChanceBelt?1:0;
-    int nGauntlet =     d100() <= ChanceGauntlet? 1:0;
-    int nCloak =        d100() <= ChanceCloak?1:0;
-    int nTrash =        d100() <= ChanceTrash?1:0;
+    int nAmmo=0;
+    int nGrenades=0;
+    int nBooks =0;
+    int nWands =0;
+    int nRods =0;
+    int nStaff=0;
+    int nRings =0;
+    int nAmulets =0;
+    int nBoots =0;
+    int nBracer =0;
+    int nBelt =0;
+    int nGauntlet =0;
+    int nCloak =0;
+    int nTrash =0;
 
-    for(i = 0; i < Random(50); i++) Random(999999);
+
+    int ChanceModifier=3;
+    for(i = 0; i < iChestLevel*ChanceModifier; i++)
+    {
+        switch(Random(27))
+        {
+        case 0: nGems =  d100() <= ChanceGems? d3():0; break;
+        case 1: nJewls=  d100() <= ChanceJewelry?d2():0; break;
+        case 2: nMagic=  d100() <= ChanceMagic?d2():0; break;
+        case 3: nWeapon= d100() <= ChanceWeapon?d2():0;break;
+        case 4: nArmor=  d100() <= ChanceArmor?1:0;break;
+        case 5: nAScrolls=d100() <= ChanceArcaneScrolls?d3():0;break;
+        case 6: nDScrolls=      d100() <= ChanceDivineScrolls?d3():0; break;
+        case 7: nPotions=       d100() <= ChancePotions?d3():0; break;
+        case 8: nShield=        d100() <= ChanceShield? 1:0; break;
+        case 9: nHelmet=        d100() <= ChanceHelmet? 1:0; break;
+        case 10: nMisc=           d100() <= ChanceMisc? d3():0;break;
+        case 11: nPotions=         d100() <= ChancePoison?d3():0;break;
+        case 12: nMiscMagic=d100() <= ChanceMiscMagic?0:0;break;
+        case 13: nRanged=d100() <= ChanceRangedWeapon?1:0; break;
+        case 14: nAmmo=d100() <= ChanceAmmo?1:0; break;
+        case 15: nGrenades=     d100() <= ChanceGrenades?d3():0;break;
+        case 16: nBooks=d100() <= ChanceBooks?1:0;break;
+        case 17: nWands=        d100() <= ChanceWands?1:0; break;
+        case 18: nRods=          d100() <= ChanceRods?1:0; break;
+        case 19: nStaff=         d100() <= ChanceStaffs?1:0;break;
+        case 20: nRings=        d100() <= ChanceRings?1:0; break;
+        case 21: nAmulets=      d100() <= ChanceAmulet?1:0; break;
+        case 22: nBoots=        d100() <= ChanceBoots?1:0; break;
+        case 23: nBracer=       d100() <= ChanceBracer?1:0;break;
+        case 24: nBelt=         d100() <= ChanceBelt?1:0; break;
+        case 25: nGauntlet=     d100() <= ChanceGauntlet? 1:0;break;
+        case 26: nCloak=        d100() <= ChanceCloak?1:0; break;
+        case 27: nTrash=        d100() <= ChanceTrash?1:0; break;
+        }
+    }
+
 
     // class biases
     if( bFighter == TRUE || bGiant == TRUE || bPaladin == TRUE || bRanger == TRUE)

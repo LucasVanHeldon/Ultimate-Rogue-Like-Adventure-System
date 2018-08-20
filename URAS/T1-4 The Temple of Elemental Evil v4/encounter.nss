@@ -131,6 +131,7 @@ int CalcEL(object oC)
 void ENC_Spawner(object oS, int EL, float CR, int dontlvl=0)
 {
     CR += GetLocalFloat(GetModule(),"fCR");
+    if(CR < 1.0) CR = 0.5;
 
     int   num = FloatToInt(CalcNumFromELCR(EL,CR));
     int   nCR = FloatToInt(CR);
