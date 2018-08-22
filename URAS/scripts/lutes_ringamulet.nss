@@ -27,30 +27,28 @@ void EnchantItem(struct sEnchantments Enchants)
         case 1: Enchants  = ImbueSaveThrowBonus(Enchants);  break;
         case 2: Enchants  = ImbueFreeAction(Enchants);  break;
         case 3: Enchants  = ImbueRegeneration(Enchants); break;
-        case 4: Enchants = ImbueBonusSpellSlot(Enchants); break;
-        case 5: Enchants = ImbueSpellResistance(Enchants);break;
-        case 6: Enchants = ImbueSaveBonus(Enchants);break;
-        case 7: Enchants = ImbueAbility(Enchants);break;
-        case 8: Enchants = ImbueACBonus(Enchants); break;
-        case 9: Enchants = ImbueDamageImmunity(Enchants); break;
+        case 4: Enchants  = ImbueBonusSpellSlot(Enchants); break;
+        case 5: Enchants  = ImbueSpellResistance(Enchants);break;
+        case 6: Enchants  = ImbueSaveBonus(Enchants);break;
+        case 7: Enchants  = ImbueAbility(Enchants);break;
+        case 8: Enchants  = ImbueACBonus(Enchants); break;
+        case 9: Enchants  = ImbueDamageImmunity(Enchants); break;
         case 10: Enchants = ImbueDamageReduction(Enchants); break;
         case 11: Enchants = ImbueDamageResistance(Enchants); break;
         case 12: Enchants = ImbueImprovedEvasion(Enchants); break;
-
         case 13: Enchants = ImbueCastSpell(Enchants); break;
         case 14: Enchants = ImbueSkill(Enchants); break;
         case 15: Enchants = ImbueFeat(Enchants); break;
-
-
         }
 
-        //PrintString("Enchants.iValue="+IntToString(Enchants.iValue));
-        // fix the watchdog to avoid infinite loops
-        if(Enchants.iValue > 0) ticker = 0;
-        else ticker = ticker +1;
+       if(Enchants.iValue > 0)
+       {
+            ticker = 0;
+            points -= Enchants.iValue;
+            cost   += Enchants.iValue;
+        }
+       else ticker = ticker +1;
 
-        points -= Enchants.iValue;
-        cost   += Enchants.iValue;
 
         if(ticker > 250) break;
     }
@@ -59,8 +57,9 @@ void EnchantItem(struct sEnchantments Enchants)
     {
         Enchants.iTotalCost = iTotalCost;
         ApplyEnchantments(Enchants);
+        SetName(Enchants.oItem,Enchants.sName);
     }
-    SetName(Enchants.oItem,Enchants.sName);
+
 
 }
 

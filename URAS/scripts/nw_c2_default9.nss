@@ -4,18 +4,25 @@
 #include "x0_i0_treasure"
 
 #include "x2_inc_switches"
-#include "lutes"
 #include "x3_inc_skin"
-#include "inc_ai"
-#include "mmp_lutes"
+#include "x2_i0_spells"
 
+#include "lutes"
+#include "inc_ai"
+
+#include "mmp_lutes"
 #include "inc_mmpaberr"
 #include "inc_mmpmrbd"
 #include "inc_mmpooze"
-#include "x2_i0_spells"
-#include "inc_templates0"
 
-int bOC = FALSE;
+#include "inc_templates0"
+#include "sd_lootsystem"
+
+float fSocketLootChance = 0.05;
+int bMunchkin = FALSE;   // Set to TRUE if you want to use the munchkin only
+int bOC = FALSE;        // Set to TRUE if compiling for Official campaign
+int bModifyArmorAndWeapons=TRUE;
+
 
 void PersonalSpellBook()
 {
@@ -32,6 +39,7 @@ void PersonalSpellBook()
         EnchantSpellBook(info);
     }
     SetName(info.oItem,"Spell Book");
+    SetDroppableFlag(info.oItem,FALSE);
 }
 
 
@@ -47,6 +55,16 @@ int IsAberration(object oTarget)
     return FALSE;
 }
 
+int IsMonk(object oTarget)
+{
+    int i;
+    for(i = 1; i < 4; i++)
+    {
+        if( GetClassByPosition(i,oTarget) == CLASS_TYPE_MONK ) return TRUE;
+    }
+    return FALSE;
+}
+
 int IsFighter(object oTarget)
 {
     int i=1;
@@ -54,10 +72,8 @@ int IsFighter(object oTarget)
     {
         if(GetClassByPosition(i,oTarget) == CLASS_TYPE_FIGHTER ||
            GetClassByPosition(i,oTarget) == CLASS_TYPE_PALADIN ||
-           GetClassByPosition(i,oTarget) == CLASS_TYPE_RANGER ||
-           GetClassByPosition(i,oTarget) == CLASS_TYPE_MONK ||
-           // don't know, if should include this guy or not.
-           GetClassByPosition(i,oTarget) == CLASS_TYPE_CLERIC)
+           GetClassByPosition(i,oTarget) == CLASS_TYPE_BARBARIAN ||
+           GetClassByPosition(i,oTarget) == CLASS_TYPE_RANGER)
             return TRUE;
     }
     return FALSE;
@@ -154,13 +170,24 @@ void LevelUp()
 
 object ModifyArmor(object oItem)
 {
-    int color1=Random(64);
-    int color2=Random(64);
-    int color3=Random(64);
+    int color1=Random(63);
+    int color2=Random(63);
+    int color3=Random(63);
+
     oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_CLOTH1,color1);
     oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_CLOTH2,color2);
+    // fashion power, gaudy
+    if(d10()==1) {
+        color1 = Random(63);
+        color2 = Random(63);
+    }
     oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_LEATHER1,color1);
     oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_LEATHER2,color2);
+    if(d10()==1) {
+        color1 = Random(63);
+        color2 = Random(63);
+    }
+
     oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_METAL1,color1);
     oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_METAL2,color2);
 
@@ -795,28 +822,46 @@ void main()
 
     object sack = OBJECT_SELF;
 
-    // only make hostiles NPCs
-    // eventually will work out a more meaningful probability then 'd6()==1'
-    if(d6() == 1 && GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) == 100)
+    if(bMunchkin == FALSE)
     {
-        SetLocalInt(OBJECT_SELF,"bForceLvlUp",1);
-        SetLocalInt(OBJECT_SELF,"X2_NAME_RANDOM",1);
-        // don't spawn too many creatures
-        if(NumAlliesNearby() < 6)
-            CreateObject(OBJECT_TYPE_CREATURE,"enc_minions",GetLocation(OBJECT_SELF));
-    }
-    else if(d10() == 1 && GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) == 100)
-    {
-        if(NumAlliesNearby() < 6)
-            CreateObject(OBJECT_TYPE_CREATURE,"enc_minions",GetLocation(OBJECT_SELF));
-    }
+        if(d6() == 1 && GetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT")=="")
+        {
+            string s;
+            switch(d4())
+            {
+            case 1: s = "x2_ai_attackweak"; break;
+            case 2: s = "x2_ai_attackstr"; break;
+            case 3: s = "x2_ai_atkspellc"; break;
+            case 4: s = "x2_ai_atkvuln"; break;
+            }
+            SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT",s);
+        }
 
-    /* Creature size templates need alot of work.
-    if(d6() == 1)
-    {
-        IncreaseSizeTemplate();
+        // only make hostiles NPCs
+        // eventually will work out a more meaningful probability then 'd6()==1'
+        if(d6() == 1 && GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) == 100)
+        {
+            SetLocalInt(OBJECT_SELF,"bForceLvlUp",1);
+            SetLocalInt(OBJECT_SELF,"X2_NAME_RANDOM",1);
+            // don't spawn too many creatures
+    //        if(NumAlliesNearby() < 6)
+    //            CreateObject(OBJECT_TYPE_CREATURE,"enc_minions",GetLocation(OBJECT_SELF));
+        }
+        /*
+        else if(d10() == 1 && GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) == 100)
+        {
+            if(NumAlliesNearby() < 6)
+                CreateObject(OBJECT_TYPE_CREATURE,"enc_minions",GetLocation(OBJECT_SELF));
+        }
+        */
+
+        /* Creature size templates need alot of work.
+        if(d6() == 1)
+        {
+            IncreaseSizeTemplate();
+        }
+        */
     }
-    */
 
     if (GetCreatureFlag(OBJECT_SELF, CREATURE_VAR_USE_SPAWN_SEARCH) == TRUE)
     {
@@ -929,9 +974,11 @@ void main()
     }
 
 
+    // the random generator in this game is not uniform at all.
+    float fLootChance = 0.5*GetLocalFloat(GetModule(),"fLootMod");
+    float dice = IntToFloat(Random(25000))/10000.0;
 
-
-    if(  GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) > 50 )
+    if( dice <= fLootChance && (GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) > 50) )
     {
         if(GetAbilityScore(OBJECT_SELF,ABILITY_INTELLIGENCE) > 5)
         {
@@ -939,6 +986,7 @@ void main()
 
             if(class == CLASS_TYPE_ASSASSIN) SetLocalInt(sack,"Assassin",TRUE);
             if(class == CLASS_TYPE_BARD) SetLocalInt(sack,"Bard",1);
+            if(class == CLASS_TYPE_MONK) SetLocalInt(sack,"Monk",1);
             if(class == CLASS_TYPE_CLERIC) SetLocalInt(sack,"Cleric",1);
             if(class == CLASS_TYPE_FIGHTER)  SetLocalInt(sack,"Fighter",1);
             if(class == CLASS_TYPE_GIANT) SetLocalInt(sack,"Giant",1);
@@ -964,12 +1012,17 @@ void main()
             {
                 //SendMessageToPC(GetFirstPC(),"Lutes");
                 iChestLevel = GetCharacterLevel(OBJECT_SELF);
-                Lutes(OBJECT_SELF);
+                dice = IntToFloat(Random(25000))/10000.0;
+
+                if(dice <= fSocketLootChance)
+                    sd_droploot(OBJECT_SELF,OBJECT_SELF);
+                else
+                    Lutes(OBJECT_SELF);
             }
         }
 
 
-        if(GetLocalInt(GetModule(),"difficulty") >= 0 || GetLocalInt(OBJECT_SELF,"bForceLvlUp")==1)
+        if( (GetLocalInt(GetModule(),"difficulty") >= 0 || GetLocalInt(OBJECT_SELF,"bForceLvlUp")==1) && bMunchkin==FALSE)
         {
             if(GetLocalInt(OBJECT_SELF,"bNeverLvlUp")==0)
             {
@@ -980,59 +1033,191 @@ void main()
         }
     }
 
-    if(IsMagicUser(OBJECT_SELF) || IsCleric(OBJECT_SELF))
+
+    if( (IsMagicUser(OBJECT_SELF) || IsCleric(OBJECT_SELF)) && bMunchkin==FALSE)
     {
         oObject = OBJECT_SELF;
         iChestLevel = GetCharacterLevel(OBJECT_SELF);
         PersonalSpellBook();
     }
 
-    object oArmor = GetItemInSlot(INVENTORY_SLOT_CHEST);
-    if(GetIsObjectValid(oArmor))
+    if(bModifyArmorAndWeapons == TRUE)
     {
-        oArmor = ModifyArmor(oArmor);
-        if(GetIsObjectValid(oArmor)) {
-            ActionEquipItem(oArmor,INVENTORY_SLOT_CHEST);
-            DelayCommand(0.1,ForceArmor(OBJECT_SELF,oArmor));
+        object oArmor = GetItemInSlot(INVENTORY_SLOT_CHEST);
+        if(GetIsObjectValid(oArmor))
+        {
+            oArmor = ModifyArmor(oArmor);
+            if(GetIsObjectValid(oArmor)) {
+                ActionEquipItem(oArmor,INVENTORY_SLOT_CHEST);
+                DelayCommand(0.1,ForceArmor(OBJECT_SELF,oArmor));
+            }
         }
-    }
 
-    object oWeapon = GetItemInSlot(INVENTORY_SLOT_RIGHTHAND);
-    if(GetIsObjectValid(oWeapon))
-    {
-        oWeapon = ModifyWeapon(oWeapon);
+        object oWeapon = GetItemInSlot(INVENTORY_SLOT_RIGHTHAND);
         if(GetIsObjectValid(oWeapon))
-            ActionEquipItem(oWeapon,INVENTORY_SLOT_RIGHTHAND);
-    }
-    if(d20() == 1) IncreaseWeaponSize(oWeapon);
-
-    oWeapon = GetItemInSlot(INVENTORY_SLOT_LEFTHAND);
-    if(GetIsObjectValid(oWeapon))
-    {
-        if(GetMeleeWeapon(oWeapon))
         {
             oWeapon = ModifyWeapon(oWeapon);
             if(GetIsObjectValid(oWeapon))
-                ActionEquipItem(oWeapon,INVENTORY_SLOT_LEFTHAND);
+                ActionEquipItem(oWeapon,INVENTORY_SLOT_RIGHTHAND);
         }
-        else if(GetBaseItemType(oWeapon) == BASE_ITEM_SMALLSHIELD ||
-                GetBaseItemType(oWeapon) == BASE_ITEM_LARGESHIELD ||
-                GetBaseItemType(oWeapon) == BASE_ITEM_TOWERSHIELD)
-        {
-            oWeapon = ModifyShield(oWeapon);
-            if(GetIsObjectValid(oWeapon))
-                ActionEquipItem(oWeapon,INVENTORY_SLOT_LEFTHAND);
-        }
+        if(d20() == 1) IncreaseWeaponSize(oWeapon);
 
+        oWeapon = GetItemInSlot(INVENTORY_SLOT_LEFTHAND);
+        if(GetIsObjectValid(oWeapon))
+        {
+            if(GetMeleeWeapon(oWeapon))
+            {
+                oWeapon = ModifyWeapon(oWeapon);
+                if(GetIsObjectValid(oWeapon))
+                    ActionEquipItem(oWeapon,INVENTORY_SLOT_LEFTHAND);
+            }
+            else if(GetBaseItemType(oWeapon) == BASE_ITEM_SMALLSHIELD ||
+                    GetBaseItemType(oWeapon) == BASE_ITEM_LARGESHIELD ||
+                    GetBaseItemType(oWeapon) == BASE_ITEM_TOWERSHIELD)
+            {
+                oWeapon = ModifyShield(oWeapon);
+                if(GetIsObjectValid(oWeapon))
+                    ActionEquipItem(oWeapon,INVENTORY_SLOT_LEFTHAND);
+            }
+
+        }
     }
 
-    SetSpawnInCondition(NW_FLAG_FAST_BUFF_ENEMY);
-    SetSpawnInCondition(NW_FLAG_END_COMBAT_ROUND_EVENT);
-    SetSpawnInCondition(NW_FLAG_SPELL_CAST_AT_EVENT);
-    SetSpawnInCondition(NW_FLAG_PERCIEVE_EVENT);
+    if(!bMunchkin)
+    {
+        SetSpawnInCondition(NW_FLAG_FAST_BUFF_ENEMY);
+        SetSpawnInCondition(NW_FLAG_END_COMBAT_ROUND_EVENT);
+        SetSpawnInCondition(NW_FLAG_SPELL_CAST_AT_EVENT);
+        SetSpawnInCondition(NW_FLAG_PERCIEVE_EVENT);
+
+        object oSkin = GetItemInSlot(INVENTORY_SLOT_CARMOUR);
+        if(GetLocalInt(OBJECT_SELF,"bAberTable") == TRUE)
+        {
+            int i;
+            for(i = 0; i < GetHitDice(OBJECT_SELF); i++)
+                MMP_AbberationTable(oSkin);
+
+            object oBite = GetItemInSlot(INVENTORY_SLOT_CWEAPON_B);
+            MMP_AbberationCW(oBite);
+            object oClaw = GetItemInSlot(INVENTORY_SLOT_CWEAPON_L);
+            MMP_AbberationCW(oBite);
+        }
+
+        if(GetLocalInt(OBJECT_SELF,"bAberOozeTable") == TRUE || GetLocalInt(OBJECT_SELF,"bOozeTable") == TRUE)
+        {
+            int i;
+            for(i = 0; i < GetHitDice(OBJECT_SELF)/2+1; i++) MMP_OozeTable(oSkin);
+            for(i = 0; i < GetHitDice(OBJECT_SELF)/2+1; i++) MMP_AbberationTable(oSkin);
+
+            object oBite = GetItemInSlot(INVENTORY_SLOT_CWEAPON_B);
+            MMP_AbberationCW(oBite);
+            object oClaw = GetItemInSlot(INVENTORY_SLOT_CWEAPON_L);
+            MMP_AbberationCW(oBite);
+        }
+
+        if(GetLocalInt(OBJECT_SELF,"bAberDemonicTable") == TRUE || GetLocalInt(OBJECT_SELF,"bDemonicTable") == TRUE)
+        {
+            effect eEffect = EffectAbilityIncrease(ABILITY_STRENGTH,4);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityIncrease(ABILITY_DEXTERITY,4);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityIncrease(ABILITY_CONSTITUTION,4);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityIncrease(ABILITY_INTELLIGENCE,4);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityIncrease(ABILITY_CHARISMA,2);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectTemporaryHitpoints(d12(4));
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            int nHDc = GetHitDice(OBJECT_SELF)/5+1;
+            effect eDR = EffectDamageReduction(5,nHDc);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+            eDR = EffectDamageResistance(DAMAGE_TYPE_ACID,10);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+            eDR = EffectDamageResistance(DAMAGE_TYPE_FIRE,10);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+            eDR = EffectDamageResistance(DAMAGE_TYPE_ELECTRICAL,10);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+            eDR = EffectDamageResistance(DAMAGE_TYPE_COLD,10);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+
+            int nHD = GetHitDice(OBJECT_SELF);
+            int sR = 10+nHD;
+            if(sR > 25) sR = 25;
+            eDR = EffectSpellResistanceIncrease(sR);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+        }
+        if(GetLocalInt(OBJECT_SELF,"bPsychicTable")==TRUE)
+        {
+
+            int i;
+            for(i = 0; i < GetHitDice(OBJECT_SELF); i++) MMP_AbberationTable(oSkin);
 
 
+            if(d6()==1) MMPOOZE_EvardsBlackTentacles(oSkin);
 
+            object oBite = GetItemInSlot(INVENTORY_SLOT_CWEAPON_B);
+            MMP_AbberationCW(oBite);
+            object oClaw = GetItemInSlot(INVENTORY_SLOT_CWEAPON_L);
+            MMP_AbberationCW(oBite);
+
+
+            int nPoints= GetHitDice(OBJECT_SELF);
+            nPoints = nPoints + GetAbilityModifier(ABILITY_INTELLIGENCE);
+            nPoints = nPoints + GetAbilityModifier(ABILITY_WISDOM);
+            nPoints = nPoints + GetAbilityModifier(ABILITY_CHARISMA);
+            SetLocalInt(OBJECT_SELF,"nPoints",nPoints);
+        }
+        if(GetLocalInt(OBJECT_SELF,"bAluDemon") == TRUE)
+        {
+            effect eEffect = EffectAbilityIncrease(ABILITY_STRENGTH,2);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityIncrease(ABILITY_DEXTERITY,4);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityIncrease(ABILITY_CONSTITUTION,4);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityIncrease(ABILITY_INTELLIGENCE,2);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityIncrease(ABILITY_CHARISMA,6);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectTemporaryHitpoints(d12(4));
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            int nHDc = GetHitDice(OBJECT_SELF)/5+1;
+            effect eDR = EffectDamageReduction(5,nHDc);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+
+            eDR = EffectDamageResistance(DAMAGE_TYPE_ACID,10);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+            eDR = EffectDamageResistance(DAMAGE_TYPE_FIRE,10);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+            eDR = EffectDamageResistance(DAMAGE_TYPE_ELECTRICAL,10);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+            eDR = EffectDamageResistance(DAMAGE_TYPE_COLD,10);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+        }
+    }
+    // fix a weird bug in NWN where it drops creature items that should not ever drop.
+    SetDroppableFlag(GetItemInSlot(INVENTORY_SLOT_CARMOUR),FALSE);
+    SetDroppableFlag(GetItemInSlot(INVENTORY_SLOT_CWEAPON_L),FALSE);
+    SetDroppableFlag(GetItemInSlot(INVENTORY_SLOT_CWEAPON_R),FALSE);
+    SetDroppableFlag(GetItemInSlot(INVENTORY_SLOT_CWEAPON_B),FALSE);
+
+    if(GetLocalInt(OBJECT_SELF,"bMinions")==TRUE)
+    {
+        ExecuteScript(GetLocalString(OBJECT_SELF,"sMinionScript"),OBJECT_SELF);
+    }
 }
 
 

@@ -1,0 +1,16 @@
+//::///////////////////////////////////////////////
+//:: FileName sc_chasmbridge06
+//:://////////////////////////////////////////////
+//:://////////////////////////////////////////////
+//:: Created By: Script Wizard
+//:: Created On: 6/4/2005 2:20:14 AM
+//:://////////////////////////////////////////////
+int StartingConditional()
+{
+
+    // Inspect local variables
+    if(!(GetLocalInt(GetArea(GetPCSpeaker()), "chasm") == 6))
+        return FALSE;
+
+    return TRUE;
+}

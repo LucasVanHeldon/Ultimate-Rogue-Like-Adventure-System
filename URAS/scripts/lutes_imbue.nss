@@ -66,6 +66,7 @@ struct sEnchantments ImbueAttackBonusVsSAlign(struct sEnchantments Enchantments)
     if( cost <= points )
     {
         Enchantments.iAttackBonus    +=1;
+        Enchantments.iSAlign = Random(9);
         Enchantments.iValue = cost;
     }
     return Enchantments;
@@ -688,7 +689,8 @@ void ApplyEnchantments(struct sEnchantments Enchants)
 {
     object oItem = Enchants.oItem;
 
-    //PrintEnchants(Enchants);
+    // remove all properties before adding new ones
+    //IPRemoveAllItemProperties(oItem,DURATION_TYPE_PERMANENT);
 
     if(Enchants.iAttackBonus > 0)
     {
@@ -720,6 +722,7 @@ void ApplyEnchantments(struct sEnchantments Enchants)
             itemproperty ipAdd = ItemPropertyEnhancementBonusVsRace(Enchants.iRace,Enchants.iEnhance);
             IPSafeAddItemProperty(oItem, ipAdd);
         }
+
         /*
         else if(Enchants.iSAlign != -1)
         {
@@ -727,6 +730,7 @@ void ApplyEnchantments(struct sEnchantments Enchants)
             IPSafeAddItemProperty(oItem, ipAdd);
         }
         */
+
         else if(Enchants.iAlign != ALL)
         {
             itemproperty ipAdd = ItemPropertyEnhancementBonusVsAlign(Enchants.iAlign,Enchants.iEnhance);
@@ -2963,36 +2967,34 @@ struct sEnchantments ImbueCastSpell(struct sEnchantments Enchants, int nUse=-1)
     else if(use > 7) nCost += use-7;
 
     int spell;
-    if(Enchants.iPoints > 0)
-    {
 
-        if     ((Enchants.iPoints+nCost) >= 32) { nCost=32; spell=ImbueCastSpell20(); }
-        else if((Enchants.iPoints+nCost) >= 30) { nCost=30; spell=ImbueCastSpell18(); }
-        else if((Enchants.iPoints+nCost) >= 28) { nCost=28; spell=ImbueCastSpell17(); }
-        else if((Enchants.iPoints+nCost) >= 26) { nCost=26; spell=ImbueCastSpell16(); }
-        else if((Enchants.iPoints+nCost) >= 24) { nCost=24; spell=ImbueCastSpell15(); }
-        else if((Enchants.iPoints+nCost) >= 22) { nCost=22; spell=ImbueCastSpell13(); }
-        else if((Enchants.iPoints+nCost) >= 20) { nCost=20; spell=ImbueCastSpell12(); }
-        else if((Enchants.iPoints+nCost) >= 18) { nCost=18; spell=ImbueCastSpell11(); }
-        else if((Enchants.iPoints+nCost) >= 16) { nCost=16; spell=ImbueCastSpell10(); }
-        else if((Enchants.iPoints+nCost) >= 14) { nCost=14; spell=ImbueCastSpell9(); }
-        else if((Enchants.iPoints+nCost) >= 9) {  nCost=9; spell=ImbueCastSpell7(); }
-        else if((Enchants.iPoints+nCost) >= 7) {  nCost=7; spell=ImbueCastSpell6(); }
-        else if((Enchants.iPoints+nCost) >= 5) {  nCost=5; spell=ImbueCastSpell5(); }
-        else if((Enchants.iPoints+nCost) >= 3) {  nCost=3; spell=ImbueCastSpell3(); }
-        else if((Enchants.iPoints+nCost) >= 2) {  nCost=2; spell=ImbueCastSpell2(); }
-        else if((Enchants.iPoints+nCost) >= 1) {  nCost=1; spell=ImbueCastSpell1(); }
-        else nCost=0;
-    }
+    if     ((Enchants.iPoints) >= 20) { nCost=20; spell=ImbueCastSpell20(); }
+    else if((Enchants.iPoints) >= 18) { nCost=18; spell=ImbueCastSpell18(); }
+    else if((Enchants.iPoints) >= 17) { nCost=17; spell=ImbueCastSpell17(); }
+    else if((Enchants.iPoints) >= 16) { nCost=16; spell=ImbueCastSpell16(); }
+    else if((Enchants.iPoints) >= 15) { nCost=15; spell=ImbueCastSpell15(); }
+    else if((Enchants.iPoints) >= 13) { nCost=13; spell=ImbueCastSpell13(); }
+    else if((Enchants.iPoints) >= 12) { nCost=12; spell=ImbueCastSpell12(); }
+    else if((Enchants.iPoints) >= 11) { nCost=11; spell=ImbueCastSpell11(); }
+    else if((Enchants.iPoints) >= 10) { nCost=10; spell=ImbueCastSpell10(); }
+    else if((Enchants.iPoints) >= 9) { nCost=9; spell=ImbueCastSpell9(); }
+    else if((Enchants.iPoints) >= 7) {  nCost=7; spell=ImbueCastSpell7(); }
+    else if((Enchants.iPoints) >= 6) {  nCost=6; spell=ImbueCastSpell6(); }
+    else if((Enchants.iPoints) >= 5) {  nCost=5; spell=ImbueCastSpell5(); }
+    else if((Enchants.iPoints) >= 3) {  nCost=3; spell=ImbueCastSpell3(); }
+    else if((Enchants.iPoints) >= 2) {  nCost=2; spell=ImbueCastSpell2(); }
+    else if((Enchants.iPoints) >= 1) {  nCost=1; spell=ImbueCastSpell1(); }
+    else nCost=0;
 
 
-   //SendMessageToPC(GetFirstPC(),"points="+IntToString(Enchants.iPoints)+" cost="+IntToString(nCost));
+
+
    if( nCost > 0 )
    {
         // there is a bug with acid fog
         if(spell == 0)
         {
-            if(iChestLevel < 11) return Enchants;
+            if(iChestLevel < 11) spell=ImbueCastSpell1();
         }
         itemproperty ipAdd = ItemPropertyCastSpell(spell,use);
         IPSafeAddItemProperty(Enchants.oItem,ipAdd);

@@ -1,0 +1,18 @@
+//::///////////////////////////////////////////////
+//:: FileName at_torturee_int
+//:://////////////////////////////////////////////
+//:://////////////////////////////////////////////
+//:: Created By: Script Wizard
+//:: Created On: 8/28/2005 10:27:18 PM
+//:://////////////////////////////////////////////
+#include "nw_i0_tool"
+
+void main()
+{
+    // Give the speaker some XP
+    RewardPartyXP(25, GetPCSpeaker());
+
+    // Set the variables
+    SetLocalInt(OBJECT_SELF, "torturee", 1);
+
+}

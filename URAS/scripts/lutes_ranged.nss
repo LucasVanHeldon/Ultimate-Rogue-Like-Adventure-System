@@ -1,10 +1,3 @@
-// todo:
-// bracers
-// gauntlets
-// boots
-// belts
-// cloaks
-
 
 struct sEnchantments ImbueAmmoDamageBonus(struct sEnchantments Enchants)
 {
@@ -145,35 +138,29 @@ void EnchantAmmo(struct sItemInfo ItemInfo)
         while(points > 0)
         {
             Enchants.iValue = 0;
-            switch(d3())
-            {
-            case 1:
-                Enchants = ImbueAmmoDamageBonus(Enchants);
-                break;
-            case 2: Enchants = ImbueOnHitCastSpell(Enchants);break;
-            case 3: Enchants = ImbueOnHit(Enchants);break;
-            }
+            Enchants = ImbueAmmoDamageBonus(Enchants);
 
             //PrintString("Enchants.iValue="+IntToString(Enchants.iValue));
             // fix the watchdog to avoid infinite loops
-            if(Enchants.iValue > 0) ticker = 0;
+            if(Enchants.iValue > 0)
+            {
+                ticker = 0;
+                points -= Enchants.iValue;
+                cost   += Enchants.iValue;
+            }
             else ticker = ticker +1;
 
-            points -= Enchants.iValue;
-            cost   += Enchants.iValue;
 
-            if(ticker > 20) break;
+            if(ticker > 250) break;
         }
         iTotalCost = cost;
     }
     if(iTotalCost > 0)
     {
-        Enchants.iTotalCost = iTotalCost;
-        ApplyEnchantments(Enchants);
         SetWeaponName(Enchants);
 
     }
-    iChestLevel = level;
+
 
 }
 
@@ -239,25 +226,28 @@ void EnchantRangedWeapon(struct sItemInfo ItemInfo)
             {
                 switch(iRoll)
                 {
-                case 0: Enchants = ImbueAbility(Enchants);break;
+                case 0: Enchants  = ImbueAbility(Enchants);break;
                 case 1: Enchants  = DoImbueAttackBonus(Enchants);  break;
                 case 2: Enchants  = ImbueSaveThrowBonus(Enchants);  break;
                 case 3: Enchants  = ImbueFreeAction(Enchants);  break;
                 case 4: Enchants  = ImbueRegeneration(Enchants); break;
-                case 5: Enchants = ImbueSpellResistance(Enchants);break;
-                case 6: Enchants = ImbueSaveBonus(Enchants);break;
+                case 5: Enchants  = ImbueSpellResistance(Enchants);break;
+                case 6: Enchants  = ImbueSaveBonus(Enchants);break;
 
                 }
             }
             //PrintString("Enchants.iValue="+IntToString(Enchants.iValue));
             // fix the watchdog to avoid infinite loops
-            if(Enchants.iValue > 0) ticker = 0;
+            if(Enchants.iValue > 0)
+            {
+                ticker = 0;
+                points -= Enchants.iValue;
+                cost   += Enchants.iValue;
+            }
             else ticker = ticker +1;
 
-            points -= Enchants.iValue;
-            cost   += Enchants.iValue;
 
-            if(ticker > 20) break;
+            if(ticker > 250) break;
         }
         iTotalCost = cost;
     }

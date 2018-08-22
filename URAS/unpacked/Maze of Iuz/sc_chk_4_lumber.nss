@@ -1,0 +1,18 @@
+//::///////////////////////////////////////////////
+//:: FileName sc_chk_4_lumber
+//:://////////////////////////////////////////////
+//:://////////////////////////////////////////////
+//:: Created By: Script Wizard
+//:: Created On: 5/27/2005 12:29:58 AM
+//:://////////////////////////////////////////////
+#include "nw_i0_tool"
+
+int StartingConditional()
+{
+
+	// Make sure the PC speaker has these items in their inventory
+	if(!HasItem(GetPCSpeaker(), "LumberBoard"))
+		return FALSE;
+
+	return TRUE;
+}

@@ -938,11 +938,9 @@ void EnchantWeapon(struct sItemInfo ItemInfo)
     int    tier=1;
 
     int level =  iChestLevel;
-    if(d6() == 1) iPoints += d4();
-    if(d20() == 1) iPoints += d4(2);
 
-    // don't generate magical items of obscene proportions
-    if(level > 40) iChestLevel = 40;
+    if(d10() == 1) iPoints  += d4();
+    if(d20() == 1) iPoints += d4(2);
 
     if(iChestLevel <= 3) tier=1;
     else if(iChestLevel > 3 && iChestLevel < 10)   tier=2;
@@ -990,15 +988,13 @@ void EnchantWeapon(struct sItemInfo ItemInfo)
         if(d100() > 95)
             iPoints += d4(tier);
 
-        PrintString("Enchant Weapon: Points="+IntToString(iPoints));
-
         int cost   = iTotalCost;
         int points = iPoints;
         Enchants.iPoints = iPoints;
         while(points > 0)
         {
             Enchants.iValue = 0;
-            int iRoll = Die(16);
+            int iRoll = Die(20);
             //PrintString("Roll="+IntToString(iRoll));
 
             if(points == 1) Enchants  = DoImbueAttackBonus(Enchants);
@@ -1014,25 +1010,32 @@ void EnchantWeapon(struct sItemInfo ItemInfo)
                 case 4: Enchants  = ImbueSaveThrowBonus(Enchants);  break;
                 case 5: Enchants  = ImbueExtraMeleeDamage(Enchants);  break;
                 case 6: Enchants  = ImbueFreeAction(Enchants);  break;
-                case 7: Enchants  = ImbueHolyAvenger(Enchants); break;
-                case 8: Enchants  = ImbueMassiveCritical(Enchants); break;
-                case 9: Enchants  = ImbueRegeneration(Enchants); break;
-                case 10: Enchants = ImbueVampiricRegeneration(Enchants);break;
-                case 11: Enchants = ImbueBonusSpellSlot(Enchants); break;
-                case 12: Enchants = ImbueSpellResistance(Enchants);break;
-                case 13: Enchants = ImbueSaveBonus(Enchants);break;
-                case 14: Enchants = ImbueAbility(Enchants);break;
-                case 15: Enchants = ImbueOnHit(Enchants); break;
-                case 16: Enchants = ImbueOnHitCastSpell(Enchants); break;
+                case 7: Enchants  = DoImbueEnhanceBonus(Enchants); break;
+                case 8: Enchants  = ImbueHolyAvenger(Enchants); break;
+                case 9: Enchants  = ImbueMassiveCritical(Enchants); break;
+                case 10: Enchants  = ImbueRegeneration(Enchants); break;
+                case 11: Enchants  = DoImbueEnhanceBonus(Enchants); break;
+                case 12: Enchants = ImbueVampiricRegeneration(Enchants);break;
+                case 13: Enchants = ImbueBonusSpellSlot(Enchants); break;
+                case 14: Enchants = ImbueSpellResistance(Enchants);break;
+                case 15: Enchants  = DoImbueEnhanceBonus(Enchants); break;
+                case 16: Enchants = ImbueSaveBonus(Enchants);break;
+                case 17: Enchants = ImbueAbility(Enchants);break;
+                case 18: Enchants = ImbueOnHit(Enchants); break;
+                case 19: Enchants = ImbueOnHitCastSpell(Enchants); break;
+                case 20: Enchants  = DoImbueEnhanceBonus(Enchants); break;
                 }
             }
             //PrintString("Enchants.iValue="+IntToString(Enchants.iValue));
             // fix the watchdog to avoid infinite loops
-            if(Enchants.iValue > 0) ticker = 0;
+            if(Enchants.iValue > 0)
+            {
+                ticker = 0;
+                points -= Enchants.iValue;
+                cost   += Enchants.iValue;
+            }
             else ticker = ticker +1;
 
-            points -= Enchants.iValue;
-            cost   += Enchants.iValue;
 
             if(ticker > 250) break;
         }
@@ -1043,7 +1046,6 @@ void EnchantWeapon(struct sItemInfo ItemInfo)
         Enchants.iTotalCost = iTotalCost;
         ApplyEnchantments(Enchants);
         SetWeaponName(Enchants);
-
     }
     iChestLevel = level;
 

@@ -9,7 +9,8 @@ void EnchantArmor(struct sItemInfo ItemInfo)
     int    tier=1;
 
     int level =  iChestLevel;
-    if(d20() == 1) iPoints += d4();
+    if(d10() == 1) iPoints += d4();
+    if(d20() == 1) iPoints += d4(2);
 
     if(iChestLevel <= 3) tier=1;
     else if(iChestLevel > 3 && iChestLevel < 10)   tier=2;
@@ -60,42 +61,42 @@ void EnchantArmor(struct sItemInfo ItemInfo)
         if(d100() > 95)
             iPoints += d4(tier);
 
-        PrintString("Enchant Armor: Points="+IntToString(iPoints));
-
-
-
         int cost   = iTotalCost;
         int points = iPoints;
         Enchants.iPoints = iPoints;
         while(points > 0)
         {
+            int iRoll = Die(16);
+
             Enchants.iValue = 0;
-            int iRoll = Die(12);
-            //PrintString("Roll="+IntToString(iRoll));
 
             switch(iRoll)
             {
             case 1: Enchants = ImbueACBonus(Enchants); break;
             case 2: Enchants = ImbueArcaneSpellFailureDecrease(Enchants); break;
             case 3: Enchants = ImbueSaveBonus(Enchants);break;
-            case 4: Enchants = ImbueSaveThrowBonus(Enchants);  break;
-            case 5: Enchants = ImbueFreeAction(Enchants);  break;
-            case 6: Enchants = ImbueBonusSpellSlot(Enchants); break;
-            case 7: Enchants = ImbueSpellResistance(Enchants);break;
-            case 8: Enchants = ImbueAbility(Enchants);break;
-            case 9: Enchants = ImbueDamageImmunity(Enchants); break;
-            case 10: Enchants = ImbueDamageReduction(Enchants); break;
-            case 11: Enchants = ImbueDamageResistance(Enchants); break;
-            case 12: Enchants = ImbueImprovedEvasion(Enchants); break;
-            case 13: Enchants = ImbueCastSpell(Enchants); break;
+            case 4: Enchants = ImbueACBonus(Enchants); break;
+            case 5: Enchants = ImbueSaveThrowBonus(Enchants);  break;
+            case 6: Enchants = ImbueFreeAction(Enchants);  break;
+            case 7: Enchants = ImbueBonusSpellSlot(Enchants); break;
+            case 8: Enchants = ImbueSpellResistance(Enchants);break;
+            case 9: Enchants = ImbueACBonus(Enchants); break;
+            case 10: Enchants = ImbueAbility(Enchants);break;
+            case 11: Enchants = ImbueDamageImmunity(Enchants); break;
+            case 12: Enchants = ImbueDamageReduction(Enchants); break;
+            case 13: Enchants = ImbueDamageResistance(Enchants); break;
+            case 14: Enchants = ImbueImprovedEvasion(Enchants); break;
+            case 15: Enchants = ImbueCastSpell(Enchants); break;
+            case 16: Enchants = ImbueACBonus(Enchants); break;
             }
-            //PrintString("Enchants.iValue="+IntToString(Enchants.iValue));
-            // fix the watchdog to avoid infinite loops
-            if(Enchants.iValue > 0) ticker = 0;
+            if(Enchants.iValue > 0)
+            {
+                ticker = 0;
+                points -= Enchants.iValue;
+                cost   += Enchants.iValue;
+            }
             else ticker = ticker +1;
 
-            points -= Enchants.iValue;
-            cost   += Enchants.iValue;
             // since EE has extended the amount of loops you can loop, this alsmot always works now.
             if(ticker > 250) break;
         }
@@ -105,7 +106,6 @@ void EnchantArmor(struct sItemInfo ItemInfo)
     {
         Enchants.iTotalCost = iTotalCost;
         ApplyEnchantments(Enchants);
-        //SetWeaponName(Enchants);
         SetName(Enchants.oItem, "Enchanted " + ItemInfo.sName);
     }
     iChestLevel = level;
@@ -190,6 +190,7 @@ void GenerateArmor()
     object o = CopyItem(ItemInfo.oItem,oObject);
     DestroyObject(ItemInfo.oItem);
     ItemInfo.oItem = o;
+
     EnchantArmor(ItemInfo);
 
 }
@@ -234,12 +235,12 @@ void GenerateHelmet()
         PrintString("Create Helmet " + ItemInfo.sName + " bp="+ItemInfo.sBluePrint+" failed.");
         return;
     }
-    EnchantArmor(ItemInfo);
 
     object oldItem=ItemInfo.oItem;
     ItemInfo.oItem= CopyItemAndModify(ItemInfo.oItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(255));
     if(GetIsObjectValid(ItemInfo.oItem)) DestroyObject(oldItem);
 
+    EnchantArmor(ItemInfo);
 
 }
 

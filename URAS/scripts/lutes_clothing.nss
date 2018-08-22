@@ -5,10 +5,9 @@ void GenerateBelt()
     SetIdentified(oBelt,bIdentified);
     struct sEnchantments Enchants;
 
-    object oldItem=Enchants.oItem;
+    object oldItem=oBelt;
     oBelt = OBJECT_INVALID;
     oBelt = CopyItemAndModify(oldItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(255));
-
     if(GetIsObjectValid(oBelt)) DestroyObject(oldItem);
     else oBelt = oldItem;
 

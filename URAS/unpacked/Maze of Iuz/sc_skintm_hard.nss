@@ -1,0 +1,18 @@
+//::///////////////////////////////////////////////
+//:: FileName sc_skintm_hard
+//:://////////////////////////////////////////////
+//:://////////////////////////////////////////////
+//:: Created By: Script Wizard
+//:: Created On: 3/8/2006 12:57:20 AM
+//:://////////////////////////////////////////////
+#include "nw_i0_tool"
+
+int StartingConditional()
+{
+
+    // Perform skill checks
+    if(!(AutoDC(DC_HARD, SKILL_INTIMIDATE, GetPCSpeaker())))
+        return FALSE;
+
+    return TRUE;
+}

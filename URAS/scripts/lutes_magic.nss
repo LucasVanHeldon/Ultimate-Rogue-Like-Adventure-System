@@ -1,4 +1,5 @@
 
+// don't use this unless you like to drink potions of acid fog
 void EnchantPotion(struct sEnchantments Enchants)
 {
     int iPoints=iChestLevel;
@@ -14,6 +15,8 @@ void EnchantPotion(struct sEnchantments Enchants)
     if(d20() == 1) iPoints += d4(2);
 
     Enchants.iPoints = iPoints;
+    Enchants.sName = "Magic Potion";
+
     if(points > 0)
     {
         Enchants.iValue = 0;
@@ -26,12 +29,13 @@ void EnchantPotion(struct sEnchantments Enchants)
     if(iTotalCost > 0)
     {
         Enchants.iTotalCost = iTotalCost;
-        ApplyEnchantments(Enchants);
+        SetName(Enchants.oItem,Enchants.sName);
     }
 
     iChestLevel = iTemp;
 }
 
+// this is pretty useless
 void EnchantScroll(struct sEnchantments Enchants)
 {
     int iPoints,iTotalCost=0;
@@ -44,19 +48,21 @@ void EnchantScroll(struct sEnchantments Enchants)
     if(d20() == 1) iPoints += d4(2);
 
     Enchants.iPoints = iPoints;
+    Enchants.sName = "Magic Scroll";
     if(points > 0)
     {
         Enchants.iValue = 0;
-        Enchants = ImbueCastSpell(Enchants);
         points -= Enchants.iValue;
         cost   += Enchants.iValue;
+        Enchants = ImbueCastSpell(Enchants);
     }
 
     iTotalCost = cost;
     if(iTotalCost > 0)
     {
         Enchants.iTotalCost = iTotalCost;
-        ApplyEnchantments(Enchants);
+        SetName(Enchants.oItem,Enchants.sName);
+
     }
 
 }
@@ -72,6 +78,7 @@ void EnchantMagic(struct sEnchantments Enchants)
     if(d6() == 1) iPoints += d4();
     if(d20() == 1) iPoints += d4(2);
     int points = iPoints;
+
     Enchants.iPoints = iPoints;
 
     while(points > 0)
@@ -79,20 +86,22 @@ void EnchantMagic(struct sEnchantments Enchants)
         Enchants.iValue = 0;
         Enchants = ImbueCastSpell(Enchants);
 
-        if(Enchants.iValue > 0) break;
+        if(Enchants.iValue > 0)
+        {
+            ticker = 0;
+            points -= Enchants.iValue;
+            cost   += Enchants.iValue;
+        }
         else ticker = ticker +1;
 
-        points -= Enchants.iValue;
-        cost   += Enchants.iValue;
-
-        if(ticker > 20) break;
+        if(ticker > 250) break;
     }
 
     iTotalCost = cost;
     if(iTotalCost > 0)
     {
         Enchants.iTotalCost = iTotalCost;
-        ApplyEnchantments(Enchants);
+        SetName(Enchants.oItem,Enchants.sName);
     }
 }
 
@@ -110,36 +119,37 @@ void EnchantSpellBook(struct sItemInfo ItemInfo)
     if(d6() == 1) iPoints += d4();
     if(d20() == 1) iPoints += d4(2);
 
-    Enchants.iPoints = iPoints;
-
-    if(level > 40) iChestLevel = 40;
-
-
+    Enchants.iPoints    = iPoints;
     Enchants.oItem      = ItemInfo.oItem;
     Enchants.sName      = ItemInfo.sName;
 
     int cost   = iTotalCost;
     int points = iPoints;
     Enchants.iPoints = iPoints;
+    Enchants.sName   = "Magic Spellbook";
+
     while(points > 0)
     {
         Enchants.iValue = 0;
         Enchants = ImbueCastSpell(Enchants);
 
-        if(Enchants.iValue > 0) ticker = 0;
+        if(Enchants.iValue > 0)
+        {
+            ticker = 0;
+            points -= Enchants.iValue;
+            cost   += Enchants.iValue;
+        }
         else ticker = ticker +1;
 
-        points -= Enchants.iValue;
-        cost   += Enchants.iValue;
 
-        if(ticker > 50) break;
+        if(ticker > 250) break;
     }
     iTotalCost = cost;
 
     if(iTotalCost > 0)
     {
         Enchants.iTotalCost = iTotalCost;
-        ApplyEnchantments(Enchants);
+        SetName(Enchants.oItem,Enchants.sName);
     }
 
     iChestLevel = level;

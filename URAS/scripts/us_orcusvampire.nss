@@ -1,5 +1,3 @@
-// Demonic Template
-// By Weed Wizard
 
 #include "x0_i0_anims"
 #include "x0_i0_treasure"
