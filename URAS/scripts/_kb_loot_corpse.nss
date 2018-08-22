@@ -901,5 +901,5 @@ UNDER CONSTRUCTION :)
             DelayCommand(fCorpseFade, FadeCorpse(oCorpseBlood, oLootCorpse, oHostBody));
         }
     }
-}              s
+}
 //void main(){}

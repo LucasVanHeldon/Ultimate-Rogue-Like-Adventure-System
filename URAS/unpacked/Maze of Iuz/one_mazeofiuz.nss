@@ -111,10 +111,13 @@ void CreateMushrooms(location lLoc, vector vPos, object oC)
     }
 }
 
+int CreateTrap(object oObject)
+{
+    return Random(47);
+}
 
 int CreateMinorTrap(object oDoor)
 {
-   return Random(47);
    switch(d12())
    {
    case 1: return TRAP_BASE_TYPE_MINOR_ACID;
@@ -173,7 +176,6 @@ void RunOnce()
     object oWP;
     if(GetLocalInt(OBJECT_SELF,"bEntered") == 0)
     {
-        SendMessageToPC(GetFirstPC(),"Entering");
         SetLocalInt(OBJECT_SELF,"bEntered",1);
 
         object oC = GetFirstObjectInArea();

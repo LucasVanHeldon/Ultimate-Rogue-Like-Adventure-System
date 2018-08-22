@@ -66,28 +66,30 @@ void EnchantArmor(struct sItemInfo ItemInfo)
         Enchants.iPoints = iPoints;
         while(points > 0)
         {
-            int iRoll = Die(16);
+            int iRoll = FloatToInt(IntToFloat(Random(17000))/1000.0);
 
             Enchants.iValue = 0;
 
             switch(iRoll)
             {
-            case 1: Enchants = ImbueACBonus(Enchants); break;
-            case 2: Enchants = ImbueArcaneSpellFailureDecrease(Enchants); break;
-            case 3: Enchants = ImbueSaveBonus(Enchants);break;
-            case 4: Enchants = ImbueACBonus(Enchants); break;
-            case 5: Enchants = ImbueSaveThrowBonus(Enchants);  break;
-            case 6: Enchants = ImbueFreeAction(Enchants);  break;
-            case 7: Enchants = ImbueBonusSpellSlot(Enchants); break;
-            case 8: Enchants = ImbueSpellResistance(Enchants);break;
-            case 9: Enchants = ImbueACBonus(Enchants); break;
-            case 10: Enchants = ImbueAbility(Enchants);break;
-            case 11: Enchants = ImbueDamageImmunity(Enchants); break;
-            case 12: Enchants = ImbueDamageReduction(Enchants); break;
-            case 13: Enchants = ImbueDamageResistance(Enchants); break;
-            case 14: Enchants = ImbueImprovedEvasion(Enchants); break;
-            case 15: Enchants = ImbueCastSpell(Enchants); break;
-            case 16: Enchants = ImbueACBonus(Enchants); break;
+            case 0: Enchants = ImbueACBonus(Enchants); break;
+            case 1: Enchants = ImbueArcaneSpellFailureDecrease(Enchants); break;
+            case 2: Enchants = ImbueSaveBonus(Enchants);break;
+            case 3: Enchants = ImbueACBonus(Enchants); break;
+            case 4: Enchants = ImbueSaveThrowBonus(Enchants);  break;
+            case 5: Enchants = ImbueFreeAction(Enchants);  break;
+            case 6: Enchants = ImbueBonusSpellSlot(Enchants); break;
+            case 7: Enchants = ImbueSpellResistance(Enchants);break;
+            case 8: Enchants = ImbueACBonus(Enchants); break;
+            case 9: Enchants = ImbueAbility(Enchants);break;
+            case 10: Enchants = ImbueDamageImmunity(Enchants); break;
+            case 11: Enchants = ImbueDamageReduction(Enchants); break;
+            case 12: Enchants = ImbueDamageResistance(Enchants); break;
+            case 13: Enchants = ImbueImprovedEvasion(Enchants); break;
+            case 14: Enchants = ImbueCastSpell(Enchants); break;
+            case 15:
+            default:
+                Enchants = ImbueACBonus(Enchants); break;
             }
             if(Enchants.iValue > 0)
             {

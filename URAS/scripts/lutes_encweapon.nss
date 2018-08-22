@@ -994,7 +994,7 @@ void EnchantWeapon(struct sItemInfo ItemInfo)
         while(points > 0)
         {
             Enchants.iValue = 0;
-            int iRoll = Die(20);
+            int iRoll = FloatToInt(IntToFloat(Random(21000))/1000.0);
             //PrintString("Roll="+IntToString(iRoll));
 
             if(points == 1) Enchants  = DoImbueAttackBonus(Enchants);
@@ -1004,6 +1004,7 @@ void EnchantWeapon(struct sItemInfo ItemInfo)
                 switch(iRoll)
                 {
 
+                case 0: Enchants  = DoImbueEnhanceBonus(Enchants); break;
                 case 1: Enchants  = DoImbueAttackBonus(Enchants);  break;
                 case 2: Enchants  = DoImbueDamageBonus(Enchants);  break;
                 case 3: Enchants  = DoImbueEnhanceBonus(Enchants); break;
@@ -1023,7 +1024,9 @@ void EnchantWeapon(struct sItemInfo ItemInfo)
                 case 17: Enchants = ImbueAbility(Enchants);break;
                 case 18: Enchants = ImbueOnHit(Enchants); break;
                 case 19: Enchants = ImbueOnHitCastSpell(Enchants); break;
-                case 20: Enchants  = DoImbueEnhanceBonus(Enchants); break;
+                case 20:
+                default:
+                    Enchants  = DoImbueEnhanceBonus(Enchants); break;
                 }
             }
             //PrintString("Enchants.iValue="+IntToString(Enchants.iValue));

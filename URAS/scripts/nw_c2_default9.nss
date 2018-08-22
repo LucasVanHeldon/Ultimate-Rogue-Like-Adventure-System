@@ -18,8 +18,8 @@
 #include "inc_templates0"
 #include "sd_lootsystem"
 
-float fSocketLootChance = 0.05;
-int bMunchkin = FALSE;   // Set to TRUE if you want to use the munchkin only
+int iSocketedLootChance = 100;
+int bMunchkin = TRUE;   // Set to TRUE if you want to use the munchkin only
 int bOC = FALSE;        // Set to TRUE if compiling for Official campaign
 int bModifyArmorAndWeapons=TRUE;
 
@@ -822,6 +822,14 @@ void main()
 
     object sack = OBJECT_SELF;
 
+    if(!GetLocalInt(GetModule(),"bUrasRunOnce"))
+    {
+        SetLocalInt(GetModule(),"bUrasRunOnce",1);
+        SetLocalFloat(GetModule(),"fLootMod",1.0);
+        if(bMunchkin == TRUE)
+                SetLocalFloat(GetModule(),"fLootMod",5.0);
+    }
+
     if(bMunchkin == FALSE)
     {
         if(d6() == 1 && GetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT")=="")
@@ -972,13 +980,15 @@ void main()
 
         //SetName(OBJECT_SELF,RandomName(NAME_FIRST_HUMAN_MALE));
     }
-
+    float fLootMod = GetLocalFloat(GetModule(),"fLootMod");
+    if(bMunchkin == TRUE) fLootMod = 5.0;
 
     // the random generator in this game is not uniform at all.
-    float fLootChance = 0.5*GetLocalFloat(GetModule(),"fLootMod");
-    float dice = IntToFloat(Random(25000))/10000.0;
+    float fLootChance = 0.5* fLootMod;
+    int dice = Random(10000);
+    int iChance = FloatToInt(fLootChance*10000);
 
-    if( dice <= fLootChance && (GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) > 50) )
+    if( (dice <= iChance) && (GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) > 50) )
     {
         if(GetAbilityScore(OBJECT_SELF,ABILITY_INTELLIGENCE) > 5)
         {
@@ -1012,27 +1022,24 @@ void main()
             {
                 //SendMessageToPC(GetFirstPC(),"Lutes");
                 iChestLevel = GetCharacterLevel(OBJECT_SELF);
-                dice = IntToFloat(Random(25000))/10000.0;
+                dice = Random(10000);
 
-                if(dice <= fSocketLootChance)
+                if(dice <= iSocketedLootChance)
                     sd_droploot(OBJECT_SELF,OBJECT_SELF);
                 else
                     Lutes(OBJECT_SELF);
             }
         }
-
-
-        if( (GetLocalInt(GetModule(),"difficulty") >= 0 || GetLocalInt(OBJECT_SELF,"bForceLvlUp")==1) && bMunchkin==FALSE)
+    }
+    if( (GetLocalInt(GetModule(),"difficulty") >= 0 || GetLocalInt(OBJECT_SELF,"bForceLvlUp")==1) && bMunchkin==FALSE)
+    {
+        if(GetLocalInt(OBJECT_SELF,"bNeverLvlUp")==0)
         {
-            if(GetLocalInt(OBJECT_SELF,"bNeverLvlUp")==0)
-            {
-                EnhanceSkin();
-                EnhanceItems();
-                Upgrade();
-            }
+            EnhanceSkin();
+            EnhanceItems();
+            Upgrade();
         }
     }
-
 
     if( (IsMagicUser(OBJECT_SELF) || IsCleric(OBJECT_SELF)) && bMunchkin==FALSE)
     {
@@ -1207,6 +1214,15 @@ void main()
             eDR = EffectDamageResistance(DAMAGE_TYPE_COLD,10);
             ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
         }
+        if(GetLocalInt(OBJECT_SELF,"bMinions")==TRUE)
+        {
+            ExecuteScript(GetLocalString(OBJECT_SELF,"sMinionScript"),OBJECT_SELF);
+        }
+        if(GetLocalInt(OBJECT_SELF,"bHenchmen")==TRUE)
+        {
+            ExecuteScript(GetLocalString(OBJECT_SELF,"sHenchmenScript"),OBJECT_SELF);
+        }
+
     }
     // fix a weird bug in NWN where it drops creature items that should not ever drop.
     SetDroppableFlag(GetItemInSlot(INVENTORY_SLOT_CARMOUR),FALSE);
@@ -1214,10 +1230,7 @@ void main()
     SetDroppableFlag(GetItemInSlot(INVENTORY_SLOT_CWEAPON_R),FALSE);
     SetDroppableFlag(GetItemInSlot(INVENTORY_SLOT_CWEAPON_B),FALSE);
 
-    if(GetLocalInt(OBJECT_SELF,"bMinions")==TRUE)
-    {
-        ExecuteScript(GetLocalString(OBJECT_SELF,"sMinionScript"),OBJECT_SELF);
-    }
+
 }
 
 

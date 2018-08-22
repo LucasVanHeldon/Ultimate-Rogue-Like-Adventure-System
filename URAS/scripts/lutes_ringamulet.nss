@@ -18,12 +18,13 @@ void EnchantItem(struct sEnchantments Enchants)
     while(points > 0)
     {
         Enchants.iValue = 0;
-        int iRoll = Die(15);
+        int iRoll = FloatToInt(IntToFloat(Random(16000))/1000.0);
         //PrintString("Roll="+IntToString(iRoll));
 
         // todo: cast spell, skills, feats
         switch(iRoll)
         {
+        case 0: Enchants  = ImbueACBonus(Enchants); break;
         case 1: Enchants  = ImbueSaveThrowBonus(Enchants);  break;
         case 2: Enchants  = ImbueFreeAction(Enchants);  break;
         case 3: Enchants  = ImbueRegeneration(Enchants); break;
@@ -38,6 +39,7 @@ void EnchantItem(struct sEnchantments Enchants)
         case 12: Enchants = ImbueImprovedEvasion(Enchants); break;
         case 13: Enchants = ImbueCastSpell(Enchants); break;
         case 14: Enchants = ImbueSkill(Enchants); break;
+        default:
         case 15: Enchants = ImbueFeat(Enchants); break;
         }
 

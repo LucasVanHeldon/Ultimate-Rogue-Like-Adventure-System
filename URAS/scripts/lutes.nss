@@ -81,7 +81,7 @@ void Lutes(object oTarget)
 
 
     float fLootMod = 0.5*GetLocalFloat(GetModule(),"fLootMod");
-    float x  = fLootMod*IntToFloat(iChestLevel);
+    float x        = fLootMod*IntToFloat(iChestLevel);
 
 
     iLootModifier = FloatToInt(x);
@@ -122,82 +122,85 @@ void Lutes(object oTarget)
     }
 
 
-    // class biases
-    if( (random() < fLootMod) && (bFighter == TRUE || bGiant == TRUE || bPaladin == TRUE || bRanger == TRUE))
+    int chance = FloatToInt(fLootMod*10000.0);
+    if(Random(10000) < chance)
     {
-        nWeapon   += d100() <= FtrChanceWeapon? d2():0;
-        nRanged   += d100() <= FtrChanceRanged? d2() : 0;
-        nAmmo     += d100() <= FtrChanceAmmo?   d3() : 0;
-        nShield   += d100() <= FtrChanceShield? 1:0;
-        nHelmet   += d100() <= FtrChanceHelmet? 1:0;
-        nGrenades += d3();
-        nPotions  += d100() < FtrChancePotions? d3():0;
+        if( (bFighter == TRUE || bGiant == TRUE || bPaladin == TRUE || bRanger == TRUE))
+        {
+            nWeapon   += d100() <= FtrChanceWeapon? d2():0;
+            nRanged   += d100() <= FtrChanceRanged? d2() : 0;
+            nAmmo     += d100() <= FtrChanceAmmo?   d3() : 0;
+            nShield   += d100() <= FtrChanceShield? 1:0;
+            nHelmet   += d100() <= FtrChanceHelmet? 1:0;
+            nGrenades += d3();
+            nPotions  += d100() < FtrChancePotions? d3():0;
 
+        }
+
+        else if( (bMonk == TRUE))
+        {
+            nBelt      += d100() <= MonkChanceBelt?       1:0;
+            nCloak     += d100() <= MonkChanceCloak?      1:0;
+            nBoots     += d100() <= MonkChanceBoots?      1:0;
+            nGauntlet  += d100() <= MonkChanceGauntlet?   1:0;
+
+            nRings     += d100() <= MonkChanceRings?   d2():0;
+            nAmulets   += d100() <= MonkChanceAmulets? d2():0;
+            nPotions   += d100() <= MonkChancePotions? d4():0;
+
+        }
+
+        else if(( bWizard == TRUE))
+        {
+
+            nAScrolls  += d100() <= WizChanceScrolls? d4():0;
+            nMagic     += d100() <= WizChanceMagic? 1:0;
+            nMiscMagic += d100() <= WizChanceMiscMagic? 1:0;
+            nRings     += d100() <= WizChanceRings? d2():0;
+            nAmulets   += d100() <= WizChanceAmulets? d2():0;
+            nBooks     += d100() <= WizChanceBooks? d3():0;
+            nWands     += d100() <= WizChanceWands? d3():0;
+            nStaff     += d100() <= WizChanceStaff? 1:0;
+            nPotions   += d100() <= WizChancePotions? d4():0;
+
+        }
+        else if(( bCleric == TRUE || bDruid == TRUE))
+        {
+
+            nWeapon    += d100() <= ClrChanceWeapon?1:0;
+            nArmor     += d100() <= ClrChanceArmor?1:0;
+            nShield    += d100() <= ClrChanceShield?1:0;
+            nRings     += d100() <= ClrChanceRings?d2():0;
+            nAmulets   += d100() <= ClrChanceAmulets?1:0;
+            nRods      += d100() <= ClrChanceRods? 1:0;
+            nPotions   += d100() <= ClrChancePotions? d4():0;
+            nDScrolls  += d100() <= ClrChanceScrolls? d4():0;
+
+
+        }
+        else if(( bRogue == TRUE || bAssassin == TRUE))
+        {
+            nGems    += d4();
+            nJewls   += d3();
+            nPoison  += d100() < RogueChancePoison? d3():0;
+            nRanged  += d100() < RogueChanceRanged? 1:0;
+            nAmmo    += d100() < RogueChanceAmmo? d3():0;
+            nWeapon  += d100() <= RogueChanceWeapon? 1:0;
+            nPotions   += d100() <= RogueChancePotions? d4():0;
+            nAScrolls  += d100() <= RogueChanceScrolls? d4():0;
+
+        }
+        else if(( bDragon == TRUE))
+        {
+            nGems  = Random(Die(100)+iChestLevel);
+            nGold  = d4(iChestLevel)*1000;
+            nJewls = iChestLevel;
+            nRings    = Random(6);
+            nAmulets  = Random(4);
+
+            PrintString("Dragon Drop");
+         }
     }
-
-    else if( (random() < fLootMod) && (bMonk == TRUE))
-    {
-        nBelt      += d100() <= MonkChanceBelt?       1:0;
-        nCloak     += d100() <= MonkChanceCloak?      1:0;
-        nBoots     += d100() <= MonkChanceBoots?      1:0;
-        nGauntlet  += d100() <= MonkChanceGauntlet?   1:0;
-
-        nRings     += d100() <= MonkChanceRings?   d2():0;
-        nAmulets   += d100() <= MonkChanceAmulets? d2():0;
-        nPotions   += d100() <= MonkChancePotions? d4():0;
-
-    }
-
-    else if((random() < fLootMod) && ( bWizard == TRUE))
-    {
-
-        nAScrolls  += d100() <= WizChanceScrolls? d4():0;
-        nMagic     += d100() <= WizChanceMagic? 1:0;
-        nMiscMagic += d100() <= WizChanceMiscMagic? 1:0;
-        nRings     += d100() <= WizChanceRings? d2():0;
-        nAmulets   += d100() <= WizChanceAmulets? d2():0;
-        nBooks     += d100() <= WizChanceBooks? d3():0;
-        nWands     += d100() <= WizChanceWands? d3():0;
-        nStaff     += d100() <= WizChanceStaff? 1:0;
-        nPotions   += d100() <= WizChancePotions? d4():0;
-
-    }
-    else if((random() < fLootMod) &&( bCleric == TRUE || bDruid == TRUE))
-    {
-
-        nWeapon    += d100() <= ClrChanceWeapon?1:0;
-        nArmor     += d100() <= ClrChanceArmor?1:0;
-        nShield    += d100() <= ClrChanceShield?1:0;
-        nRings     += d100() <= ClrChanceRings?d2():0;
-        nAmulets   += d100() <= ClrChanceAmulets?1:0;
-        nRods      += d100() <= ClrChanceRods? 1:0;
-        nPotions   += d100() <= ClrChancePotions? d4():0;
-        nDScrolls  += d100() <= ClrChanceScrolls? d4():0;
-
-
-    }
-    else if((random() < fLootMod) && ( bRogue == TRUE || bAssassin == TRUE))
-    {
-        nGems    += d4();
-        nJewls   += d3();
-        nPoison  += d100() < RogueChancePoison? d3():0;
-        nRanged  += d100() < RogueChanceRanged? 1:0;
-        nAmmo    += d100() < RogueChanceAmmo? d3():0;
-        nWeapon  += d100() <= RogueChanceWeapon? 1:0;
-        nPotions   += d100() <= RogueChancePotions? d4():0;
-        nAScrolls  += d100() <= RogueChanceScrolls? d4():0;
-
-    }
-    else if((random() < fLootMod) &&( bDragon == TRUE))
-    {
-        nGems  = Random(Die(100)+iChestLevel);
-        nGold  = d4(iChestLevel)*1000;
-        nJewls = iChestLevel;
-        nRings    = Random(6);
-        nAmulets  = Random(4);
-
-        PrintString("Dragon Drop");
-     }
 
     if(nGems > 0)      CreateGems(nGems);
     if(nGold > 0 )     CreateMoney(nGold);

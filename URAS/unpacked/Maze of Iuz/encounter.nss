@@ -390,7 +390,8 @@ float CalcCR(int EL, int num)
     if(EL < 1) EL = 1;
     if(num < 1) num = 1;
     if(num > 12) num = 12;
-    return CRTableLookup(EL,num);
+
+    return CRTableLookup(EL+FloatToInt(GetLocalFloat(GetModule(),"fCR")),num);
 
 }
 
@@ -611,28 +612,16 @@ void ENC_Spawner(object oS, int EL, int dontlvl = FALSE)
     if(difficulty == -6) n = n / 8;
     else if(difficulty == -4) n = n / 4;
     else if(difficulty == -2) n = n / 3;
-    else if(difficulty == 0) n = n / 2;
-    else if(difficulty == 1) n = n;
+    else if(difficulty == 1) n = n+n/4;
     else if(difficulty == 2) n = n+n/2;
-
+    if(n < 1) n = 1;
     int num = n;
-    float CR  = CalcCR(EL,num);
-    float oCR = CR;
-    CR       += GetLocalFloat(GetModule(),"fCR");
-    if(CR <= 0.0) CR = 0.5;
-    float N   = IntToFloat(num);
-    if(d6() < 4)
-    {
-        CR = IntToFloat(EL);
-        N  = CalcNumFromELCR(EL,CR);
-    }
-    else if(oCR != CR)
-    {
-        N = CalcNumFromELCR(EL,CR);
-    }
-    num       = FloatToInt(N);
 
+    float CR  = CalcCR(EL,num);
     int   nCR = FloatToInt(CR);
+    if(nCR < EL/2) n = n * 2;
+
+    SendMessageToPC(GetFirstPC(),"EL="+IntToString(EL)+" CR="+FloatToString(CR) + " num="+IntToString(num));
     Fill(nCR);
 
     int     i;
@@ -642,6 +631,7 @@ void ENC_Spawner(object oS, int EL, int dontlvl = FALSE)
     int     nTemp = nCR;
 
     int c = 0;
+    int bHero=FALSE;
     if(nNum > 0)
     {
         sTag = GetLocalString(oS,"BP"+IntToString(nCR)+"_"+IntToString(nNum));
@@ -649,8 +639,17 @@ void ENC_Spawner(object oS, int EL, int dontlvl = FALSE)
         for(i = 0; i < num; i++)
         {
             object o = CreateObject(OBJECT_TYPE_CREATURE,sTag,GetLocation(oS));
+
             if(GetIsObjectValid(o))
             {
+                if(nCR < EL/2) {
+                    if(!bHero)
+                    {
+                        bHero = TRUE;
+                        ExecuteScript("us_npc",o);
+                    }
+                }
+
                 c++;
                 if(dontlvl == 1) SetLocalInt(o,"bNeverLvlUp",1);
                 AssignCommand(o,ActionRandomWalk());
