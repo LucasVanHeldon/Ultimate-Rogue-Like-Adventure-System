@@ -399,23 +399,18 @@ float CalcNumFromELCR(int el, float CR)
 {
 
     if(el <= 0) el = 1;
-    if(CR <= 0.0) CR = 1.0;
+    if(CR <= 0.0) CR = 0.5;
 
     float n =  IntToFloat(el) / (CR);
-    if(n - IntToFloat(abs(FloatToInt(n))) >= 0.5)
-        n=n+1.0;
-
+    if(n - fabs(n) >= 0.5) n+=1.0;
     int difficulty = GetLocalInt(GetModule(),"difficulty");
     if(difficulty <= -2) n = n / 4;
     else if(difficulty == -1) n = n / 2;
     else if(difficulty == 1) n = n + n/2;
     else if(difficulty == 2) n = 2*n;
 
-    if(n < 1.0) n= 1.0;
-    if(n > 12.0) n = 12.0;
-    int x = FloatToInt(n);
-    return IntToFloat(Random(x)+1);
-
+    if(n < 1.0)  n = 1.0;
+    return n;
 }
 
 void DoPop(object oC, int CR, string list)
@@ -493,6 +488,43 @@ int CalcEL(object oC)
 }
 
 
+
+void SpawnTable()
+{
+    switch(Random(28)+1)
+    {
+    case 1: CreateObject(OBJECT_TYPE_CREATURE,"enc_aberration",GetLocation(OBJECT_SELF)); break;
+    case 2: CreateObject(OBJECT_TYPE_CREATURE,"enc_undead",GetLocation(OBJECT_SELF)); break;
+    case 3: CreateObject(OBJECT_TYPE_CREATURE,"enc_orcs",GetLocation(OBJECT_SELF)); break;
+    case 4: CreateObject(OBJECT_TYPE_CREATURE,"enc_goblins",GetLocation(OBJECT_SELF)); break;
+    case 5: CreateObject(OBJECT_TYPE_CREATURE,"enc_gnolls",GetLocation(OBJECT_SELF)); break;
+    case 6: CreateObject(OBJECT_TYPE_CREATURE,"enc_ogres",GetLocation(OBJECT_SELF)); break;
+    case 7: CreateObject(OBJECT_TYPE_CREATURE,"enc_trolls",GetLocation(OBJECT_SELF)); break;
+    case 8: CreateObject(OBJECT_TYPE_CREATURE,"enc_hobgoblins",GetLocation(OBJECT_SELF)); break;
+    case 9: CreateObject(OBJECT_TYPE_CREATURE,"enc_aberrate",GetLocation(OBJECT_SELF)); break;
+    case 10: CreateObject(OBJECT_TYPE_CREATURE,"enc_undead",GetLocation(OBJECT_SELF)); break;
+    case 11: CreateObject(OBJECT_TYPE_CREATURE,"enc_minotaur",GetLocation(OBJECT_SELF)); break;
+    case 12: CreateObject(OBJECT_TYPE_CREATURE,"enc_beasts",GetLocation(OBJECT_SELF)); break;
+    case 13: CreateObject(OBJECT_TYPE_CREATURE,"enc_construct",GetLocation(OBJECT_SELF)); break;
+    case 14: CreateObject(OBJECT_TYPE_CREATURE,"enc_minions",GetLocation(OBJECT_SELF)); break;
+    case 15: CreateObject(OBJECT_TYPE_CREATURE,"enc_animals",GetLocation(OBJECT_SELF)); break;
+    case 16: CreateObject(OBJECT_TYPE_CREATURE,"enc_bandits",GetLocation(OBJECT_SELF)); break;
+    case 17: CreateObject(OBJECT_TYPE_CREATURE,"enc_brigands",GetLocation(OBJECT_SELF)); break;
+    case 18: CreateObject(OBJECT_TYPE_CREATURE,"enc_bugbears",GetLocation(OBJECT_SELF)); break;
+    case 19: CreateObject(OBJECT_TYPE_CREATURE,"enc_dwarf",GetLocation(OBJECT_SELF)); break;
+    case 20: CreateObject(OBJECT_TYPE_CREATURE,"enc_elf",GetLocation(OBJECT_SELF)); break;
+    case 21: CreateObject(OBJECT_TYPE_CREATURE,"enc_elemental",GetLocation(OBJECT_SELF)); break;
+    case 22: CreateObject(OBJECT_TYPE_CREATURE,"enc_halfling",GetLocation(OBJECT_SELF)); break;
+    case 23: CreateObject(OBJECT_TYPE_CREATURE,"enc_human",GetLocation(OBJECT_SELF)); break;
+    case 24: CreateObject(OBJECT_TYPE_CREATURE,"enc_magicalbeast",GetLocation(OBJECT_SELF)); break;
+    case 25: CreateObject(OBJECT_TYPE_CREATURE,"enc_ooze",GetLocation(OBJECT_SELF)); break;
+    case 26: CreateObject(OBJECT_TYPE_CREATURE,"enc_outsider",GetLocation(OBJECT_SELF)); break;
+    case 27: CreateObject(OBJECT_TYPE_CREATURE,"enc_reptilian",GetLocation(OBJECT_SELF)); break;
+    case 28: CreateObject(OBJECT_TYPE_CREATURE,"enc_shapechanger",GetLocation(OBJECT_SELF)); break;
+    case 29: CreateObject(OBJECT_TYPE_CREATURE,"enc_dragon",GetLocation(OBJECT_SELF)); break;
+    }
+}
+
 void ENC_Spawner0(object oS, int EL, float CR, int dontlvl=0)
 {
     CR    += GetLocalFloat(GetModule(),"fCR");
@@ -547,38 +579,7 @@ void ENC_Spawner0(object oS, int EL, float CR, int dontlvl=0)
     // else try spawning some other thing
     if(c== 0)
     {
-        switch(Random(28)+1)
-        {
-        case 1: CreateObject(OBJECT_TYPE_CREATURE,"enc_aberration",GetLocation(OBJECT_SELF)); break;
-        case 2: CreateObject(OBJECT_TYPE_CREATURE,"enc_undead",GetLocation(OBJECT_SELF)); break;
-        case 3: CreateObject(OBJECT_TYPE_CREATURE,"enc_orcs",GetLocation(OBJECT_SELF)); break;
-        case 4: CreateObject(OBJECT_TYPE_CREATURE,"enc_goblins",GetLocation(OBJECT_SELF)); break;
-        case 5: CreateObject(OBJECT_TYPE_CREATURE,"enc_gnolls",GetLocation(OBJECT_SELF)); break;
-        case 6: CreateObject(OBJECT_TYPE_CREATURE,"enc_ogres",GetLocation(OBJECT_SELF)); break;
-        case 7: CreateObject(OBJECT_TYPE_CREATURE,"enc_trolls",GetLocation(OBJECT_SELF)); break;
-        case 8: CreateObject(OBJECT_TYPE_CREATURE,"enc_hobgoblins",GetLocation(OBJECT_SELF)); break;
-        case 9: CreateObject(OBJECT_TYPE_CREATURE,"enc_aberrate",GetLocation(OBJECT_SELF)); break;
-        case 10: CreateObject(OBJECT_TYPE_CREATURE,"enc_undead",GetLocation(OBJECT_SELF)); break;
-        case 11: CreateObject(OBJECT_TYPE_CREATURE,"enc_minotaur",GetLocation(OBJECT_SELF)); break;
-        case 12: CreateObject(OBJECT_TYPE_CREATURE,"enc_beasts",GetLocation(OBJECT_SELF)); break;
-        case 13: CreateObject(OBJECT_TYPE_CREATURE,"enc_construct",GetLocation(OBJECT_SELF)); break;
-        case 14: CreateObject(OBJECT_TYPE_CREATURE,"enc_minions",GetLocation(OBJECT_SELF)); break;
-        case 15: CreateObject(OBJECT_TYPE_CREATURE,"enc_animals",GetLocation(OBJECT_SELF)); break;
-        case 16: CreateObject(OBJECT_TYPE_CREATURE,"enc_bandits",GetLocation(OBJECT_SELF)); break;
-        case 17: CreateObject(OBJECT_TYPE_CREATURE,"enc_brigands",GetLocation(OBJECT_SELF)); break;
-        case 18: CreateObject(OBJECT_TYPE_CREATURE,"enc_bugbears",GetLocation(OBJECT_SELF)); break;
-        case 19: CreateObject(OBJECT_TYPE_CREATURE,"enc_dwarf",GetLocation(OBJECT_SELF)); break;
-        case 20: CreateObject(OBJECT_TYPE_CREATURE,"enc_elf",GetLocation(OBJECT_SELF)); break;
-        case 21: CreateObject(OBJECT_TYPE_CREATURE,"enc_elemental",GetLocation(OBJECT_SELF)); break;
-        case 22: CreateObject(OBJECT_TYPE_CREATURE,"enc_halfling",GetLocation(OBJECT_SELF)); break;
-        case 23: CreateObject(OBJECT_TYPE_CREATURE,"enc_human",GetLocation(OBJECT_SELF)); break;
-        case 24: CreateObject(OBJECT_TYPE_CREATURE,"enc_magicalbeast",GetLocation(OBJECT_SELF)); break;
-        case 25: CreateObject(OBJECT_TYPE_CREATURE,"enc_ooze",GetLocation(OBJECT_SELF)); break;
-        case 26: CreateObject(OBJECT_TYPE_CREATURE,"enc_outsider",GetLocation(OBJECT_SELF)); break;
-        case 27: CreateObject(OBJECT_TYPE_CREATURE,"enc_reptilian",GetLocation(OBJECT_SELF)); break;
-        case 28: CreateObject(OBJECT_TYPE_CREATURE,"enc_shapechanger",GetLocation(OBJECT_SELF)); break;
-        case 29: CreateObject(OBJECT_TYPE_CREATURE,"enc_dragon",GetLocation(OBJECT_SELF)); break;
-        }
+        SpawnTable();
     }
     else if(d6() == 1)
     {
@@ -650,8 +651,8 @@ void ENC_Spawner(object oS, int EL, int dontlvl = FALSE)
             location l = GetLocation(oS);
             vector p = GetPositionFromLocation(l);
             float  f = GetFacing(oS);
-            p.x = p.x + IntToFloat(Random(3)) * d4() < 3? -1.0:1.0;
-            p.y = p.y + IntToFloat(Random(3)) * d4() < 3? -1.0:1.0;
+            p.x = p.x + IntToFloat(Random(3)) * (d4() < 3? -1.0:1.0);
+            p.y = p.y + IntToFloat(Random(3)) * (d4() < 3? -1.0:1.0);
             object o = CreateObject(OBJECT_TYPE_CREATURE,sTag,Location(GetArea(OBJECT_SELF),p,f));
 
             if(GetIsObjectValid(o))
@@ -675,38 +676,7 @@ void ENC_Spawner(object oS, int EL, int dontlvl = FALSE)
     // else try spawning some other thing
     if(c== 0)
     {
-        switch(Random(28)+1)
-        {
-        case 1: CreateObject(OBJECT_TYPE_CREATURE,"enc_aberration",GetLocation(OBJECT_SELF)); break;
-        case 2: CreateObject(OBJECT_TYPE_CREATURE,"enc_undead",GetLocation(OBJECT_SELF)); break;
-        case 3: CreateObject(OBJECT_TYPE_CREATURE,"enc_orcs",GetLocation(OBJECT_SELF)); break;
-        case 4: CreateObject(OBJECT_TYPE_CREATURE,"enc_goblins",GetLocation(OBJECT_SELF)); break;
-        case 5: CreateObject(OBJECT_TYPE_CREATURE,"enc_gnolls",GetLocation(OBJECT_SELF)); break;
-        case 6: CreateObject(OBJECT_TYPE_CREATURE,"enc_ogres",GetLocation(OBJECT_SELF)); break;
-        case 7: CreateObject(OBJECT_TYPE_CREATURE,"enc_trolls",GetLocation(OBJECT_SELF)); break;
-        case 8: CreateObject(OBJECT_TYPE_CREATURE,"enc_hobgoblins",GetLocation(OBJECT_SELF)); break;
-        case 9: CreateObject(OBJECT_TYPE_CREATURE,"enc_aberrate",GetLocation(OBJECT_SELF)); break;
-        case 10: CreateObject(OBJECT_TYPE_CREATURE,"enc_undead",GetLocation(OBJECT_SELF)); break;
-        case 11: CreateObject(OBJECT_TYPE_CREATURE,"enc_minotaur",GetLocation(OBJECT_SELF)); break;
-        case 12: CreateObject(OBJECT_TYPE_CREATURE,"enc_beasts",GetLocation(OBJECT_SELF)); break;
-        case 13: CreateObject(OBJECT_TYPE_CREATURE,"enc_construct",GetLocation(OBJECT_SELF)); break;
-        case 14: CreateObject(OBJECT_TYPE_CREATURE,"enc_minions",GetLocation(OBJECT_SELF)); break;
-        case 15: CreateObject(OBJECT_TYPE_CREATURE,"enc_animals",GetLocation(OBJECT_SELF)); break;
-        case 16: CreateObject(OBJECT_TYPE_CREATURE,"enc_bandits",GetLocation(OBJECT_SELF)); break;
-        case 17: CreateObject(OBJECT_TYPE_CREATURE,"enc_brigands",GetLocation(OBJECT_SELF)); break;
-        case 18: CreateObject(OBJECT_TYPE_CREATURE,"enc_bugbears",GetLocation(OBJECT_SELF)); break;
-        case 19: CreateObject(OBJECT_TYPE_CREATURE,"enc_dwarf",GetLocation(OBJECT_SELF)); break;
-        case 20: CreateObject(OBJECT_TYPE_CREATURE,"enc_elf",GetLocation(OBJECT_SELF)); break;
-        case 21: CreateObject(OBJECT_TYPE_CREATURE,"enc_elemental",GetLocation(OBJECT_SELF)); break;
-        case 22: CreateObject(OBJECT_TYPE_CREATURE,"enc_halfling",GetLocation(OBJECT_SELF)); break;
-        case 23: CreateObject(OBJECT_TYPE_CREATURE,"enc_human",GetLocation(OBJECT_SELF)); break;
-        case 24: CreateObject(OBJECT_TYPE_CREATURE,"enc_magicalbeast",GetLocation(OBJECT_SELF)); break;
-        case 25: CreateObject(OBJECT_TYPE_CREATURE,"enc_ooze",GetLocation(OBJECT_SELF)); break;
-        case 26: CreateObject(OBJECT_TYPE_CREATURE,"enc_outsider",GetLocation(OBJECT_SELF)); break;
-        case 27: CreateObject(OBJECT_TYPE_CREATURE,"enc_reptilian",GetLocation(OBJECT_SELF)); break;
-        case 28: CreateObject(OBJECT_TYPE_CREATURE,"enc_shapechanger",GetLocation(OBJECT_SELF)); break;
-        case 29: CreateObject(OBJECT_TYPE_CREATURE,"enc_dragon",GetLocation(OBJECT_SELF)); break;
-        }
+        SpawnTable();
     }
     else if(d6() == 1)
     {
@@ -715,6 +685,12 @@ void ENC_Spawner(object oS, int EL, int dontlvl = FALSE)
     else if(CR > 2.0 && num == 1 && d3() == 1)
     {
         SpawnMinions(0.5,oS);
+    }
+
+    if(d6() < 4)
+    {
+        CR = CR - 2.0;
+        if(CR > 1.0) ENC_Spawner(oS,EL);
     }
 }
 
@@ -729,6 +705,70 @@ void Spawn(object oS=OBJECT_SELF)
 }
 
 
+
+
+
+void ENC_SpawnFromCR(object oS, int EL, int dontlvl = FALSE)
+{
+    float CR = GetChallengeRating(oS);
+    int   nCR = FloatToInt(CR);
+    float N = CalcNumFromELCR(EL,CR);
+    int   num = FloatToInt(N);
+
+    Fill(nCR);
+
+    int     i;
+    string  sTag;
+    int d = GetLocalInt(GetModule(),"difficulty");
+    int     nNum = Random(GetLocalInt(oS,"nNum"+IntToString(nCR)))+1;
+    int     nTemp = nCR;
+
+    int c = 0;
+    int bHero=FALSE;
+    if(nNum > 0)
+    {
+        sTag = GetLocalString(oS,"BP"+IntToString(nCR)+"_"+IntToString(nNum));
+
+        for(i = 0; i < num; i++)
+        {
+            location l = GetLocation(oS);
+            vector p = GetPositionFromLocation(l);
+            float  f = GetFacing(oS);
+            p.x = p.x + IntToFloat(Random(3)) * (d4() < 3? -1.0:1.0);
+            p.y = p.y + IntToFloat(Random(3)) * (d4() < 3? -1.0:1.0);
+            object o = CreateObject(OBJECT_TYPE_CREATURE,sTag,Location(GetArea(OBJECT_SELF),p,f));
+
+            if(GetIsObjectValid(o))
+            {
+                if((nCR < EL/2) && dontlvl == 0) {
+                    if(!bHero)
+                    {
+                        bHero = TRUE;
+                        ExecuteScript("us_npc",o);
+                    }
+                }
+
+                c++;
+                if(dontlvl == 1) SetLocalInt(o,"bNeverLvlUp",1);
+                AssignCommand(o,ActionRandomWalk());
+            }
+            else SendMessageToPC(GetFirstPC(),"Failed to spawn creature");
+        }
+    }
+    if(d6() < 4)
+    {
+        CR = CR - 2.0;
+        if(CR > 1.0) ENC_Spawner(oS,EL);
+    }
+}
+
+
+void Spawn_CR(object oS=OBJECT_SELF)
+{
+    int   EL = CalcEL_nearby(oS)+GetLocalInt(GetModule(),"difficulty");
+    ENC_SpawnFromCR(oS,EL);
+    DestroyObject(oS);
+}
 
 
 

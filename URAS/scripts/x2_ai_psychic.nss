@@ -3,17 +3,20 @@
 
 void main()
 {
-     if(d6() < 3)
-     {
-        int nPoints = GetLocalInt(OBJECT_SELF,"nPoints");
-        if(nPoints > 0)
+    int nPoints = GetLocalInt(OBJECT_SELF,"nPoints");
+
+    if(nPoints > 0)
+    {
+        __TurnCombatRoundOn(TRUE);
+        int n = PSYCHIC_SpecialAttack(nPoints);
+        SetLocalInt(OBJECT_SELF,"nPoints",nPoints-n);
+        if(n == 0)
         {
-            __TurnCombatRoundOn(TRUE);
-
-            int n = PSYCHIC_SpecialAttack(nPoints);
-            SetLocalInt(OBJECT_SELF,"nPoints",nPoints-n);
-            __TurnCombatRoundOn(FALSE);
-
+            ClearAllActions(TRUE);
+            ActionAttack(FindNearestEnemy(OBJECT_SELF));
         }
+
+        __TurnCombatRoundOn(FALSE);
+
     }
 }

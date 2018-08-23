@@ -359,7 +359,7 @@ void main()
         for(i = 0; i < n; i++)
             CreateObject(OBJECT_TYPE_CREATURE,"mmp_dancinglight",GetLocation(OBJECT_SELF));
     }
-    else if(d6() < 5)
+    else
     {
         __TurnCombatRoundOn(TRUE);
         MMPABB_SpecialAttack();

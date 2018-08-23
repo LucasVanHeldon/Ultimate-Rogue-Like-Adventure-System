@@ -150,6 +150,11 @@ void EnchantSpellBook(struct sItemInfo ItemInfo)
     {
         Enchants.iTotalCost = iTotalCost;
         SetName(Enchants.oItem,Enchants.sName);
+        itemproperty ip = ItemPropertyLimitUseByClass(IP_CONST_CLASS_WIZARD);
+        IPSafeAddItemProperty(Enchants.oItem,ip);
+        ip = ItemPropertyLimitUseByClass(IP_CONST_CLASS_SORCERER);
+        IPSafeAddItemProperty(Enchants.oItem,ip);
+
     }
 
     iChestLevel = level;
@@ -223,6 +228,10 @@ void GenerateWand()
     Enchants.sName = "Enchanted Wand";
     SetName(oitem,Enchants.sName);
     EnchantMagic(Enchants);
+    itemproperty ip = ItemPropertyLimitUseByClass(IP_CONST_CLASS_WIZARD);
+    IPSafeAddItemProperty(Enchants.oItem,ip);
+    ip = ItemPropertyLimitUseByClass(IP_CONST_CLASS_SORCERER);
+    IPSafeAddItemProperty(Enchants.oItem,ip);
 
 }
 
@@ -248,6 +257,10 @@ void GenerateStaff()
     Enchants.sName = "Enchanted Staff";
     SetName(oitem,Enchants.sName);
     EnchantMagic(Enchants);
+    itemproperty ip = ItemPropertyLimitUseByClass(IP_CONST_CLASS_WIZARD);
+    IPSafeAddItemProperty(Enchants.oItem,ip);
+    ip = ItemPropertyLimitUseByClass(IP_CONST_CLASS_SORCERER);
+    IPSafeAddItemProperty(Enchants.oItem,ip);
 }
 
 void GenerateRod()

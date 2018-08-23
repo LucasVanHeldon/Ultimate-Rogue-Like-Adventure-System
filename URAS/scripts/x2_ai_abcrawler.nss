@@ -354,13 +354,8 @@ void MMPABB_SpecialAttack(object oTarget = OBJECT_INVALID)
 void main()
 {
     object oEnemy = bkAcquireTarget();
-    if(d6() < 3)
-    {
-          __TurnCombatRoundOn(TRUE);
-        MMPABB_SpecialAttack();
-          __TurnCombatRoundOn(FALSE);
-    }
-    else if (GetIsObjectValid(oEnemy))
+
+    if (GetIsObjectValid(oEnemy))
     {
         object oSelf = OBJECT_SELF;
         int i;

@@ -549,6 +549,11 @@ void LeaveCorpse()
     float lsDelay  = 240.0;                   // Corpse & loot fade delay
 
 
+    SetDroppableFlag(GetItemInSlot(INVENTORY_SLOT_CARMOUR),FALSE);
+    SetDroppableFlag(GetItemInSlot(INVENTORY_SLOT_CWEAPON_L),FALSE);
+    SetDroppableFlag(GetItemInSlot(INVENTORY_SLOT_CWEAPON_R),FALSE);
+    SetDroppableFlag(GetItemInSlot(INVENTORY_SLOT_CWEAPON_B),FALSE);
+
     /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     //ALTER THE FOLLOWING AT YOUR OWN RISK :)
