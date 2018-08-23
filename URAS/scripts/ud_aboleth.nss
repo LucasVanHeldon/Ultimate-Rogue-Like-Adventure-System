@@ -156,9 +156,10 @@ void main()
     switch(nCalledBy)
     {
     case 1003:
-        if(d6() == 1) SpecialAttack();
+        if(d6() < 3) SpecialAttack();
         break;
     case 1011:
         if(GetIsEnemy(GetLastSpellCaster())) SpellCast(GetLastSpellCaster());
+        break;
     }
 }

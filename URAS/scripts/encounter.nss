@@ -606,7 +606,16 @@ void SpawnMinions(float CR,object oS = OBJECT_SELF)
 
 void ENC_Spawner(object oS, int EL, int dontlvl = FALSE)
 {
-    int   n = d12();
+    int    rX = Random(50000);
+    float  fX = IntToFloat(rX)/1000.0;
+    int    iN = FloatToInt(fX);
+    int    n  = d12();
+    if(iN < 15) n = 1;
+    else if(iN < 25) n = 2;
+    else if(iN < 30) n = 3;
+    else if(iN < 35) n = 4;
+    else if(iN < 40) n = 5;
+    else n = Random(11)+1;
 
     int difficulty = GetLocalInt(GetModule(),"difficulty");
     if(difficulty == -6) n = n / 8;
@@ -638,7 +647,12 @@ void ENC_Spawner(object oS, int EL, int dontlvl = FALSE)
 
         for(i = 0; i < num; i++)
         {
-            object o = CreateObject(OBJECT_TYPE_CREATURE,sTag,GetLocation(oS));
+            location l = GetLocation(oS);
+            vector p = GetPositionFromLocation(l);
+            float  f = GetFacing(oS);
+            p.x = p.x + IntToFloat(Random(3)) * d4() < 3? -1.0:1.0;
+            p.y = p.y + IntToFloat(Random(3)) * d4() < 3? -1.0:1.0;
+            object o = CreateObject(OBJECT_TYPE_CREATURE,sTag,Location(GetArea(OBJECT_SELF),p,f));
 
             if(GetIsObjectValid(o))
             {
@@ -654,6 +668,7 @@ void ENC_Spawner(object oS, int EL, int dontlvl = FALSE)
                 if(dontlvl == 1) SetLocalInt(o,"bNeverLvlUp",1);
                 AssignCommand(o,ActionRandomWalk());
             }
+            else SendMessageToPC(GetFirstPC(),"Failed to spawn creature");
         }
     }
 

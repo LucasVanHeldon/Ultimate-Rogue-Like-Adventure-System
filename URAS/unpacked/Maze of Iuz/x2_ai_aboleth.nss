@@ -159,14 +159,4 @@ void main()
       __TurnCombatRoundOn(FALSE);
 
     }
-    if(GetLastSpellHarmful())
-    {
-        object oSC = GetLastSpellCaster();
-        if( d6() < 3 && GetIsEnemy(oSC) && oSC != OBJECT_SELF)
-        {
-          __TurnCombatRoundOn(TRUE);
-            SpellCast(oSC);
-          __TurnCombatRoundOn(FALSE);
-        }
-    }
 }

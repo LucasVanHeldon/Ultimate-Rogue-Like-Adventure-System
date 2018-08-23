@@ -1,0 +1,16 @@
+//::///////////////////////////////////////////////
+//:: FileName sc_dame_found
+//:://////////////////////////////////////////////
+//:://////////////////////////////////////////////
+//:: Created By: Script Wizard
+//:: Created On: 5/14/2006 10:57:43 PM
+//:://////////////////////////////////////////////
+int StartingConditional()
+{
+    object oPC = GetPCSpeaker();
+    // Inspect local variables
+    if(!(GetLocalInt(oPC, "Dame_Found") >= 1))
+        return FALSE;
+
+    return TRUE;
+}

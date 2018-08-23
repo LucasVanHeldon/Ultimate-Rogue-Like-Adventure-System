@@ -356,10 +356,7 @@ void main()
     {
     case 1003:
 
-        if(d6() < 3)
-        {
-            MMPABB_SpecialAttack();
-        }
+        MMPABB_SpecialAttack();
         break;
     }
 }

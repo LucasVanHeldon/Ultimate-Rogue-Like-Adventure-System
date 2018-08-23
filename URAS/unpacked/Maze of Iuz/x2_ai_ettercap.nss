@@ -64,7 +64,7 @@ void MMP_CastWeb(object oTarget = OBJECT_INVALID)
 void main()
 {
 
-    if(d6() < 3)
+    if(d6() < 4)
     {
         __TurnCombatRoundOn(TRUE);
         switch(d2())

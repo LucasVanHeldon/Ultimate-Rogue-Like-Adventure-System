@@ -1,0 +1,16 @@
+//::///////////////////////////////////////////////
+//:: FileName sc_has_animempat
+//:://////////////////////////////////////////////
+//:://////////////////////////////////////////////
+//:: Created By: Script Wizard
+//:: Created On: 9/15/2004 4:55:17 PM
+//:://////////////////////////////////////////////
+int StartingConditional()
+{
+
+	// Make sure the player has the required skills
+	if(!GetHasSkill(SKILL_ANIMAL_EMPATHY, GetPCSpeaker()))
+		return FALSE;
+
+	return TRUE;
+}

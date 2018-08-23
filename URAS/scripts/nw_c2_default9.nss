@@ -19,7 +19,7 @@
 #include "sd_lootsystem"
 
 int iSocketedLootChance = 100;
-int bMunchkin = TRUE;   // Set to TRUE if you want to use the munchkin only
+int bMunchkin = FALSE;   // Set to TRUE if you want to use the munchkin only
 int bOC = FALSE;        // Set to TRUE if compiling for Official campaign
 int bModifyArmorAndWeapons=TRUE;
 
@@ -1214,6 +1214,12 @@ void main()
             eDR = EffectDamageResistance(DAMAGE_TYPE_COLD,10);
             ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
         }
+        if(GetLocalInt(OBJECT_SELF,"bPsionicTable") == TRUE)
+        {
+            int nPoints = GetHitDice(OBJECT_SELF)
+                + GetAbilityModifier(ABILITY_INTELLIGENCE)
+                + GetAbilityModifier(ABILITY_CHARISMA);
+        }
         if(GetLocalInt(OBJECT_SELF,"bMinions")==TRUE)
         {
             ExecuteScript(GetLocalString(OBJECT_SELF,"sMinionScript"),OBJECT_SELF);
@@ -1224,12 +1230,13 @@ void main()
         }
 
     }
+    /*
     // fix a weird bug in NWN where it drops creature items that should not ever drop.
     SetDroppableFlag(GetItemInSlot(INVENTORY_SLOT_CARMOUR),FALSE);
     SetDroppableFlag(GetItemInSlot(INVENTORY_SLOT_CWEAPON_L),FALSE);
     SetDroppableFlag(GetItemInSlot(INVENTORY_SLOT_CWEAPON_R),FALSE);
     SetDroppableFlag(GetItemInSlot(INVENTORY_SLOT_CWEAPON_B),FALSE);
-
+    */
 
 }
 

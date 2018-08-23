@@ -1,0 +1,18 @@
+//::///////////////////////////////////////////////
+//:: FileName sc_skbluff_med
+//:://////////////////////////////////////////////
+//:://////////////////////////////////////////////
+//:: Created By: Script Wizard
+//:: Created On: 7/20/2006 3:09:44 AM
+//:://////////////////////////////////////////////
+#include "nw_i0_tool"
+
+int StartingConditional()
+{
+
+	// Perform skill checks
+	if(!(AutoDC(DC_MEDIUM, SKILL_BLUFF, GetPCSpeaker())))
+		return FALSE;
+
+	return TRUE;
+}

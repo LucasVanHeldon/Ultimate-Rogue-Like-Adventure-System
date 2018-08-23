@@ -1,0 +1,16 @@
+//::///////////////////////////////////////////////
+//:: FileName sc_fireplace01
+//:://////////////////////////////////////////////
+//:://////////////////////////////////////////////
+//:: Created By: Script Wizard
+//:: Created On: 2/12/2005 12:29:13 AM
+//:://////////////////////////////////////////////
+int StartingConditional()
+{
+
+    // Inspect local variables
+    if(!(GetLocalInt(GetObjectByTag("Fireplace03"), "fireplace03") == 1))
+        return FALSE;
+
+    return TRUE;
+}

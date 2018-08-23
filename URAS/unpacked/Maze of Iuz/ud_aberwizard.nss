@@ -226,8 +226,7 @@ void main()
         if(GetCurrentAction() == ACTION_CASTSPELL) break;
         SendMessageToPC(GetFirstPC(),"Running attack");
         if(d6() < 3) DEMON_Blink();
-        if(d6() < 3)
-            MMPABB_SpecialAttack();
+        if(d6() < 3) MMPABB_SpecialAttack();
         break;
 
     case 1011:
