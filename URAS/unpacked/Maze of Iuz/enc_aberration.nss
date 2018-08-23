@@ -78,7 +78,7 @@ void Fill(int CR,object o = OBJECT_SELF)
 
 void main()
 {
-    Spawn();
+        Spawn();
 
 }
 

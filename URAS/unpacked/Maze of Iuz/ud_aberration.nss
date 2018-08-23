@@ -355,8 +355,8 @@ void main()
     switch(nCalledBy)
     {
     case 1003:
-
-        MMPABB_SpecialAttack();
+        if(GetCurrentAction() != ACTION_CASTSPELL && d6() < 3)
+            MMPABB_SpecialAttack();
         break;
     }
 }

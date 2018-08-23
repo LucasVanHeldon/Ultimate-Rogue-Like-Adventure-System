@@ -817,6 +817,7 @@ int NumAlliesNearby()
     return n;
 }
 
+
 void main()
 {
 
@@ -832,21 +833,23 @@ void main()
 
     if(bMunchkin == FALSE)
     {
-        if(d6() == 1 && GetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT")=="")
+        if(IsFighter(OBJECT_SELF) && GetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT")=="")
         {
             string s;
-            switch(d4())
+            switch(d8())
             {
             case 1: s = "x2_ai_attackweak"; break;
             case 2: s = "x2_ai_attackstr"; break;
             case 3: s = "x2_ai_atkspellc"; break;
             case 4: s = "x2_ai_atkvuln"; break;
+            default: s = "";
             }
             SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT",s);
         }
+        else if(IsMagicUser(OBJECT_SELF))
+            SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT","x2_ai_wizard");
 
         // only make hostiles NPCs
-        // eventually will work out a more meaningful probability then 'd6()==1'
         if(d6() == 1 && GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) == 100)
         {
             SetLocalInt(OBJECT_SELF,"bForceLvlUp",1);
@@ -1160,13 +1163,11 @@ void main()
             eDR = EffectSpellResistanceIncrease(sR);
             ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
         }
-        if(GetLocalInt(OBJECT_SELF,"bPsychicTable")==TRUE)
-        {
+        // it is twisted by chaos (aberration) and psionic
+        if(GetLocalInt(OBJECT_SELF,"bPsychicTable")==TRUE)        {
 
             int i;
             for(i = 0; i < GetHitDice(OBJECT_SELF); i++) MMP_AbberationTable(oSkin);
-
-
             if(d6()==1) MMPOOZE_EvardsBlackTentacles(oSkin);
 
             object oBite = GetItemInSlot(INVENTORY_SLOT_CWEAPON_B);
@@ -1181,7 +1182,8 @@ void main()
             nPoints = nPoints + GetAbilityModifier(ABILITY_CHARISMA);
             SetLocalInt(OBJECT_SELF,"nPoints",nPoints);
         }
-        if(GetLocalInt(OBJECT_SELF,"bAluDemon") == TRUE)
+        // anything possessed, or part evil outsider
+        if(GetLocalInt(OBJECT_SELF,"bAluDemon") == TRUE || GetLocalInt(OBJECT_SELF,"bFiendish") == TRUE || GetLocalInt(OBJECT_SELF,"bDemonic") == TRUE || GetLocalInt(OBJECT_SELF,"bHalfFiend") == TRUE)
         {
             effect eEffect = EffectAbilityIncrease(ABILITY_STRENGTH,2);
             ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
@@ -1218,7 +1220,8 @@ void main()
         {
             int nPoints = GetHitDice(OBJECT_SELF)
                 + GetAbilityModifier(ABILITY_INTELLIGENCE)
-                + GetAbilityModifier(ABILITY_CHARISMA);
+                + GetAbilityModifier(ABILITY_WISDOM);
+            SetLocalInt(OBJECT_SELF,"nPoints",nPoints*GetAbilityModifier(ABILITY_CHARISMA));
         }
         if(GetLocalInt(OBJECT_SELF,"bMinions")==TRUE)
         {
