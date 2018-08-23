@@ -1,6 +1,7 @@
 
 
 #include "inc_demons"
+#include "inc_demonic"
 
 void SpellCast(object oTarget)
 {
@@ -36,6 +37,7 @@ void main()
     switch(nCalledBy)
     {
     case 1003:
+        if(d6() < 3) DEMONIC_SpecialAttack();
         break;
     case 1011:
         SpellCast(GetLastSpellCaster());

@@ -4,20 +4,29 @@
 void main()
 {
 
-    object oTarget = FindNearestEnemy(OBJECT_SELF);
-    if(!GetIsObjectValid(oTarget)) return;
-    if(d6()< 3 && !GetHasEffect(EFFECT_TYPE_DOMINATED,oTarget))
+
+
+    object o = GetFirstObjectInShape(SHAPE_SPHERE,15.0,GetLocation(OBJECT_SELF));
+    while(GetIsObjectValid(o))
     {
-        __TurnCombatRoundOn(TRUE);
-        ActionCastSpellAtObject(SPELL_DOMINATE_MONSTER,oTarget,METAMAGIC_ANY,TRUE);
-        __TurnCombatRoundOn(FALSE);
+        if(NoPsychology(o) && GetIsEnemy(o) && !GetIsDead(o) )
+        {
+            __TurnCombatRoundOn(TRUE);
+            SendMessageToPC(GetFirstPC(),"Herr-derr");
+            ActionCastSpellAtObject(SPELL_DOMINATE_MONSTER,o,METAMAGIC_ANY,TRUE);
+            __TurnCombatRoundOn(FALSE);
+            return;
+        }
+        o = GetNextObjectInShape(SHAPE_CONE,15.0,GetLocation(OBJECT_SELF));
     }
-    else
-        if( GetCurrentHitPoints() < 20
+
+
+    if( GetCurrentHitPoints() < 20
         && !GetHasEffect(EFFECT_TYPE_INVISIBILITY,OBJECT_SELF))
     {
         __TurnCombatRoundOn(TRUE);
         ActionCastSpellAtObject(SPELL_INVISIBILITY,OBJECT_SELF,METAMAGIC_ANY,TRUE);
         __TurnCombatRoundOn(FALSE);
     }
+
 }

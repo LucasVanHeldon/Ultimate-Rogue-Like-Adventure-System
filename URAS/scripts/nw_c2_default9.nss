@@ -8,7 +8,7 @@
 #include "x2_i0_spells"
 
 #include "lutes"
-#include "inc_ai"
+#include "ai_inc"
 
 #include "mmp_lutes"
 #include "inc_mmpaberr"
@@ -44,7 +44,7 @@ void PersonalSpellBook()
 
 
 
-int IsAberration(object oTarget)
+int GetIsAberration(object oTarget)
 {
     int i=1;
     for(i = 1; i < 4; i++)
@@ -55,7 +55,7 @@ int IsAberration(object oTarget)
     return FALSE;
 }
 
-int IsMonk(object oTarget)
+int GetIsMonk(object oTarget)
 {
     int i;
     for(i = 1; i < 4; i++)
@@ -65,7 +65,7 @@ int IsMonk(object oTarget)
     return FALSE;
 }
 
-int IsFighter(object oTarget)
+int GetIsFighter(object oTarget)
 {
     int i=1;
     for(i = 1; i < 4; i++)
@@ -79,7 +79,7 @@ int IsFighter(object oTarget)
     return FALSE;
 }
 
-int IsRogue(object oTarget)
+int GetIsRogue(object oTarget)
 {
     int i=1;
     for(i = 1; i < 4; i++)
@@ -92,7 +92,7 @@ int IsRogue(object oTarget)
     return FALSE;
 }
 
-int IsMagicUser(object oTarget)
+int GetIsMagicUser(object oTarget)
 {
     int i=1;
     for(i = 1; i < 4; i++)
@@ -104,7 +104,7 @@ int IsMagicUser(object oTarget)
     return FALSE;
 }
 
-int IsCleric(object oTarget)
+int GetIsCleric(object oTarget)
 {
     int i=1;
     for(i = 1; i < 4; i++)
@@ -300,7 +300,7 @@ void EnhanceItems()
     int n = d6();
     int i;
 
-    if(IsMagicUser(OBJECT_SELF) || IsCleric(OBJECT_SELF) || IsFighter(OBJECT_SELF) || IsRogue(OBJECT_SELF))
+    if(GetIsMagicUser(OBJECT_SELF) || GetIsCleric(OBJECT_SELF) || GetIsFighter(OBJECT_SELF) || GetIsRogue(OBJECT_SELF) || GetIsMonk(OBJECT_SELF))
     {
         object oRing =MMP_GenerateRing();
         AssignCommand(OBJECT_SELF,ActionEquipItem(oRing,INVENTORY_SLOT_RIGHTRING));
@@ -382,7 +382,7 @@ void EnhanceItems()
             EnchantRangedWeapon(iteminfo);
     }
 
-    if(IsMagicUser(OBJECT_SELF))
+    if(GetIsMagicUser(OBJECT_SELF))
     {
         int i;
         for(i = 0; i < d4(); i++)
@@ -390,7 +390,7 @@ void EnhanceItems()
         for(i = 0; i < d4(); i++)
             CreatePotion(OBJECT_SELF,OBJECT_SELF);
     }
-    if(IsCleric(OBJECT_SELF))
+    if(GetIsCleric(OBJECT_SELF))
     {
         int i;
         for(i = 0; i < d4(); i++)
@@ -833,7 +833,7 @@ void main()
 
     if(bMunchkin == FALSE)
     {
-        if(IsFighter(OBJECT_SELF) && GetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT")=="")
+        if(GetIsFighter(OBJECT_SELF) && GetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT")=="")
         {
             string s;
             switch(d8())
@@ -846,7 +846,7 @@ void main()
             }
             SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT",s);
         }
-        else if(IsMagicUser(OBJECT_SELF))
+        else if(GetIsMagicUser(OBJECT_SELF))
             SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT","x2_ai_wizard");
 
         // only make hostiles NPCs
@@ -1044,7 +1044,7 @@ void main()
         }
     }
 
-    if( (IsMagicUser(OBJECT_SELF) || IsCleric(OBJECT_SELF)) && bMunchkin==FALSE)
+    if( (GetIsMagicUser(OBJECT_SELF) || GetIsCleric(OBJECT_SELF)) && bMunchkin==FALSE)
     {
         oObject = OBJECT_SELF;
         iChestLevel = GetCharacterLevel(OBJECT_SELF);
@@ -1113,7 +1113,8 @@ void main()
             MMP_AbberationCW(oBite);
         }
 
-        if(GetLocalInt(OBJECT_SELF,"bAberOozeTable") == TRUE || GetLocalInt(OBJECT_SELF,"bOozeTable") == TRUE)
+        if(GetLocalInt(OBJECT_SELF,"bAberOozeTable") == TRUE || GetLocalInt(OBJECT_SELF,"bOozeTable") == TRUE
+            || GetLocalInt(OBJECT_SELF,"bOoze") == TRUE || GetLocalInt(OBJECT_SELF,"bAberOoze") == TRUE)
         {
             int i;
             for(i = 0; i < GetHitDice(OBJECT_SELF)/2+1; i++) MMP_OozeTable(oSkin);
@@ -1125,7 +1126,8 @@ void main()
             MMP_AbberationCW(oBite);
         }
 
-        if(GetLocalInt(OBJECT_SELF,"bAberDemonicTable") == TRUE || GetLocalInt(OBJECT_SELF,"bDemonicTable") == TRUE)
+        if(GetLocalInt(OBJECT_SELF,"bAberDemonicTable") == TRUE || GetLocalInt(OBJECT_SELF,"bDemonicTable") == TRUE ||
+            GetLocalInt(OBJECT_SELF,"bDemonicAberration") == TRUE || GetLocalInt(OBJECT_SELF,"bDemonic") == TRUE)
         {
             effect eEffect = EffectAbilityIncrease(ABILITY_STRENGTH,4);
             ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
@@ -1164,7 +1166,8 @@ void main()
             ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
         }
         // it is twisted by chaos (aberration) and psionic
-        if(GetLocalInt(OBJECT_SELF,"bPsychicTable")==TRUE)        {
+        if(GetLocalInt(OBJECT_SELF,"bPsychicTable")==TRUE || GetLocalInt(OBJECT_SELF,"bPsychic")==TRUE)
+        {
 
             int i;
             for(i = 0; i < GetHitDice(OBJECT_SELF); i++) MMP_AbberationTable(oSkin);
@@ -1216,7 +1219,7 @@ void main()
             eDR = EffectDamageResistance(DAMAGE_TYPE_COLD,10);
             ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
         }
-        if(GetLocalInt(OBJECT_SELF,"bPsionicTable") == TRUE)
+        if(GetLocalInt(OBJECT_SELF,"bPsionicTable") == TRUE || GetLocalInt(OBJECT_SELF,"bPsionic") == TRUE)
         {
             int nPoints = GetHitDice(OBJECT_SELF)
                 + GetAbilityModifier(ABILITY_INTELLIGENCE)
@@ -1233,13 +1236,13 @@ void main()
         }
 
     }
-    /*
+
     // fix a weird bug in NWN where it drops creature items that should not ever drop.
     SetDroppableFlag(GetItemInSlot(INVENTORY_SLOT_CARMOUR),FALSE);
     SetDroppableFlag(GetItemInSlot(INVENTORY_SLOT_CWEAPON_L),FALSE);
     SetDroppableFlag(GetItemInSlot(INVENTORY_SLOT_CWEAPON_R),FALSE);
     SetDroppableFlag(GetItemInSlot(INVENTORY_SLOT_CWEAPON_B),FALSE);
-    */
+
 
 }
 

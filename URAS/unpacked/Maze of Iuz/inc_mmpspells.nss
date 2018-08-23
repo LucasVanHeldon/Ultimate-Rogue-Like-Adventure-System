@@ -5,9 +5,6 @@ void MMP_RayOfEnfeeblement(object oTarget = OBJECT_INVALID);
 void MMP_MindBlast(object oTarget = OBJECT_INVALID)
 {
 
-    if(!GetIsObjectValid(oTarget))
-        oTarget = FindStrongestEnemy(OBJECT_SELF);
-
     SendMessageToPC(oTarget,"Mind Blast");
     if(GetIsObjectValid(oTarget) && GetIsEnemy(oTarget) && GetCurrentHitPoints(oTarget) > 0)
     {
@@ -18,9 +15,6 @@ void MMP_MindBlast(object oTarget = OBJECT_INVALID)
 
 void MMP_RayOfEnfeeblement(object oTarget = OBJECT_INVALID)
 {
-
-    if(!GetIsObjectValid(oTarget))
-        oTarget = FindStrongestEnemy(OBJECT_SELF);
 
     SendMessageToPC(oTarget,"Ray of Enfeeblement");
 
@@ -45,9 +39,6 @@ void MMP_GazeCharm(object oTarget = OBJECT_INVALID)
 
 void MMP_AuraBlind(object oTarget = OBJECT_INVALID)
 {
-    if(!GetIsObjectValid(oTarget))
-        oTarget = FindStrongestEnemy(OBJECT_SELF);
-
 
     SendMessageToPC(oTarget,"Aura of Blinding");
     oTarget=OBJECT_SELF;
@@ -68,9 +59,6 @@ void MMP_AuraCold(object oTarget = OBJECT_INVALID)
 
 void MMP_AuraElectricity(object oTarget = OBJECT_INVALID)
 {
-    if(!GetIsObjectValid(oTarget))
-        oTarget = FindStrongestEnemy(OBJECT_SELF);
-
     SendMessageToPC(oTarget,"Aura of Electricity");
     oTarget=OBJECT_SELF;
     ClearAllActions(TRUE);
@@ -79,8 +67,6 @@ void MMP_AuraElectricity(object oTarget = OBJECT_INVALID)
 
 void MMP_AuraFear(object oTarget = OBJECT_INVALID)
 {
-    if(!GetIsObjectValid(oTarget))
-        oTarget = FindStrongestEnemy(OBJECT_SELF);
 
     SendMessageToPC(oTarget,"Aura of Fear");
     oTarget=OBJECT_SELF;
@@ -101,9 +87,6 @@ void MMP_AuraMenace(object oTarget = OBJECT_INVALID)
 
 void MMP_AuraProtection(object oTarget = OBJECT_INVALID)
 {
-    if(!GetIsObjectValid(oTarget))
-        oTarget = FindStrongestEnemy(OBJECT_SELF);
-
     SendMessageToPC(oTarget,"Aura of Protection");
     oTarget=OBJECT_SELF;
     ClearAllActions(TRUE);
@@ -112,9 +95,6 @@ void MMP_AuraProtection(object oTarget = OBJECT_INVALID)
 
 void MMP_AuraStun(object oTarget = OBJECT_INVALID)
 {
-    if(!GetIsObjectValid(oTarget))
-        oTarget = FindStrongestEnemy(OBJECT_SELF);
-
     SendMessageToPC(oTarget,"Aura of Stun");
     oTarget=OBJECT_SELF;
     ClearAllActions(TRUE);
@@ -123,9 +103,6 @@ void MMP_AuraStun(object oTarget = OBJECT_INVALID)
 
 void MMP_AuraUnearthlyVisage(object oTarget = OBJECT_INVALID)
 {
-    if(!GetIsObjectValid(oTarget))
-        oTarget = FindStrongestEnemy(OBJECT_SELF);
-
     SendMessageToPC(oTarget,"Aura of Unearthly Visage");
 
     oTarget=OBJECT_SELF;
@@ -135,9 +112,6 @@ void MMP_AuraUnearthlyVisage(object oTarget = OBJECT_INVALID)
 
 void MMP_AuraFire(object oTarget = OBJECT_INVALID)
 {
-    if(!GetIsObjectValid(oTarget))
-        oTarget = FindStrongestEnemy(OBJECT_SELF);
-
     SendMessageToPC(oTarget,"Aura of Fire");
 
     ClearAllActions(TRUE);
@@ -149,9 +123,6 @@ void MMP_AuraFire(object oTarget = OBJECT_INVALID)
 
 void MMP_BoltDrainCHA(object oTarget = OBJECT_INVALID)
 {
-    if(!GetIsObjectValid(oTarget))
-        oTarget = FindStrongestEnemy(OBJECT_SELF);
-
     if(GetIsObjectValid(oTarget) && GetIsEnemy(oTarget) && GetCurrentHitPoints(oTarget) > 0)
     {
         SendMessageToPC(oTarget,"Boltdrain CHA");
@@ -525,9 +496,6 @@ void MMP_CallLightning(object oTarget = OBJECT_INVALID)
 
 void MMP_LightningBolt(object oTarget = OBJECT_INVALID)
 {
-    if(!GetIsObjectValid(oTarget))
-        oTarget = FindStrongestEnemy(OBJECT_SELF);
-
     SendMessageToPC(oTarget,"Lightning");
     ClearAllActions(TRUE);
     ActionCastSpellAtObject(SPELL_LIGHTNING_BOLT,oTarget,METAMAGIC_ANY,TRUE);
@@ -535,8 +503,6 @@ void MMP_LightningBolt(object oTarget = OBJECT_INVALID)
 
 void MMP_PulseLightning(object oTarget = OBJECT_INVALID)
 {
-    if(!GetIsObjectValid(oTarget))
-        oTarget = FindStrongestEnemy(OBJECT_SELF);
 
     SendMessageToPC(oTarget,"Pulse Lightning");
     ClearAllActions(TRUE);
@@ -547,9 +513,6 @@ void MMP_PulseLightning(object oTarget = OBJECT_INVALID)
 
 void MMP_WhirlWind(object oTarget = OBJECT_INVALID)
 {
-    if(!GetIsObjectValid(oTarget))
-        oTarget = FindStrongestEnemy(OBJECT_SELF);
-
     SendMessageToPC(oTarget,"Whirlwind");
     ClearAllActions(TRUE);
     ActionCastSpellAtObject(SPELLABILITY_WHIRLWIND,oTarget,METAMAGIC_ANY,TRUE);
@@ -567,8 +530,6 @@ void MMP_CloudOfBewilderment(object oTarget = OBJECT_INVALID)
 
 void MMP_CloudKill(object oTarget = OBJECT_INVALID)
 {
-    if(!GetIsObjectValid(oTarget))
-        oTarget = FindStrongestEnemy(OBJECT_SELF);
 
     SendMessageToPC(oTarget,"Cloud Kill");
     ClearAllActions(TRUE);
@@ -577,8 +538,6 @@ void MMP_CloudKill(object oTarget = OBJECT_INVALID)
 
 void MMP_ElementalShield(object oTarget = OBJECT_INVALID)
 {
-    if(!GetIsObjectValid(oTarget))
-        oTarget = FindStrongestEnemy(OBJECT_SELF);
 
     SendMessageToPC(oTarget,"Elemental SHield");
     ClearAllActions(TRUE);
@@ -587,8 +546,6 @@ void MMP_ElementalShield(object oTarget = OBJECT_INVALID)
 
 void MMP_ElementalSwarm(object oTarget = OBJECT_INVALID)
 {
-    if(!GetIsObjectValid(oTarget))
-        oTarget = FindStrongestEnemy(OBJECT_SELF);
 
     SendMessageToPC(oTarget,"Elemental Swarm");
     ClearAllActions(TRUE);

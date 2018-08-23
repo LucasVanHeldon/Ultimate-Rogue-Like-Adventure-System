@@ -14,9 +14,6 @@
 
 void main()
 {
-    ExecuteScript("nw_c2_default9",OBJECT_SELF);
-    if(GetLocalInt(GetModule(),"bUseAIScripts") == FALSE) return;
-
     SetSpawnInCondition(NW_FLAG_STEALTH);
 
     //--------------------------------------------------------------------------

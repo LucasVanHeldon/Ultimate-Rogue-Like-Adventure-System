@@ -1,40 +1,7 @@
 #include "x0_i0_spawncond"
-#include "ai_inc"
+#include "inc_mmp"
+#include "inc_drider"
 
-void MMP_MindBlast(object oTarget = OBJECT_INVALID)
-{
-    if(!GetIsObjectValid(oTarget))
-        oTarget = FindStrongestEnemy(OBJECT_SELF);
-
-    ClearAllActions(TRUE);
-    ActionCastSpellAtObject(SPELLABILITY_MINDBLAST,oTarget,METAMAGIC_ANY,TRUE);
-}
-
-void MMP_GazeCharm(object oTarget = OBJECT_INVALID)
-{
-    if(!GetIsObjectValid(oTarget))
-        oTarget = FindStrongestEnemy(OBJECT_SELF);
-
-    ClearAllActions(TRUE);
-    ActionCastSpellAtObject(SPELLABILITY_GAZE_CHARM,oTarget,METAMAGIC_ANY,TRUE);
-}
-
-void MMPABB_SpecialAttack(object oTarget = OBJECT_INVALID)
-{
-    if(GetLocalInt(OBJECT_SELF,"bMindBlast"))
-        if(d6() < 3)
-        {
-            MMP_MindBlast(oTarget);
-            return;
-        }
-
-    if(GetLocalInt(OBJECT_SELF,"bCharmGaze"))
-        if(d6() < 3)
-        {
-            MMP_GazeCharm(oTarget);
-            return;
-        }
-}
 
 
 void main()

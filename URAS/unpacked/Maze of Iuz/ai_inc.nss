@@ -84,17 +84,7 @@ int IsMindless(object oC)
 {
     int i;
     // anything with an int < 6 is considered mindless
-    if(GetAbilityScore(oC, ABILITY_INTELLIGENCE) < 6) return TRUE;
-    // most undead are unintelligent
-    if(GetHitDice(oC) < 4 && GetClassByPosition(1,oC) == CLASS_TYPE_UNDEAD) return TRUE;
-    // most of these things are considered mindless
-    if(GetClassByPosition(1,oC) == CLASS_TYPE_VERMIN) return TRUE;
-    if(GetClassByPosition(1,oC) == CLASS_TYPE_OOZE) return TRUE;
-    if(GetClassByPosition(1,oC) == CLASS_TYPE_CONSTRUCT) return TRUE;
-    if(GetClassByPosition(1,oC) == CLASS_TYPE_ELEMENTAL) return TRUE;
-    // most animals are considered mindless
-    if(GetClassByPosition(1,oC) == CLASS_TYPE_ANIMAL) return TRUE;
-
+    if(GetAbilityScore(oC, ABILITY_INTELLIGENCE)  == 3) return TRUE;
     return FALSE;
 }
 
@@ -112,31 +102,6 @@ int IsVulnerable(object oObject)
 int CanSeeObject(object oObject)
 {
     return GetObjectSeen(oObject) && LineOfSightObject(OBJECT_SELF,oObject);
-    // keep this around, it would sometimes see things it shouldn't be able to
-    /*
-    if( InvisibleTrue(oObject) )
-    {
-        if( GetHasEffect(EFFECT_TYPE_INVISIBILITY,oObject) ||
-            GetHasEffect(EFFECT_TYPE_IMPROVEDINVISIBILITY,oObject) )
-
-            if(GetHasEffect(EFFECT_TYPE_SEEINVISIBLE,OBJECT_SELF))
-                return TRUE;
-
-        else if( GetHasEffect(SPELL_DARKNESS,oObject) ||
-            GetHasEffect(EFFECT_TYPE_ETHEREAL) )
-
-            if(GetHasEffect(EFFECT_TYPE_ULTRAVISION,OBJECT_SELF) ||
-               GetHasEffect(EFFECT_TYPE_ULTRAVISION,OBJECT_SELF) ||
-               GetHasFeat(FEAT_DARKVISION) )
-                    return TRUE;
-
-        // the Game actually ignores this
-        else if( GetHasEffect(EFFECT_TYPE_SANCTUARY,oObject) ) return FALSE;
-
-    }
-    else return TRUE;
-    return FALSE;
-    */
 }
 
 
@@ -575,5 +540,264 @@ object MaximizeConeWithoutEffect(int iEffect, float fSize=15.0)
     }
     else return OBJECT_INVALID;
 }
+
+
+
+
+int IsFighter(object oTarget)
+{
+    int i=1;
+    for(i = 1; i < 4; i++)
+    {
+        if(GetClassByPosition(i,oTarget) == CLASS_TYPE_FIGHTER ||
+           GetClassByPosition(i,oTarget) == CLASS_TYPE_PALADIN ||
+           GetClassByPosition(i,oTarget) == CLASS_TYPE_RANGER ||
+           GetClassByPosition(i,oTarget) == CLASS_TYPE_MONK ||
+           // don't know, if should include this guy or not.
+           GetClassByPosition(i,oTarget) == CLASS_TYPE_CLERIC)
+            return TRUE;
+    }
+    return FALSE;
+}
+
+int IsMagicUser(object oTarget)
+{
+    int i=1;
+    for(i = 1; i < 4; i++)
+    {
+        if(GetClassByPosition(i,oTarget) == CLASS_TYPE_SORCERER ||
+           GetClassByPosition(i,oTarget) == CLASS_TYPE_WIZARD)
+            return TRUE;
+    }
+    return FALSE;
+}
+
+int IsCleric(object oTarget)
+{
+    int i=1;
+    for(i = 1; i < 4; i++)
+    {
+        if(GetClassByPosition(i,oTarget) == CLASS_TYPE_CLERIC)
+            return TRUE;
+    }
+    return FALSE;
+}
+
+// some classes which can cast spells are not counted atm
+int IsSpellCaster(object oTarget)
+{
+    int i=1;
+    for(i = 1; i < 4; i++)
+    {
+        if(GetClassByPosition(i,oTarget) == CLASS_TYPE_SORCERER ||
+           GetClassByPosition(i,oTarget) == CLASS_TYPE_WIZARD ||
+           GetClassByPosition(i,oTarget) == CLASS_TYPE_CLERIC ||
+           GetClassByPosition(i,oTarget) == CLASS_TYPE_DRUID)
+            return TRUE;
+    }
+    return FALSE;
+}
+
+object FindNearestEnemyMagicUser(object oSelf=OBJECT_SELF,float fSize=30.0)
+{
+    object oNear = GetFirstObjectInShape(SHAPE_SPHERE,fSize,GetLocation(oSelf));
+    while(GetIsObjectValid(oNear))
+    {
+        if( GetIsEnemy(oNear) && CanSeeObject(oNear) && IsMagicUser(oNear) && !IsEnemyDead(oNear) ) return oNear;
+
+        oNear = GetNextObjectInShape(SHAPE_SPHERE,fSize,GetLocation(oSelf));
+    }
+    return OBJECT_INVALID;
+}
+
+object FindNearestEnemyCleric(object oSelf=OBJECT_SELF,float fSize=30.0)
+{
+    object oNear = GetFirstObjectInShape(SHAPE_SPHERE,fSize,GetLocation(oSelf));
+    while(GetIsObjectValid(oNear))
+    {
+        if( GetIsEnemy(oNear) && CanSeeObject(oNear)&& IsCleric(oNear) && !GetIsDead(oNear)) return oNear;
+
+        oNear = GetNextObjectInShape(SHAPE_SPHERE,fSize,GetLocation(oSelf));
+    }
+    return OBJECT_INVALID;
+}
+
+object FindNearestEnemySpellCaster(object oSelf=OBJECT_SELF, float fSize=30.0)
+{
+    object oNear = GetFirstObjectInShape(SHAPE_SPHERE,fSize,GetLocation(oSelf));
+    while(GetIsObjectValid(oNear))
+    {
+        if( GetIsEnemy(oNear) && CanSeeObject(oNear) && IsSpellCaster(oNear) && !IsEnemyDead(oNear)) return oNear;
+
+        oNear = GetNextObjectInShape(SHAPE_SPHERE,fSize,GetLocation(oSelf));
+    }
+    return OBJECT_INVALID;
+}
+
+object FindNearestRangedEnemy(object oSelf=OBJECT_SELF, float fSize=30.0f)
+{
+    object oNear = GetFirstObjectInShape(SHAPE_SPHERE,fSize,GetLocation(oSelf));
+    while(GetIsObjectValid(oNear))
+    {
+        if( GetIsEnemy(oNear) && CanSeeObject(oNear) &&
+            GetWeaponRanged(GetItemInSlot(INVENTORY_SLOT_RIGHTHAND,oNear)) &&
+            !IsEnemyDead(oNear))
+
+           return oNear;
+
+        oNear = GetNextObjectInShape(SHAPE_SPHERE,fSize,GetLocation(oSelf));
+    }
+    return OBJECT_INVALID;
+}
+
+int NoPsychology(object oTarget)
+{
+    return !GetHasEffect(EFFECT_TYPE_DAZED,oTarget) &&
+           !GetHasEffect(EFFECT_TYPE_SLEEP,oTarget) &&
+           !GetHasEffect(EFFECT_TYPE_CHARMED,oTarget) &&
+           !GetHasEffect(EFFECT_TYPE_DOMINATED,oTarget) &&
+           !GetHasEffect(EFFECT_TYPE_PARALYZE,oTarget) &&
+           !GetHasEffect(EFFECT_TYPE_STUNNED,oTarget);
+}
+
+
+
+
+void CastAt(object oTarget, int spell)
+{
+    ClearAllActions(TRUE);
+    ActionCastSpellAtObject(spell,oTarget);
+    ActionWait(6.0);
+}
+
+void CastAtLocation(location loc, int spell)
+{
+    ClearAllActions(TRUE);
+    ActionCastSpellAtLocation(spell,loc);
+    ActionWait(6.0);
+}
+
+// will cast spell at a location halfway between caster and target
+void CastBetween(int iSpell, object oTarget=OBJECT_INVALID)
+{
+    object oNear;
+
+    if(oTarget==OBJECT_INVALID)
+        oNear= FindNearestEnemy(OBJECT_SELF);
+    else
+        oNear = oTarget;
+
+    float D = GetDistanceToObject(oNear);
+
+
+    float P = D/2.0;
+    vector vMy = GetPosition(OBJECT_SELF);
+    vector vN  = GetPosition(oNear);
+    // for whatever reason, I believe it should be: vMy - vN
+    // but for some reason, it is facing the wrong way.
+    vector vP  = VectorNormalize(vN - vMy);
+    vector vL  = vMy + (P*vP);
+    float  Facing = VectorToAngle(vP);
+
+    ClearAllActions(TRUE);
+    ActionCastSpellAtLocation( iSpell,
+                        Location(GetArea(OBJECT_SELF),
+                                 vL,
+                                 Facing) );
+
+}
+
+
+// used for summoning (non-game functions)
+void Summon(string resref, int num, location loc)
+{
+    int n = num;
+    int i;
+
+    for(i = 0; i < n; i++)
+    {
+        effect eSummon = EffectVisualEffect(VFX_IMP_UNSUMMON);
+        object oSummon = CreateObject(OBJECT_TYPE_CREATURE,resref,loc);
+        ApplyEffectAtLocation(DURATION_TYPE_TEMPORARY,eSummon,loc,15.0);
+    }
+}
+
+
+
+
+// cast at enemy that does not have effect
+void CastAtWithoutEffect(int iEffect, int spell)
+{
+    object oDoom = FindNearestEnemyWithoutEffect(OBJECT_SELF,iEffect);
+    if(!GetIsObjectValid(oDoom)) oDoom = FindNearestEnemy(OBJECT_SELF);
+    ClearAllActions(TRUE);
+    ActionCastSpellAtObject(spell,oDoom);
+    ActionWait(6.0);
+}
+
+
+void CastAtWeakest(int spell)
+{
+    object oDoom = FindWeakestEnemy(OBJECT_SELF);
+    if(!GetIsObjectValid(oDoom)) oDoom = FindNearestEnemy(OBJECT_SELF);
+    ClearAllActions(TRUE);
+    ActionCastSpellAtObject(spell,oDoom);
+    ActionWait(6.0);
+
+}
+
+void CastAtStrongest(int spell)
+{
+    object oDoom = FindStrongestEnemy(OBJECT_SELF);
+    if(!GetIsObjectValid(oDoom)) oDoom = FindNearestEnemy(OBJECT_SELF);
+    ClearAllActions(TRUE);
+    ActionCastSpellAtObject(spell,oDoom);
+    ActionWait(6.0);
+
+}
+
+// 1st level wizard
+void CastGrease(object oDoom)
+{
+    CastAtLocation(GetLocation(oDoom),SPELL_GREASE);
+}
+
+
+// will put a grease spell at a location in between caster and
+// enemy.
+void CastGreaseBetween(object oTarget=OBJECT_INVALID)
+{
+    object oNear;
+
+    if(oTarget==OBJECT_INVALID)
+        oNear= FindNearestEnemy(OBJECT_SELF);
+    else
+        oNear = oTarget;
+
+    float D = GetDistanceToObject(oNear);
+
+
+    float P = D/2.0;
+    vector vMy = GetPosition(OBJECT_SELF);
+    vector vN  = GetPosition(oNear);
+    // for whatever reason, I believe it should be: vMy - vN
+    // but for some reason, it is facing the wrong way.
+    vector vP  = VectorNormalize(vN - vMy);
+    vector vL  = vMy + (P*vP);
+    float  Facing = VectorToAngle(vP);
+
+    ClearAllActions(TRUE);
+    ActionCastSpellAtLocation( SPELL_GREASE,
+                        Location(GetArea(OBJECT_SELF),
+                                 vL,
+                                 Facing) );
+
+}
+
+
+
+
+
+
 
 
