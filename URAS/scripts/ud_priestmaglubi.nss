@@ -14,7 +14,7 @@
 #include "x0_i0_spawncond"
 #include "ai_inc"
 
-void Summon(int n, string resref)
+void PriestSummon(int n, string resref)
 {
     effect eEff =  EffectVisualEffect(VFX_IMP_UNSUMMON);
     DelayCommand(0.1,ApplyEffectAtLocation(DURATION_TYPE_INSTANT,eEff,GetLocation(OBJECT_SELF)));
@@ -30,7 +30,7 @@ void State0()
     object oSeen=GetLastPerceived();
     SetLocalInt(OBJECT_SELF,"nCurrentState",1);
     ClearAllActions(TRUE);
-    Summon(4+d6(),"giantcentipede");
+    PriestSummon(4+d6(),"giantcentipede");
 }
 
 void State1()
@@ -38,7 +38,7 @@ void State1()
     int nHold = GetLocalInt(OBJECT_SELF,"nHoldPerson");
     ClearAllActions(TRUE);
     SetLocalInt(OBJECT_SELF,"nCurrentState",2);
-    Summon(4+d6(),"gianttick");
+    PriestSummon(4+d6(),"gianttick");
 }
 
 void State2()
@@ -46,7 +46,7 @@ void State2()
     int nHold = GetLocalInt(OBJECT_SELF,"nHoldPerson");
     ClearAllActions(TRUE);
     SetLocalInt(OBJECT_SELF,"nCurrentState",3);
-    Summon(3+d6(),"mmp_vampbat");
+    PriestSummon(3+d6(),"mmp_vampbat");
 }
 
 void main()

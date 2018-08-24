@@ -83,7 +83,6 @@ void Lutes(object oTarget)
     float fLootMod = 0.5*GetLocalFloat(GetModule(),"fLootMod");
     float x        = fLootMod*IntToFloat(iChestLevel);
 
-
     iLootModifier = FloatToInt(x);
 
     for(i = 0; i < iLootModifier; i++)

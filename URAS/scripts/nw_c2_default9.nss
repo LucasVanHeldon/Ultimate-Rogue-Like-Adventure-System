@@ -18,7 +18,7 @@
 #include "inc_templates0"
 #include "sd_lootsystem"
 
-int iSocketedLootChance = 100;
+int iSocketedLootChance = 0;
 int bMunchkin = FALSE;   // Set to TRUE if you want to use the munchkin only
 int bOC = FALSE;        // Set to TRUE if compiling for Official campaign
 int bModifyArmorAndWeapons=TRUE;
@@ -984,7 +984,12 @@ void main()
         //SetName(OBJECT_SELF,RandomName(NAME_FIRST_HUMAN_MALE));
     }
     float fLootMod = GetLocalFloat(GetModule(),"fLootMod");
-    if(bMunchkin == TRUE) fLootMod = 5.0;
+    if(bMunchkin == TRUE)
+    {
+        fLootMod = 5.0;
+        SetLocalFloat(GetModule(),"fLootMode",fLootMod);
+    }
+
 
     // the random generator in this game is not uniform at all.
     float fLootChance = 0.5* fLootMod;
@@ -1027,9 +1032,9 @@ void main()
                 iChestLevel = GetCharacterLevel(OBJECT_SELF);
                 dice = Random(10000);
 
-                if(dice <= iSocketedLootChance)
-                    sd_droploot(OBJECT_SELF,OBJECT_SELF);
-                else
+                //if(dice <= iSocketedLootChance)
+                //    sd_droploot(OBJECT_SELF,OBJECT_SELF);
+                //else
                     Lutes(OBJECT_SELF);
             }
         }

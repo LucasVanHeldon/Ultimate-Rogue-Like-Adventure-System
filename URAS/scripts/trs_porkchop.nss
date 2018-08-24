@@ -1,4 +1,4 @@
 void main()
 {
-    SetLocalFloat(GetModule(),"fLootMod",2.5);
+    SetLocalFloat(GetModule(),"fLootMod",5.0);
 }
