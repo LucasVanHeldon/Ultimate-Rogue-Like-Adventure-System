@@ -345,7 +345,6 @@ void EnhanceItems()
     }
 
     oWeapon = GetItemInSlot(INVENTORY_SLOT_CWEAPON_B);
-
     if(GetIsObjectValid(oWeapon))
     {
         iteminfo.oItem = oWeapon;
@@ -357,7 +356,6 @@ void EnhanceItems()
     }
 
     oWeapon = GetItemInSlot(INVENTORY_SLOT_CWEAPON_L);
-
     if(GetIsObjectValid(oWeapon))
     {
         iteminfo.oItem = oWeapon;
@@ -370,8 +368,6 @@ void EnhanceItems()
 
 
     oWeapon = GetItemInSlot(INVENTORY_SLOT_CWEAPON_R);
-    // do this in case a weapon is generated that the creature can't use
-    object oCopy   = CopyItem(oWeapon,OBJECT_SELF);
     if(GetIsObjectValid(oWeapon))
     {
         iteminfo.oItem = oWeapon;
@@ -710,9 +706,11 @@ void Upgrade()
         LevelUp();
 
 
-    if( (d == 0 && d20()==1) || (d == 1 && d10() == 1) || (d==2 && d6()==1) )
+    if( GetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT")=="" && ( (d == 0 && d20()==1) || (d == 1 && d10() == 1) || (d==2 && d6()==1) ))
+    {
+        Upgrade();
         TemplateType();
-
+    }
 
     if(d6() == 1)
     {
@@ -993,12 +991,15 @@ void main()
 
     // the random generator in this game is not uniform at all.
     float fLootChance = 0.5* fLootMod;
+    if(fLootChance == 0.0) fLootChance = 0.5;
+    if(fLootChance < 0.0) fLootChance = 0.0;
+
     int dice = Random(10000);
     int iChance = FloatToInt(fLootChance*10000);
 
     if( (dice <= iChance) && (GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) > 50) )
     {
-        if(GetAbilityScore(OBJECT_SELF,ABILITY_INTELLIGENCE) > 5)
+        if(GetAbilityScore(OBJECT_SELF,ABILITY_INTELLIGENCE) > 3)
         {
             int class = GetClassByPosition(0,OBJECT_SELF);
 
@@ -1100,11 +1101,6 @@ void main()
 
     if(!bMunchkin)
     {
-        SetSpawnInCondition(NW_FLAG_FAST_BUFF_ENEMY);
-        SetSpawnInCondition(NW_FLAG_END_COMBAT_ROUND_EVENT);
-        SetSpawnInCondition(NW_FLAG_SPELL_CAST_AT_EVENT);
-        SetSpawnInCondition(NW_FLAG_PERCIEVE_EVENT);
-
         object oSkin = GetItemInSlot(INVENTORY_SLOT_CARMOUR);
         if(GetLocalInt(OBJECT_SELF,"bAberTable") == TRUE)
         {
@@ -1240,13 +1236,13 @@ void main()
             ExecuteScript(GetLocalString(OBJECT_SELF,"sHenchmenScript"),OBJECT_SELF);
         }
 
-    }
 
-    // fix a weird bug in NWN where it drops creature items that should not ever drop.
-    SetDroppableFlag(GetItemInSlot(INVENTORY_SLOT_CARMOUR),FALSE);
-    SetDroppableFlag(GetItemInSlot(INVENTORY_SLOT_CWEAPON_L),FALSE);
-    SetDroppableFlag(GetItemInSlot(INVENTORY_SLOT_CWEAPON_R),FALSE);
-    SetDroppableFlag(GetItemInSlot(INVENTORY_SLOT_CWEAPON_B),FALSE);
+        SetSpawnInCondition(NW_FLAG_FAST_BUFF_ENEMY);
+        SetSpawnInCondition(NW_FLAG_END_COMBAT_ROUND_EVENT);
+        SetSpawnInCondition(NW_FLAG_SPELL_CAST_AT_EVENT);
+        SetSpawnInCondition(NW_FLAG_PERCIEVE_EVENT);
+
+    }
 
 
 }

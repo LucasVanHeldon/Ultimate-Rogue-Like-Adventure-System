@@ -30,16 +30,16 @@ struct sItemInfo
 
 struct sEnchantments
 {
-    int iAlign;      // the alignment is what the weapon or item hates
+    int iAlign;
     int iRace;
     int iSAlign;
 
     int iACBonus;
-    int iArcaneSpellFailure;    // Decrease
+    int iArcaneSpellFailure;
     int iDamageImmunity;
     int iDamageImmunityType;
-    int iDamageReduction;       // the enchanment needed to hit
-    int iDamageReductionSoak;   // from 5 to 50 hitpoints reduced
+    int iDamageReduction;
+    int iDamageReductionSoak;
     int iDamageResistance;
     int iDamageResistanceType;
     int iImprovedEvasion;
@@ -66,7 +66,6 @@ struct sEnchantments
     int iRegeneration;
     int iVampiricRegeneration;
 
-    // it is possible for an item to give up to 4 feats but by default it only gives 1
     int iNumFeats;
     int iFeat1;
     int iFeat2;
@@ -86,9 +85,9 @@ struct sEnchantments
     int iOnHitCastSpellLevel;
     int iSpecial;
 
-    // up to 10 spells
+
     int iNumCastSpells;
-    // spell and use (single, 1 charge etc)
+
     int iCastSpell1;
     int iCastSpellUse1;
     int iCastSpell2;
@@ -120,6 +119,6 @@ struct sEnchantments
     string sName;
 };
 
-// where most enchantments are added to the item.
+
 void ApplyEnchantments(struct sEnchantments Enchants);
 

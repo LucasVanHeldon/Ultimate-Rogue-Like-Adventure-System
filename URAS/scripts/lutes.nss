@@ -81,6 +81,9 @@ void Lutes(object oTarget)
 
 
     float fLootMod = 0.5*GetLocalFloat(GetModule(),"fLootMod");
+    if(fLootMod < 0.0) fLootMod = 0.0;
+    if(fLootMod == 0.0) fLootMod = 0.5;
+
     float x        = fLootMod*IntToFloat(iChestLevel);
 
     iLootModifier = FloatToInt(x);

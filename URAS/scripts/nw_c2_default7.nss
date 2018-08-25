@@ -29,7 +29,7 @@ void main()
     }
 
 
-    //LeaveCorpse();
+    LeaveCorpse();
 
 }
 
