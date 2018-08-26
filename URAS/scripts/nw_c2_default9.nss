@@ -324,7 +324,6 @@ void EnhanceItems()
 
 
     oArmor = GetItemInSlot(INVENTORY_SLOT_LEFTHAND);
-
     int iBase = GetBaseItemType(oArmor);
     if(GetIsObjectValid(oArmor) && (iBase == BASE_ITEM_SMALLSHIELD || iBase == BASE_ITEM_LARGESHIELD || iBase==BASE_ITEM_TOWERSHIELD))
     {
@@ -332,8 +331,15 @@ void EnhanceItems()
         iteminfo.sBluePrint = GetResRef(oArmor);
         EnchantArmor(iteminfo);
     }
-    object oWeapon = GetItemInSlot(INVENTORY_SLOT_RIGHTHAND);
+    else if(GetIsObjectValid(oArmor))
+    {
+        iteminfo.oItem = oArmor;
+        iteminfo.sBluePrint = GetResRef(oArmor);
+        EnchantWeapon(iteminfo);
+    }
 
+    object oWeapon = GetItemInSlot(INVENTORY_SLOT_RIGHTHAND);
+    CopyItem(oWeapon,OBJECT_SELF);
     if(GetIsObjectValid(oWeapon))
     {
         iteminfo.oItem = oWeapon;
@@ -383,18 +389,18 @@ void EnhanceItems()
         int i;
         for(i = 0; i < d4(); i++)
             CreateArcaneScroll(OBJECT_SELF,OBJECT_SELF);
-        for(i = 0; i < d4(); i++)
-            CreatePotion(OBJECT_SELF,OBJECT_SELF);
+        CreatePotions(d4());
     }
-    if(GetIsCleric(OBJECT_SELF))
+    else if(GetIsCleric(OBJECT_SELF))
     {
         int i;
         for(i = 0; i < d4(); i++)
             CreateDivineScroll(OBJECT_SELF,OBJECT_SELF);
-        for(i = 0; i < d4(); i++)
-            CreatePotion(OBJECT_SELF,OBJECT_SELF);
+        CreatePotions(d4());
 
     }
+    if(GetIsFighter(OBJECT_SELF) || GetIsRogue(OBJECT_SELF) || GetIsMonk(OBJECT_SELF) || GetIsMagicUser(OBJECT_SELF) || GetIsCleric(OBJECT_SELF) )
+        CreatePotions(d4());
 }
 
 
@@ -491,7 +497,7 @@ void IncreaseWeaponSize(object oWeapon)
     float n =SetObjectVisualTransform(oWeapon, OBJECT_VISUAL_TRANSFORM_SCALE,scale);
 }
 
-void UpgradeCompiler()
+void RandomTemplate()
 {
     int n = GetHitDice(OBJECT_SELF);
     int i;
@@ -706,10 +712,9 @@ void Upgrade()
         LevelUp();
 
 
-    if( GetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT")=="" && ( (d == 0 && d20()==1) || (d == 1 && d10() == 1) || (d==2 && d6()==1) ))
+    if( (d == 0 && d20()==1) || (d == 1 && d10() == 1) || (d==2 && d6()==1)  )
     {
         Upgrade();
-        TemplateType();
     }
 
     if(d6() == 1)
@@ -749,14 +754,6 @@ void Upgrade()
 
     }
 
-    if(GetStandardFactionReputation(STANDARD_FACTION_HOSTILE,OBJECT_SELF) > 75)
-    {
-        if(d10() == 1)
-        {
-            UpgradeCompiler();
-            SetName(OBJECT_SELF,"(Elite) " + GetName(OBJECT_SELF));
-        }
-    }
 
 }
 
@@ -821,33 +818,50 @@ void main()
 
     object sack = OBJECT_SELF;
 
+///////////////////////////////////////////
+// Hack for fLootModifier
+///////////////////////////////////////////
+    float fLootMod = 1.0;
     if(!GetLocalInt(GetModule(),"bUrasRunOnce"))
     {
         SetLocalInt(GetModule(),"bUrasRunOnce",1);
-        SetLocalFloat(GetModule(),"fLootMod",1.0);
         if(bMunchkin == TRUE)
-                SetLocalFloat(GetModule(),"fLootMod",5.0);
+            fLootMod = 5.0;
+        else if(GetLocalFloat(GetModule(),"fLootMod") == 0.0)
+            fLootMod = 1.0;
+        SetLocalFloat(GetModule(),"fLootMod",fLootMod);
     }
 
+
+
+////////////////////////////////////////////
+// AI behavior and templates
+////////////////////////////////////////////
     if(bMunchkin == FALSE)
     {
-        if(GetIsFighter(OBJECT_SELF) && GetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT")=="")
-        {
-            string s;
-            switch(d8())
-            {
-            case 1: s = "x2_ai_attackweak"; break;
-            case 2: s = "x2_ai_attackstr"; break;
-            case 3: s = "x2_ai_atkspellc"; break;
-            case 4: s = "x2_ai_atkvuln"; break;
-            default: s = "";
-            }
-            SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT",s);
-        }
-        else if(GetIsMagicUser(OBJECT_SELF))
-            SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT","x2_ai_wizard");
 
-        // only make hostiles NPCs
+        // templates
+        int rt = GetRacialType(OBJECT_SELF);
+        if(d20() == 1  && GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) == 100 &&
+            (rt != RACIAL_TYPE_UNDEAD && rt != RACIAL_TYPE_CONSTRUCT && rt != RACIAL_TYPE_ELEMENTAL))
+        {
+            switch(Random(10))
+            {
+            case 0: SetLocalInt(OBJECT_SELF,"bHalfFiend",TRUE); break;
+            case 1: SetLocalInt(OBJECT_SELF,"bHalfAir",TRUE); break;
+            case 2: SetLocalInt(OBJECT_SELF,"bHalfEarth",TRUE); break;
+            case 3: SetLocalInt(OBJECT_SELF,"bHalfFire",TRUE); break;
+            case 4: SetLocalInt(OBJECT_SELF,"bHalfWater",TRUE); break;
+            case 5: SetLocalInt(OBJECT_SELF,"bOoze",TRUE); break;
+            case 6: SetLocalInt(OBJECT_SELF,"bAberOoze",TRUE); break;
+            case 7: SetLocalInt(OBJECT_SELF,"bAberration",TRUE); break;
+            case 8: SetLocalInt(OBJECT_SELF,"bDemonic",TRUE); break;
+            case 9: SetLocalInt(OBJECT_SELF,"bDemonicAberration",TRUE); break;
+            case 10: SetLocalInt(OBJECT_SELF,"bAluDemon",TRUE); break;
+            }
+        }
+
+        //only make hostiles NPCs it can break the game if it changes a key non-hostile NPC (ex solomon might be hamberg now)
         if(d6() == 1 && GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) == 100)
         {
             SetLocalInt(OBJECT_SELF,"bForceLvlUp",1);
@@ -872,6 +886,10 @@ void main()
         */
     }
 
+
+/////////////////////////////
+// Default Bioware stuff
+/////////////////////////////
     if (GetCreatureFlag(OBJECT_SELF, CREATURE_VAR_USE_SPAWN_SEARCH) == TRUE)
     {
         SetSpawnInCondition(NW_FLAG_SEARCH);
@@ -978,16 +996,12 @@ void main()
             sName = RandomName();
         }
         SetName(OBJECT_SELF,sName);
-
-        //SetName(OBJECT_SELF,RandomName(NAME_FIRST_HUMAN_MALE));
-    }
-    float fLootMod = GetLocalFloat(GetModule(),"fLootMod");
-    if(bMunchkin == TRUE)
-    {
-        fLootMod = 5.0;
-        SetLocalFloat(GetModule(),"fLootMode",fLootMod);
     }
 
+
+////////////////////////////////////////////////
+// Treasure - note that talent AI can use this.
+///////////////////////////////////////////////
 
     // the random generator in this game is not uniform at all.
     float fLootChance = 0.5* fLootMod;
@@ -1033,6 +1047,7 @@ void main()
                 iChestLevel = GetCharacterLevel(OBJECT_SELF);
                 dice = Random(10000);
 
+                // it will just drop socket way too much no matter what I do.
                 //if(dice <= iSocketedLootChance)
                 //    sd_droploot(OBJECT_SELF,OBJECT_SELF);
                 //else
@@ -1040,13 +1055,20 @@ void main()
             }
         }
     }
+
+/////////////////////////
+// Upgrade and Enhance
+//////////////////////////
     if( (GetLocalInt(GetModule(),"difficulty") >= 0 || GetLocalInt(OBJECT_SELF,"bForceLvlUp")==1) && bMunchkin==FALSE)
     {
+        int rt = GetRacialType(OBJECT_SELF);
+
         if(GetLocalInt(OBJECT_SELF,"bNeverLvlUp")==0)
         {
             EnhanceSkin();
             EnhanceItems();
-            Upgrade();
+            if(rt != RACIAL_TYPE_UNDEAD && rt != RACIAL_TYPE_CONSTRUCT)
+                Upgrade();
         }
     }
 
@@ -1057,6 +1079,9 @@ void main()
         PersonalSpellBook();
     }
 
+////////////////////////////////////
+// Modify Armour and Weapons
+////////////////////////////////////
     if(bModifyArmorAndWeapons == TRUE)
     {
         object oArmor = GetItemInSlot(INVENTORY_SLOT_CHEST);
@@ -1099,10 +1124,15 @@ void main()
         }
     }
 
+
+//////////////////////
+// Templates and AI
+//////////////////////
     if(!bMunchkin)
     {
         object oSkin = GetItemInSlot(INVENTORY_SLOT_CARMOUR);
-        if(GetLocalInt(OBJECT_SELF,"bAberTable") == TRUE)
+
+        if(GetLocalInt(OBJECT_SELF,"bAberTable") == TRUE || GetLocalInt(OBJECT_SELF,"bAberration") == TRUE)
         {
             int i;
             for(i = 0; i < GetHitDice(OBJECT_SELF); i++)
@@ -1112,23 +1142,37 @@ void main()
             MMP_AbberationCW(oBite);
             object oClaw = GetItemInSlot(INVENTORY_SLOT_CWEAPON_L);
             MMP_AbberationCW(oBite);
-        }
 
-        if(GetLocalInt(OBJECT_SELF,"bAberOozeTable") == TRUE || GetLocalInt(OBJECT_SELF,"bOozeTable") == TRUE
-            || GetLocalInt(OBJECT_SELF,"bOoze") == TRUE || GetLocalInt(OBJECT_SELF,"bAberOoze") == TRUE)
+            SetName(OBJECT_SELF,"(Aberration) " + GetName(OBJECT_SELF));
+            SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI","x2_ai_aberration");
+        }
+        else if(GetLocalInt(OBJECT_SELF,"bOozeTable") == TRUE || GetLocalInt(OBJECT_SELF,"bOoze") == TRUE)
         {
             int i;
-            for(i = 0; i < GetHitDice(OBJECT_SELF)/2+1; i++) MMP_OozeTable(oSkin);
-            for(i = 0; i < GetHitDice(OBJECT_SELF)/2+1; i++) MMP_AbberationTable(oSkin);
-
+            for(i = 0; i < GetHitDice(OBJECT_SELF); i++) MMP_OozeTable(oSkin);
+            if(d6()==1) MMPOOZE_EvardsBlackTentacles(oSkin);
             object oBite = GetItemInSlot(INVENTORY_SLOT_CWEAPON_B);
             MMP_AbberationCW(oBite);
             object oClaw = GetItemInSlot(INVENTORY_SLOT_CWEAPON_L);
             MMP_AbberationCW(oBite);
+            SetName(OBJECT_SELF,"(Ooze) " + GetName(OBJECT_SELF));
+            SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI","x2_ai_ooze");
         }
-
-        if(GetLocalInt(OBJECT_SELF,"bAberDemonicTable") == TRUE || GetLocalInt(OBJECT_SELF,"bDemonicTable") == TRUE ||
-            GetLocalInt(OBJECT_SELF,"bDemonicAberration") == TRUE || GetLocalInt(OBJECT_SELF,"bDemonic") == TRUE)
+        else if(GetLocalInt(OBJECT_SELF,"bAberOozeTable") == TRUE || GetLocalInt(OBJECT_SELF,"bAberOoze") == TRUE)
+        {
+            int i;
+            for(i = 0; i < GetHitDice(OBJECT_SELF)/2+1; i++) MMP_OozeTable(oSkin);
+            for(i = 0; i < GetHitDice(OBJECT_SELF)/2+1; i++) MMP_AbberationTable(oSkin);
+            if(d6()==1) MMPOOZE_EvardsBlackTentacles(oSkin);
+            object oBite = GetItemInSlot(INVENTORY_SLOT_CWEAPON_B);
+            MMP_AbberationCW(oBite);
+            object oClaw = GetItemInSlot(INVENTORY_SLOT_CWEAPON_L);
+            MMP_AbberationCW(oBite);
+            SetName(OBJECT_SELF,"(Aberrant-Ooze) " + GetName(OBJECT_SELF));
+            SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI","x2_ai_aberooze");
+        }
+// change
+        else if(GetLocalInt(OBJECT_SELF,"bDemonicTable") == TRUE || GetLocalInt(OBJECT_SELF,"bDemonic") == TRUE)
         {
             effect eEffect = EffectAbilityIncrease(ABILITY_STRENGTH,4);
             ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
@@ -1165,9 +1209,53 @@ void main()
             if(sR > 25) sR = 25;
             eDR = EffectSpellResistanceIncrease(sR);
             ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+
+            SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI","x2_ai_demonic");
+
+        }
+
+        else if(GetLocalInt(OBJECT_SELF,"bAberDemonicTable") == TRUE ||
+            GetLocalInt(OBJECT_SELF,"bDemonicAberration") == TRUE )
+        {
+            effect eEffect = EffectAbilityIncrease(ABILITY_STRENGTH,4);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityIncrease(ABILITY_DEXTERITY,4);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityIncrease(ABILITY_CONSTITUTION,4);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityIncrease(ABILITY_INTELLIGENCE,4);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityIncrease(ABILITY_CHARISMA,2);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectTemporaryHitpoints(d12(4));
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            int nHDc = GetHitDice(OBJECT_SELF)/5+1;
+            effect eDR = EffectDamageReduction(5,nHDc);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+            eDR = EffectDamageResistance(DAMAGE_TYPE_ACID,10);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+            eDR = EffectDamageResistance(DAMAGE_TYPE_FIRE,10);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+            eDR = EffectDamageResistance(DAMAGE_TYPE_ELECTRICAL,10);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+            eDR = EffectDamageResistance(DAMAGE_TYPE_COLD,10);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+
+            int nHD = GetHitDice(OBJECT_SELF);
+            int sR = 10+nHD;
+            if(sR > 25) sR = 25;
+            eDR = EffectSpellResistanceIncrease(sR);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+            SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI","x2_ai_aludemon");
         }
         // it is twisted by chaos (aberration) and psionic
-        if(GetLocalInt(OBJECT_SELF,"bPsychicTable")==TRUE || GetLocalInt(OBJECT_SELF,"bPsychic")==TRUE)
+        else if(GetLocalInt(OBJECT_SELF,"bPsychicTable")==TRUE || GetLocalInt(OBJECT_SELF,"bPsychic")==TRUE)
         {
 
             int i;
@@ -1185,9 +1273,12 @@ void main()
             nPoints = nPoints + GetAbilityModifier(ABILITY_WISDOM);
             nPoints = nPoints + GetAbilityModifier(ABILITY_CHARISMA);
             SetLocalInt(OBJECT_SELF,"nPoints",nPoints);
+            SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI","x2_ai_psychic");
         }
+
+// change
         // anything possessed, or part evil outsider
-        if(GetLocalInt(OBJECT_SELF,"bAluDemon") == TRUE || GetLocalInt(OBJECT_SELF,"bFiendish") == TRUE || GetLocalInt(OBJECT_SELF,"bDemonic") == TRUE || GetLocalInt(OBJECT_SELF,"bHalfFiend") == TRUE)
+        else if(GetLocalInt(OBJECT_SELF,"bAluDemon") == TRUE  )
         {
             effect eEffect = EffectAbilityIncrease(ABILITY_STRENGTH,2);
             ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
@@ -1220,13 +1311,315 @@ void main()
             eDR = EffectDamageResistance(DAMAGE_TYPE_COLD,10);
             ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
         }
-        if(GetLocalInt(OBJECT_SELF,"bPsionicTable") == TRUE || GetLocalInt(OBJECT_SELF,"bPsionic") == TRUE)
+        else if(GetLocalInt(OBJECT_SELF,"bPsionicTable") == TRUE || GetLocalInt(OBJECT_SELF,"bPsionic") == TRUE)
         {
             int nPoints = GetHitDice(OBJECT_SELF)
                 + GetAbilityModifier(ABILITY_INTELLIGENCE)
                 + GetAbilityModifier(ABILITY_WISDOM);
             SetLocalInt(OBJECT_SELF,"nPoints",nPoints*GetAbilityModifier(ABILITY_CHARISMA));
+            SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI","x2_ai_psionic");
         }
+
+        else if(GetLocalInt(OBJECT_SELF,"bHalfAir") == TRUE && GetRacialType(OBJECT_SELF) != RACIAL_TYPE_UNDEAD)
+        {
+            effect eEffect;
+            eEffect = EffectAbilityIncrease(
+                ABILITY_DEXTERITY,
+                2);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityIncrease(ABILITY_CONSTITUTION,2);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityIncrease(ABILITY_INTELLIGENCE,2);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityIncrease(ABILITY_CHARISMA,2);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityIncrease(ABILITY_WISDOM,2);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectTemporaryHitpoints(d12(4));
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+
+            int nHD = GetHitDice(OBJECT_SELF);
+            effect eDR;
+            eDR = EffectACIncrease(1,AC_NATURAL_BONUS);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+
+            eDR = EffectDamageImmunityIncrease(DAMAGE_TYPE_COLD,100);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+            eDR = EffectImmunity(IMMUNITY_TYPE_DISEASE);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+
+            SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI","x2_ai_halfair");
+
+            SetName(OBJECT_SELF," (Half-Air Elemental) " + GetName(OBJECT_SELF));
+
+        }
+        else if(GetLocalInt(OBJECT_SELF,"bHalfEarth") == TRUE&& GetRacialType(OBJECT_SELF) != RACIAL_TYPE_UNDEAD)
+        {
+            effect eEffect = EffectAbilityIncrease(ABILITY_STRENGTH,4);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityDecrease(ABILITY_DEXTERITY,2);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityIncrease(ABILITY_CONSTITUTION,4);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+
+            eEffect = EffectTemporaryHitpoints(d12(4));
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+
+            int nHD = GetHitDice(OBJECT_SELF);
+            effect eDR;
+            eDR = EffectACIncrease(3,AC_NATURAL_BONUS);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+
+            eDR = EffectImmunity(IMMUNITY_TYPE_DISEASE);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+
+            SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI","x2_ai_halfearth");
+
+
+            SetName(OBJECT_SELF," (Half-Earth Elemental) " + GetName(OBJECT_SELF));
+
+        }
+        else if(GetLocalInt(OBJECT_SELF,"bHalfFire") == TRUE && GetRacialType(OBJECT_SELF) != RACIAL_TYPE_UNDEAD)
+        {
+            effect eEffect;
+
+            eEffect = EffectAbilityIncrease(ABILITY_DEXTERITY,4);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityIncrease(ABILITY_INTELLIGENCE,2);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityIncrease(ABILITY_CHARISMA,2);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectTemporaryHitpoints(d12(4));
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+
+            int nHD = GetHitDice(OBJECT_SELF);
+            effect eDR;
+            eDR = EffectACIncrease(1,AC_NATURAL_BONUS);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+
+            eDR = EffectDamageImmunityIncrease(DAMAGE_TYPE_FIRE,100);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+            eDR = EffectImmunity(IMMUNITY_TYPE_DISEASE);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+
+
+            SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI","x2_ai_halffire");
+
+
+            SetName(OBJECT_SELF," (Half-Fire Elemental) " + GetName(OBJECT_SELF));
+
+        }
+        else if(GetLocalInt(OBJECT_SELF,"bHalfWater") == TRUE && GetRacialType(OBJECT_SELF) != RACIAL_TYPE_UNDEAD)
+        {
+            effect eEffect;
+
+            eEffect = EffectAbilityIncrease(ABILITY_STRENGTH,2);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityIncrease(ABILITY_WISDOM,2);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityIncrease(ABILITY_CONSTITUTION,2);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityIncrease(ABILITY_INTELLIGENCE,2);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityIncrease(ABILITY_CHARISMA,2);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectAbilityIncrease(ABILITY_WISDOM,2);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectTemporaryHitpoints(d12(4));
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+
+            int nHD = GetHitDice(OBJECT_SELF);
+            effect eDR;
+            eDR = EffectACIncrease(1,AC_NATURAL_BONUS);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+
+            eDR = EffectDamageImmunityIncrease(DAMAGE_TYPE_COLD,100);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+            eDR = EffectImmunity(IMMUNITY_TYPE_DISEASE);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eDR,OBJECT_SELF);
+            SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI","x2_ai_halfwater");
+
+            SetName(OBJECT_SELF," (Half-Water Elemental) " + GetName(OBJECT_SELF));
+
+        }
+        else if(GetLocalInt(OBJECT_SELF,"bCelestial") == TRUE)
+        {
+            effect eEffect;
+            itemproperty ip;
+            int nHD = GetHitDice(OBJECT_SELF);
+            eEffect = EffectAbilityIncrease(ABILITY_STRENGTH,4);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect = EffectAbilityIncrease(ABILITY_DEXTERITY,2);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect = EffectAbilityIncrease(ABILITY_CONSTITUTION,4);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect = EffectAbilityIncrease(ABILITY_INTELLIGENCE,2);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect = EffectAbilityIncrease(ABILITY_WISDOM,4);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect = EffectAbilityIncrease(ABILITY_CHARISMA,4);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect = EffectACIncrease(5,AC_NATURAL_BONUS);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect = EffectDamageResistance(DAMAGE_TYPE_ACID,10);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect = EffectDamageResistance(DAMAGE_TYPE_COLD,10);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect = EffectDamageResistance(DAMAGE_TYPE_ELECTRICAL,10);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            int sr = 10 + nHD;
+            if(sr > 32) sr = 32;
+            eEffect = EffectSpellResistanceIncrease(sr);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+
+            if( nHD >= 0 && nHD <= 11)
+            {
+                int nDR = nHD/5+1;
+                if(nDR == 6) nDR = nDR+1;
+                int nAmt = 5;
+                eEffect = EffectDamageReduction(nAmt, nHD);
+                ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            }
+
+
+            if( nHD >= 12 && nHD <= 40)
+            {
+                int nDR = nHD/5+1;
+                if(nDR == 6) nDR = nDR+1;
+                int nAmt = 10;
+                eEffect = EffectDamageReduction(nAmt, nHD);
+                ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            }
+
+            ip = ItemPropertyDarkvision(); IPSafeAddItemProperty(oSkin,ip);
+            if(GetHitDice(OBJECT_SELF) >= 1) SetLocalInt(oSkin,"bNumSPELL_BLESS",1);
+            if(GetHitDice(OBJECT_SELF) >= 1) SetLocalInt(oSkin,"bNumSPELL_LIGHT",-1);
+            if(GetHitDice(OBJECT_SELF) >= 2) SetLocalInt(oSkin,"bNumSPELL_PROTECTION_FROM_EVIL",3);
+            if(GetHitDice(OBJECT_SELF) >= 3) SetLocalInt(oSkin,"bNumSPELL_AID",1);
+            if(GetHitDice(OBJECT_SELF) >= 5) SetLocalInt(oSkin,"bNumSPELL_CURE_SERIOUS_WOUNDS",1);
+            if(GetHitDice(OBJECT_SELF) >= 6) SetLocalInt(oSkin,"bNumSPELL_REMOVE_DISEASE",1);
+            if(GetHitDice(OBJECT_SELF) >= 15) SetLocalInt(oSkin,"bNumSPELL_MASS_CHARM_MONSTER",1);
+            if(GetHitDice(OBJECT_SELF) >= 17) SetLocalInt(oSkin,"bNumSPELL_SUMMON_MONSTER_IX",1);
+            if(GetHitDice(OBJECT_SELF) >= 19) SetLocalInt(oSkin,"bNumSPELL_RESSURECTION",1);
+
+            if(GetHitDice(OBJECT_SELF) > 7)
+            {
+                ip = ItemPropertyBonusFeat(FEAT_SMITE_EVIL);
+                IPSafeAddItemProperty(oSkin,ip);
+            }
+            SetName(OBJECT_SELF,"(Half-Celestial) "+ GetName(OBJECT_SELF));
+            SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT","x2_ai_template");
+        }
+        else if(GetLocalInt(OBJECT_SELF,"bHalfFiend")==TRUE)
+        {
+            effect eEffect;
+            itemproperty ip;
+            int nHD = GetHitDice(OBJECT_SELF);
+            eEffect = EffectAbilityIncrease(ABILITY_STRENGTH,4);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect = EffectAbilityIncrease(ABILITY_DEXTERITY,4);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect = EffectAbilityIncrease(ABILITY_CONSTITUTION,2);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect = EffectAbilityIncrease(ABILITY_INTELLIGENCE,4);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect = EffectAbilityIncrease(ABILITY_CHARISMA,2);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect = EffectACIncrease(5,AC_NATURAL_BONUS);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect = EffectDamageResistance(DAMAGE_TYPE_ACID,10);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect = EffectDamageResistance(DAMAGE_TYPE_COLD,10);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect = EffectDamageResistance(DAMAGE_TYPE_ELECTRICAL,10);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            int sr = 10 + nHD;
+            if(sr > 32) sr = 32;
+            eEffect = EffectSpellResistanceIncrease(sr);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+
+            if( nHD >= 0 && nHD <= 11)
+            {
+                int nDR = nHD/5+1;
+                if(nDR == 6) nDR = nDR+1;
+                int nAmt = 5;
+                eEffect = EffectDamageReduction(nAmt, nHD);
+                ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            }
+
+
+            if( nHD >= 12 && nHD <= 40)
+            {
+                int nDR = nHD/5+1;
+                if(nDR == 6) nDR = nDR+1;
+                int nAmt = 10;
+                eEffect = EffectDamageReduction(nAmt, nHD);
+                ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            }
+
+
+            eEffect = EffectImmunity(IMMUNITY_TYPE_POISON);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            ip = ItemPropertyDarkvision(); IPSafeAddItemProperty(oSkin,ip);
+            if(GetHitDice(OBJECT_SELF) >= 1) SetLocalInt(oSkin,"bSPELL_DARKNESS",3);
+            if(GetHitDice(OBJECT_SELF) >= 3) SetLocalInt(oSkin,"bSPELL_BANE",1);
+            if(GetHitDice(OBJECT_SELF) >= 3) SetLocalInt(oSkin,"bSPELL_DOOM",1);
+            if(GetHitDice(OBJECT_SELF) >= 7) SetLocalInt(oSkin,"bSPELL_POISON",1);
+            if(GetHitDice(OBJECT_SELF) >= 8) SetLocalInt(oSkin,"bSPELL_CONTAGION",1);
+            if(GetHitDice(OBJECT_SELF) >= 9) SetLocalInt(oSkin,"bSPELL_CIRCLE_OF_DOOM",1);
+            if(GetHitDice(OBJECT_SELF) >= 11) SetLocalInt(oSkin,"bSPELL_UNHOLY_AURA",1);
+            if(GetHitDice(OBJECT_SELF) >= 13) SetLocalInt(oSkin,"bSPELL_MASS_CHARM_MONSTER",1);
+            if(GetHitDice(OBJECT_SELF) >= 15) SetLocalInt(oSkin,"bSPELL_HORRID_WILTING",1);
+            if(GetHitDice(OBJECT_SELF) >= 17) SetLocalInt(oSkin,"bSPELL_SUMMON_CREATURE_IX",1);
+            if(GetHitDice(OBJECT_SELF) >= 19) SetLocalInt(oSkin,"bSPELL_DESTRUCTION",1);
+
+            if(GetHitDice(OBJECT_SELF) > 1)
+            {
+                ip = ItemPropertyBonusFeat(FEAT_SMITE_GOOD);
+                IPSafeAddItemProperty(oSkin,ip);
+            }
+
+            SetName(OBJECT_SELF,"(Half-Fiend) "+ GetName(OBJECT_SELF));
+            SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT","x2_ai_template");
+        }
+        else if(GetStandardFactionReputation(STANDARD_FACTION_HOSTILE,OBJECT_SELF) > 75)
+        {
+            if(d10() == 1)
+            {
+                RandomTemplate();
+                SetName(OBJECT_SELF,"(Mutant) " + GetName(OBJECT_SELF));
+            }
+        }
+        else if(GetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT")=="" && d20()==1)
+            TemplateType();
+
+        /* This can cause a recursive mess to happen if too many spawn with them.
         if(GetLocalInt(OBJECT_SELF,"bMinions")==TRUE)
         {
             ExecuteScript(GetLocalString(OBJECT_SELF,"sMinionScript"),OBJECT_SELF);
@@ -1235,7 +1628,31 @@ void main()
         {
             ExecuteScript(GetLocalString(OBJECT_SELF,"sHenchmenScript"),OBJECT_SELF);
         }
+        */
 
+        else if(GetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT")=="")
+        {
+
+            if(GetIsFighter(OBJECT_SELF))
+            {
+                string s;
+                switch(d8())
+                {
+                case 1: s = "x2_ai_attackweak"; break;
+                case 2: s = "x2_ai_attackstr"; break;
+                case 3: s = "x2_ai_atkspellc"; break;
+                case 4: s = "x2_ai_atkvuln"; break;
+                default: s = "";
+                }
+                SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT",s);
+            }
+            else if(GetIsMagicUser(OBJECT_SELF))
+            {
+                SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT","x2_ai_wizard");
+            }
+
+
+        }
 
         SetSpawnInCondition(NW_FLAG_FAST_BUFF_ENEMY);
         SetSpawnInCondition(NW_FLAG_END_COMBAT_ROUND_EVENT);

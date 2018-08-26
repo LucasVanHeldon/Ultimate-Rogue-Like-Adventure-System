@@ -497,3 +497,28 @@ void CreateStdPotion()
     }
 }
 
+
+void CreateDivineScrolls(int n)
+{
+    int i;
+    for(i = 0; i < n; i++) CreateDivineScroll(oObject,oObject);
+}
+
+void CreateArcaneScrolls(int n)
+{
+    int i;
+    for(i = 0; i < n; i++) CreateArcaneScroll(oObject,oObject);
+}
+
+void CreatePotions(int n)
+{
+    int i;
+    for(i = 0; i < n; i++) CreateStdPotion();
+}
+
+void CreateHealingPotions(int n)
+{
+    int i;
+    for(i = 0; i < n; i++) CreateHealingPotion();
+}
+

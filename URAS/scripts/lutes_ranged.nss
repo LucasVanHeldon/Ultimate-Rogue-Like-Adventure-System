@@ -187,8 +187,17 @@ void EnchantRangedWeapon(struct sItemInfo ItemInfo)
 
     Enchants.oItem      = ItemInfo.oItem;
     Enchants.sName      = ItemInfo.sName;
-
-
+    if(Enchants.sName == "")
+    {
+        switch(GetBaseItemType(Enchants.oItem))
+        {
+        case BASE_ITEM_LONGBOW: Enchants.sName = "Longbow"; break;
+        case BASE_ITEM_SHORTBOW: Enchants.sName = "Shortbow"; break;
+        case BASE_ITEM_LIGHTCROSSBOW: Enchants.sName = "Light Crossbow"; break;
+        case BASE_ITEM_HEAVYCROSSBOW: Enchants.sName = "Heavy Crossbow"; break;
+        case BASE_ITEM_SLING: Enchants.sName = "Sling"; break;
+        }
+    }
     Enchants.iAlign = ALL;
     Enchants.iRace = -1;
     Enchants.iOnHitDC=-1;

@@ -23,6 +23,17 @@ void EnchantArmor(struct sItemInfo ItemInfo)
     Enchants.oItem      = ItemInfo.oItem;
     Enchants.sName      = ItemInfo.sName;
 
+    if(Enchants.sName == "")
+    {
+        switch(GetBaseItemType(Enchants.oItem))
+        {
+        case BASE_ITEM_ARMOR: Enchants.sName = "Armor"; break;
+        case BASE_ITEM_HELMET: Enchants.sName = "Helmet"; break;
+        case BASE_ITEM_LARGESHIELD: Enchants.sName = "Large Shield"; break;
+        case BASE_ITEM_SMALLSHIELD: Enchants.sName = "Small Shield"; break;
+        case BASE_ITEM_TOWERSHIELD: Enchants.sName = "Tower Shield"; break;
+        }
+    }
 
     Enchants.iAlign = ALL;
     Enchants.iRace = -1;

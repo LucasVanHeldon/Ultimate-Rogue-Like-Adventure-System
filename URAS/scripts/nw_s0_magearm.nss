@@ -57,10 +57,11 @@ void main()
          nDuration = nDuration * 2;
     }
     //Set the four unique armor bonuses
-    eAC1 = EffectACIncrease(2, AC_DODGE_BONUS);//AC_ARMOUR_ENCHANTMENT_BONUS);
-    eAC2 = EffectACIncrease(2, AC_DODGE_BONUS);//AC_DEFLECTION_BONUS);
-    eAC3 = EffectACIncrease(1, AC_DODGE_BONUS);//AC_DODGE_BONUS);
-    eAC4 = EffectACIncrease(1, AC_NATURAL_BONUS);
+    // this makes it more like Baldur's Gate
+    eAC1 = EffectACIncrease(4, AC_DODGE_BONUS);//AC_ARMOUR_ENCHANTMENT_BONUS);
+//    eAC2 = EffectACIncrease(1, AC_DEFLECTION_BONUS);//AC_DEFLECTION_BONUS);
+//    eAC3 = EffectACIncrease(1, AC_ENCHANMENT_BONUS);//AC_DODGE_BONUS);
+    eAC4 = EffectACIncrease(2, AC_NATURAL_BONUS);
     effect eDur = EffectVisualEffect(VFX_DUR_CESSATE_POSITIVE);
 
     effect eLink = EffectLinkEffects(eAC1, eAC2);

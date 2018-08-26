@@ -53,11 +53,8 @@ void TRS_CreateJewel(int n)
 
 void TRS_CreatePotion(int n)
 {
-    int i;
-    for(i = 0; i < n; i++)
-    {
-        CreatePotion(OBJECT_SELF,GetLastOpener());
-    }
+    oObject = OBJECT_SELF;
+    CreatePotions(n);
 }
 
 void TRS_CreateGold(int iGold)

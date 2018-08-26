@@ -445,6 +445,42 @@ void SetWeaponName(struct sEnchantments Enchants)
 {
     object oItem = Enchants.oItem;
 
+    if(Enchants.sName == "")
+    {
+        switch(GetBaseItemType(oItem))
+        {
+        case BASE_ITEM_BASTARDSWORD: Enchants.sName = "Bastard Sword"; break;
+        case BASE_ITEM_BATTLEAXE: Enchants.sName = "Battle Axe"; break;
+        case BASE_ITEM_CLUB: Enchants.sName = "Club"; break;
+        case BASE_ITEM_DAGGER: Enchants.sName = "Dagger"; break;
+        case BASE_ITEM_DART: Enchants.sName = "Dart"; break;
+        case BASE_ITEM_DIREMACE: Enchants.sName = "Dire Mace"; break;
+        case BASE_ITEM_DOUBLEAXE: Enchants.sName = "Double Axe"; break;
+        case BASE_ITEM_DWARVENWARAXE: Enchants.sName = "Dwarven War Axe"; break;
+        case BASE_ITEM_GREATAXE: Enchants.sName = "Greataxe"; break;
+        case BASE_ITEM_GREATSWORD: Enchants.sName = "Great Sword"; break;
+        case BASE_ITEM_HALBERD: Enchants.sName = "Halberd"; break;
+        case BASE_ITEM_HANDAXE: Enchants.sName = "Handaxe"; break;
+        case BASE_ITEM_HEAVYFLAIL: Enchants.sName = "Heavy Flail"; break;
+        case BASE_ITEM_KAMA: Enchants.sName = "Kama"; break;
+        case BASE_ITEM_KATANA: Enchants.sName = "Katana"; break;
+        case BASE_ITEM_LIGHTFLAIL: Enchants.sName = "Light Flail"; break;
+        case BASE_ITEM_LIGHTHAMMER: Enchants.sName = "Light Hammer"; break;
+        case BASE_ITEM_LIGHTMACE: Enchants.sName = "Light Mace"; break;
+        case BASE_ITEM_LONGSWORD: Enchants.sName = "Longsword"; break;
+        case BASE_ITEM_MORNINGSTAR: Enchants.sName = "Morningstar"; break;
+        case BASE_ITEM_QUARTERSTAFF: Enchants.sName = "Quarterstaff"; break;
+        case BASE_ITEM_SCIMITAR: Enchants.sName = "Scimitar"; break;
+        case BASE_ITEM_SHORTSPEAR: Enchants.sName = "Spear"; break;
+        case BASE_ITEM_SHORTSWORD: Enchants.sName = "Short Sword"; break;
+        case BASE_ITEM_SICKLE: Enchants.sName = "Sickle"; break;
+        case BASE_ITEM_SCYTHE: Enchants.sName = "Scythe"; break;
+        case BASE_ITEM_TRIDENT: Enchants.sName = "Trident"; break;
+        case BASE_ITEM_TWOBLADEDSWORD: Enchants.sName = "Two-bladed Sword"; break;
+        case BASE_ITEM_WARHAMMER: Enchants.sName = "Warhammer"; break;
+        case BASE_ITEM_WHIP: Enchants.sName = "Whip"; break;
+        }
+    }
     // cleric only holy mace
     if(Enchants.iSpecific == T_HOLYMACE)
     {
