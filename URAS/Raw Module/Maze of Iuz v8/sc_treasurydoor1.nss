@@ -1,0 +1,16 @@
+//::///////////////////////////////////////////////
+//:: FileName sc_treasurydoor1
+//:://////////////////////////////////////////////
+//:://////////////////////////////////////////////
+//:: Created By: Script Wizard
+//:: Created On: 8/12/2006 3:30:43 AM
+//:://////////////////////////////////////////////
+int StartingConditional()
+{
+
+    // Inspect local variables
+    if(!(GetLocalInt(GetPCSpeaker(), "TreasuryDoor") == 1))
+        return FALSE;
+
+    return TRUE;
+}

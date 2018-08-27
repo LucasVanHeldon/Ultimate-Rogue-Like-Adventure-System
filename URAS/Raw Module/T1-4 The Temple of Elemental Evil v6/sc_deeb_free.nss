@@ -1,0 +1,16 @@
+//::///////////////////////////////////////////////
+//:: FileName sc_deeb_free
+//:://////////////////////////////////////////////
+//:://////////////////////////////////////////////
+//:: Created By: Script Wizard
+//:: Created On: 5/14/2006 10:57:43 PM
+//:://////////////////////////////////////////////
+int StartingConditional()
+{
+    object oPC = GetPCSpeaker();
+    // Inspect local variables
+    if(!(GetLocalInt(GetArea(oPC), "Deeb_Free") == 1))
+        return FALSE;
+
+    return TRUE;
+}
