@@ -54,6 +54,8 @@ void main()
 
     oObject=OBJECT_SELF;
     iChestLevel = GetCharacterLevel(oLastOpener);
-    PlaceBelt(20);
+    PlaceWand(20);
+    PlaceRod(20);
+    PlaceStaff(20);
 
 }

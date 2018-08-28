@@ -37,7 +37,7 @@ int iTrident = 100;
 // set to false to use only default game items
 int bUseAddons=TRUE;
 
-int bIdentified=TRUE;
+int bIdentified=FALSE;
 // set to false if there is no bias towards items which hate Evil/Chaos
 int bBiasGood=TRUE;
 

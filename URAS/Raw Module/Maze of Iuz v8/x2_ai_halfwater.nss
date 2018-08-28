@@ -14,7 +14,7 @@ void main()
 {
     int nPowers = GetLocalInt(OBJECT_SELF,"nPowers");
 
-    if( nPowers < (GetHitDice(OBJECT_SELF)) && d6() < 3)
+    if( nPowers < (GetHitDice(OBJECT_SELF)))
     {
         __TurnCombatRoundOn(TRUE);
 

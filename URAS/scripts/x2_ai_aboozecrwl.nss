@@ -607,40 +607,37 @@ void MMPABBOOZE_SpecialAttack(object oTarget = OBJECT_INVALID)
 
 void main()
 {
-    if(d6() < 3)
-    {
-        __TurnCombatRoundOn(TRUE);
-        MMPABBOOZE_SpecialAttack();
-          __TurnCombatRoundOn(FALSE);
-    }
-    else
-    {
-        object oEnemy = bkAcquireTarget();
-        if (GetIsObjectValid(oEnemy))
-        {
-            object oSelf = OBJECT_SELF;
-            int i;
-            int time = d6(2);
-            for(i = 0; i < 8; i++)
-            {
-                float D = GetDistanceToObject(oEnemy);
-                if(D > 0.0 && D < 2.5)
-                {
 
-                    if(TouchAttackMelee(oEnemy,TRUE))
+    object oEnemy = bkAcquireTarget();
+    if (GetIsObjectValid(oEnemy))
+    {
+        object oSelf = OBJECT_SELF;
+        int i;
+        int time = d6(2);
+        for(i = 0; i < 8; i++)
+        {
+            float D = GetDistanceToObject(oEnemy);
+            if(D > 0.0 && D < 2.5)
+            {
+
+                if(TouchAttackMelee(oEnemy,TRUE))
+                {
+                    if(!FortitudeSave(oEnemy,13,SAVING_THROW_TYPE_POISON))
                     {
-                        if(!FortitudeSave(oEnemy,13,SAVING_THROW_TYPE_POISON))
-                        {
-                            effect ePar = EffectParalyze();
-                            ApplyEffectToObject(DURATION_TYPE_TEMPORARY,ePar,oEnemy,RoundsToSeconds(time));
-                            effect eVis = EffectVisualEffect(VFX_DUR_PARALYZE_HOLD);
-                            ApplyEffectToObject(DURATION_TYPE_TEMPORARY,eVis,oEnemy,RoundsToSeconds(time));
-                            oEnemy = PickEnemy(OBJECT_SELF);
-                        }
+                        effect ePar = EffectParalyze();
+                        ApplyEffectToObject(DURATION_TYPE_TEMPORARY,ePar,oEnemy,RoundsToSeconds(time));
+                        effect eVis = EffectVisualEffect(VFX_DUR_PARALYZE_HOLD);
+                        ApplyEffectToObject(DURATION_TYPE_TEMPORARY,eVis,oEnemy,RoundsToSeconds(time));
+                        oEnemy = PickEnemy(OBJECT_SELF);
                     }
                 }
-
             }
+
         }
     }
+
+    __TurnCombatRoundOn(TRUE);
+    MMPABBOOZE_SpecialAttack();
+      __TurnCombatRoundOn(FALSE);
+
 }

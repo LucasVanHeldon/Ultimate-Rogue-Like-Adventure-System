@@ -219,12 +219,7 @@ void MMPABB_SpecialAttack(object oTarget = OBJECT_INVALID)
 
 void main()
 {
-    if(d6() < 3)
-    {
-         __TurnCombatRoundOn(TRUE);
-        MMPABB_SpecialAttack();
-         __TurnCombatRoundOn(FALSE);
-
-    }
-
+     __TurnCombatRoundOn(TRUE);
+    MMPABB_SpecialAttack();
+     __TurnCombatRoundOn(FALSE);
 }

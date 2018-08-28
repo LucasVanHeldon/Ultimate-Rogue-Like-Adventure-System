@@ -72,6 +72,6 @@ void main()
     RemoveEffectsFromSpell(oTarget, SPELL_MAGE_ARMOR);
 
     //Apply the armor bonuses and the VFX impact
-    ApplyEffectToObject(DURATION_TYPE_TEMPORARY, eLink, oTarget, TurnsToSeconds(nDuration));
+    ApplyEffectToObject(DURATION_TYPE_TEMPORARY, eLink, oTarget, TurnsToSeconds(nDuration)*20);
     ApplyEffectToObject(DURATION_TYPE_INSTANT, eVis, oTarget);
 }

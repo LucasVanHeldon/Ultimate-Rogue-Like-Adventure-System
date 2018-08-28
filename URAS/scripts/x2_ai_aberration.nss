@@ -13,10 +13,8 @@
 
 void main()
 {
-    if(d6() < 3)
-    {
-        __TurnCombatRoundOn(TRUE);
-        MMPABB_SpecialAttack();
-        __TurnCombatRoundOn(FALSE);
-    }
+    __TurnCombatRoundOn(TRUE);
+    MMPABB_SpecialAttack();
+    __TurnCombatRoundOn(FALSE);
 }
+

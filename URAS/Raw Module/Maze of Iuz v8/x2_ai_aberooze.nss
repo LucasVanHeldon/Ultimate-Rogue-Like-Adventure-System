@@ -5,12 +5,9 @@
 
 void main()
 {
-    if(d6() < 3)
-    {
-        __TurnCombatRoundOn(TRUE);
-        SendMessageToPC(GetFirstPC(),"Running X2_AI");
-        MMPABB_SpecialAttack();
-        __TurnCombatRoundOn(FALSE);
-    }
+    __TurnCombatRoundOn(TRUE);
+    MMPABB_SpecialAttack();
+    __TurnCombatRoundOn(FALSE);
 }
+
 

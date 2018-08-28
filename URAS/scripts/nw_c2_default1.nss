@@ -64,7 +64,7 @@ void main()
         }
         else if (DoStealthAndWander())
         {
-            // nothing to do here    
+            // nothing to do here
         }
         // TK sometimes waypoints are not initialized
         else if (!GetWalkCondition(NW_WALK_FLAG_INITIALIZED) || GetWalkCondition(NW_WALK_FLAG_CONSTANT))
@@ -97,4 +97,8 @@ void main()
     {
         SignalEvent(OBJECT_SELF, EventUserDefined(EVENT_HEARTBEAT));
     }
+
+    if(GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) == 100)
+        ExecuteScript("random_encounter",OBJECT_SELF);
+
 }

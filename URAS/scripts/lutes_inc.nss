@@ -32,7 +32,7 @@ struct sEnchantments
 {
     int iAlign;
     int iRace;
-    int iSAlign;
+    int iSAlign;                // this is not working for some reason
 
     int iACBonus;
     int iArcaneSpellFailure;
@@ -66,28 +66,47 @@ struct sEnchantments
     int iRegeneration;
     int iVampiricRegeneration;
 
+    // can have up to 4 feats
     int iNumFeats;
     int iFeat1;
     int iFeat2;
     int iFeat3;
     int iFeat4;
 
+    // can have up to 4 skills
+    int iNumSkills;
     int iSkillPoints;
     int iSkill;
+    int iSkillPoints1;
+    int iSkill1;
+    int iSkillPoints2;
+    int iSkill2;
+    int iSkillPoints3;
+    int iSkill3;
 
+    int iNumBonusSpellSlots;
     int iBonusSpellSlot;
     int iBonusSpellClass;
+    int iBonusSpellSlot1;
+    int iBonusSpellClass1;
+    int iBonusSpellSlot2;
+    int iBonusSpellClass2;
+    int iBonusSpellSlot3;
+    int iBonusSpellClass3;
+
     int iSpellResistance;
 
     int iOnHit;
     int iOnHitDC;
+
     int iOnHitCastSpell;
     int iOnHitCastSpellLevel;
+
     int iSpecial;
 
-
+    // can cast up to 4 spells
+    int iNumCharges;
     int iNumCastSpells;
-
     int iCastSpell1;
     int iCastSpellUse1;
     int iCastSpell2;
@@ -96,19 +115,6 @@ struct sEnchantments
     int iCastSpellUse3;
     int iCastSpell4;
     int iCastSpellUse4;
-    int iCastSpell5;
-    int iCastSpellUse5;
-    int iCastSpell6;
-    int iCastSpellUse6;
-    int iCastSpell7;
-    int iCastSpellUse7;
-    int iCastSpell8;
-    int iCastSpellUse8;
-    int iCastSpell9;
-    int iCastSpellUse9;
-    int iCastSpell10;
-    int iCastSpellUse10;
-
 
     int iValue;
     int iPoints;

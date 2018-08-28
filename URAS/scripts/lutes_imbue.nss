@@ -175,8 +175,46 @@ struct sEnchantments ImbueBonusSkill(struct sEnchantments Enchantments)
 
     if(cost <= Enchantments.iPoints)
     {
-        Enchantments.iSkill        = skill;
-        Enchantments.iSkillPoints += 1;
+        int n = Enchantments.iNumSkills;
+        if(n < 4)
+        {
+            switch(n)
+            {
+            case 0:
+                Enchantments.iSkill        = skill;
+                Enchantments.iSkillPoints += 1;
+
+                break;
+            case 1:
+                Enchantments.iSkill1        = skill;
+                Enchantments.iSkillPoints1 += 1;
+
+                break;
+            case 2:
+                Enchantments.iSkill2        = skill;
+                Enchantments.iSkillPoints2 += 1;
+
+                break;
+            case 3:
+                Enchantments.iSkill        = skill;
+                Enchantments.iSkillPoints += 1;
+
+                break;
+            }
+            Enchantments.iNumSkills = n++;
+        }
+        else
+        {
+            int x = Random(4);
+            switch(x)
+            {
+            case 0: Enchantments.iSkillPoints += 1; break;
+            case 1: Enchantments.iSkillPoints1 += 1; break;
+            case 2: Enchantments.iSkillPoints2 += 1; break;
+            case 3: Enchantments.iSkillPoints3 += 1; break;
+            }
+        }
+
         Enchantments.iValue        = cost;
     }
     return Enchantments;
@@ -511,18 +549,18 @@ struct sEnchantments ImbueOnHit(struct sEnchantments Enchantments)
     return Enchantments;
 }
 
+// it will produce many retarded things.
 struct sEnchantments ImbueOnHitCastSpell(struct sEnchantments Enchantments)
 {
-    int cost   = IMBUE_ON_HIT_CASTSPELL;
+    int cost   = 10000;
     int level  = d20();
     cost += level;
     int points = Enchantments.iPoints;
 
     if( cost <= points && Enchantments.iOnHitDC == 0)
     {
-        Enchantments.iOnHitCastSpell   = Random(140);
+        Enchantments.iOnHitCastSpell      = Random(140);
         Enchantments.iOnHitCastSpellLevel = level;
-        cost += Enchantments.iOnHitDC;
         Enchantments.iValue = cost;
     }
     return Enchantments;
@@ -536,8 +574,28 @@ struct sEnchantments ImbueBonusSpellSlot(struct sEnchantments Enchantments)
 
     if( Enchantments.iBonusSpellSlot == 0 && cost <= Enchantments.iPoints)
     {
-        Enchantments.iBonusSpellSlot  = level;
-        Enchantments.iBonusSpellClass = SpellClass();
+        Enchantments.iNumBonusSpellSlots++;
+        if( Enchantments.iNumBonusSpellSlots == 1)
+        {
+            Enchantments.iBonusSpellSlot  = level;
+            Enchantments.iBonusSpellClass = SpellClass();
+        }
+        else if( Enchantments.iNumBonusSpellSlots == 2)
+        {
+            Enchantments.iBonusSpellSlot1  = level;
+            Enchantments.iBonusSpellClass1 = SpellClass();
+        }
+        else if( Enchantments.iNumBonusSpellSlots == 3)
+        {
+            Enchantments.iBonusSpellSlot2  = level;
+            Enchantments.iBonusSpellClass2 = SpellClass();
+        }
+        else if( Enchantments.iNumBonusSpellSlots == 4)
+        {
+            Enchantments.iBonusSpellSlot3  = level;
+            Enchantments.iBonusSpellClass3 = SpellClass();
+        }
+        else cost = 0;
         Enchantments.iValue           = cost;
     }
     return Enchantments;
@@ -883,10 +941,30 @@ void ApplyEnchantments(struct sEnchantments Enchants)
         }
     }
 
-    if(Enchants.iSkillPoints > 0)
+    if(Enchants.iNumSkills > 0)
     {
-        itemproperty ipAdd = ItemPropertySkillBonus(Enchants.iSkill, Enchants.iSkillPoints);
-        IPSafeAddItemProperty(oItem, ipAdd);
+        itemproperty ipAdd;
+
+        if(Enchants.iNumSkills >= 1)
+        {
+            ipAdd = ItemPropertySkillBonus(Enchants.iSkill, Enchants.iSkillPoints);
+            IPSafeAddItemProperty(oItem, ipAdd);
+        }
+        if(Enchants.iNumSkills >= 1)
+        {
+            ipAdd = ItemPropertySkillBonus(Enchants.iSkill1, Enchants.iSkillPoints1);
+            IPSafeAddItemProperty(oItem, ipAdd);
+        }
+        if(Enchants.iNumSkills >= 2)
+        {
+            ipAdd = ItemPropertySkillBonus(Enchants.iSkill2, Enchants.iSkillPoints2);
+            IPSafeAddItemProperty(oItem, ipAdd);
+        }
+        if(Enchants.iNumSkills >= 3)
+        {
+            ipAdd = ItemPropertySkillBonus(Enchants.iSkill3, Enchants.iSkillPoints3);
+            IPSafeAddItemProperty(oItem, ipAdd);
+        }
     }
 
     if(Enchants.iSpellResistance > 0)
@@ -909,6 +987,56 @@ void ApplyEnchantments(struct sEnchantments Enchants)
 
 
 
+    if(Enchants.iNumCastSpells > 0)
+    {
+        SetItemCharges(Enchants.oItem,Enchants.iNumCharges);
+
+        itemproperty ipAdd;
+        if(Enchants.iNumCastSpells >= 1)
+        {
+            ipAdd = ItemPropertyCastSpell(Enchants.iCastSpell1,Enchants.iCastSpellUse1);
+            IPSafeAddItemProperty(Enchants.oItem,ipAdd);
+        }
+        if(Enchants.iNumCastSpells >= 2)
+        {
+            ipAdd = ItemPropertyCastSpell(Enchants.iCastSpell2,Enchants.iCastSpellUse2);
+            IPSafeAddItemProperty(Enchants.oItem,ipAdd);
+        }
+        if(Enchants.iNumCastSpells >= 3)
+        {
+            ipAdd = ItemPropertyCastSpell(Enchants.iCastSpell3,Enchants.iCastSpellUse3);
+            IPSafeAddItemProperty(Enchants.oItem,ipAdd);
+        }
+        if(Enchants.iNumCastSpells >= 4)
+        {
+            ipAdd = ItemPropertyCastSpell(Enchants.iCastSpell4,Enchants.iCastSpellUse4);
+            IPSafeAddItemProperty(Enchants.oItem,ipAdd);
+        }
+    }
+
+    if(Enchants.iNumBonusSpellSlots > 0)
+    {
+        if(Enchants.iNumBonusSpellSlots >= 1)
+        {
+            itemproperty ipAdd = ItemPropertyCastSpell(Enchants.iBonusSpellClass,Enchants.iBonusSpellSlot);
+            IPSafeAddItemProperty(Enchants.oItem,ipAdd);
+        }
+        if(Enchants.iNumBonusSpellSlots >= 2)
+        {
+            itemproperty ipAdd = ItemPropertyCastSpell(Enchants.iBonusSpellClass1,Enchants.iBonusSpellSlot1);
+            IPSafeAddItemProperty(Enchants.oItem,ipAdd);
+        }
+        if(Enchants.iNumBonusSpellSlots >= 3)
+        {
+            itemproperty ipAdd = ItemPropertyCastSpell(Enchants.iBonusSpellClass1,Enchants.iBonusSpellSlot1);
+            IPSafeAddItemProperty(Enchants.oItem,ipAdd);
+        }
+        if(Enchants.iNumBonusSpellSlots >= 4)
+        {
+            itemproperty ipAdd = ItemPropertyCastSpell(Enchants.iBonusSpellClass1,Enchants.iBonusSpellSlot1);
+            IPSafeAddItemProperty(Enchants.oItem,ipAdd);
+        }
+    }
     if(Enchants.iACBonus > 0)
     {
         itemproperty ipAdd = ItemPropertyACBonus(Enchants.iACBonus);
@@ -2914,6 +3042,138 @@ int ImbueCastSpell20()
         break;
     }
     return spell;
+}
+
+struct _ImbueCastSpellR
+{
+    int spell;
+    int use;
+    int cost;
+};
+
+struct _ImbueCastSpellR _ImbueCastSpellQuantify(struct sEnchantments Enchants)
+{
+    int cost=0;
+    int use = Random(13)+1;
+
+    switch(GetBaseItemType(Enchants.oItem))
+    {
+    case BASE_ITEM_BOOK:
+        use = IP_CONST_CASTSPELL_NUMUSES_1_USE_PER_DAY;
+        cost += 1;
+        break;
+    case BASE_ITEM_HELMET:
+    case BASE_ITEM_BOOTS:
+    case BASE_ITEM_CLOAK:
+    case BASE_ITEM_BRACER:
+    case BASE_ITEM_GLOVES:
+    case BASE_ITEM_BELT:
+        use = IP_CONST_CASTSPELL_NUMUSES_1_USE_PER_DAY;
+        cost += 1;
+        break;
+    case BASE_ITEM_ARMOR:
+        use = IP_CONST_CASTSPELL_NUMUSES_1_USE_PER_DAY;
+        cost += 2;
+        break;
+    case BASE_ITEM_SMALLSHIELD:
+    case BASE_ITEM_LARGESHIELD:
+    case BASE_ITEM_TOWERSHIELD:
+        use = IP_CONST_CASTSPELL_NUMUSES_1_USE_PER_DAY;
+        //cost += 6;
+        cost += 2;
+        break;
+    case BASE_ITEM_RING:
+        use = IP_CONST_CASTSPELL_NUMUSES_1_USE_PER_DAY;
+        cost += 2;
+        break;
+    case BASE_ITEM_AMULET:
+        use = IP_CONST_CASTSPELL_NUMUSES_1_USE_PER_DAY;
+        cost += 2;
+        break;
+    }
+
+
+
+    int nCost=cost;
+    if(use == 7) nCost += 5;
+    else if(use > 7) nCost += use-7;
+
+    int spell;
+
+    if     ((Enchants.iPoints) >= 20) { nCost=20; spell=ImbueCastSpell20(); }
+    else if((Enchants.iPoints) >= 18) { nCost=18; spell=ImbueCastSpell18(); }
+    else if((Enchants.iPoints) >= 17) { nCost=17; spell=ImbueCastSpell17(); }
+    else if((Enchants.iPoints) >= 16) { nCost=16; spell=ImbueCastSpell16(); }
+    else if((Enchants.iPoints) >= 15) { nCost=15; spell=ImbueCastSpell15(); }
+    else if((Enchants.iPoints) >= 13) { nCost=13; spell=ImbueCastSpell13(); }
+    else if((Enchants.iPoints) >= 12) { nCost=12; spell=ImbueCastSpell12(); }
+    else if((Enchants.iPoints) >= 11) { nCost=11; spell=ImbueCastSpell11(); }
+    else if((Enchants.iPoints) >= 10) { nCost=10; spell=ImbueCastSpell10(); }
+    else if((Enchants.iPoints) >= 9) { nCost=9; spell=ImbueCastSpell9(); }
+    else if((Enchants.iPoints) >= 7) {  nCost=7; spell=ImbueCastSpell7(); }
+    else if((Enchants.iPoints) >= 6) {  nCost=6; spell=ImbueCastSpell6(); }
+    else if((Enchants.iPoints) >= 5) {  nCost=5; spell=ImbueCastSpell5(); }
+    else if((Enchants.iPoints) >= 3) {  nCost=3; spell=ImbueCastSpell3(); }
+    else if((Enchants.iPoints) >= 2) {  nCost=2; spell=ImbueCastSpell2(); }
+    else if((Enchants.iPoints) >= 1) {  nCost=1; spell=ImbueCastSpell1(); }
+    else nCost=0;
+
+    // there is a bug with acid fog
+    if(spell == 0)
+    {
+        if(iChestLevel < 11) {
+            spell = ImbueCastSpell1();
+            nCost = 1;
+        }
+    }
+
+    struct _ImbueCastSpellR r;
+    r.spell = spell;
+    r.use   = use;
+    r.cost = nCost;
+    return r;
+
+}
+
+// the cost is 1 point per level of spell
+// this can be adjusted below
+struct sEnchantments DoImbueCastSpell(struct sEnchantments Enchants, int nUse=-1)
+{
+
+   Enchants.iNumCharges = Random(10)+Random(40);
+   int num_spells = d4();
+   Enchants.iNumCastSpells = num_spells;
+   int i;
+   Enchants.iValue = 0;
+   for(i = 0; i < num_spells; i++)
+   {
+        struct _ImbueCastSpellR r = _ImbueCastSpellQuantify(Enchants);
+
+        switch(i)
+        {
+        case 0:
+            Enchants.iCastSpell1 = r.spell;
+            Enchants.iCastSpellUse1 = r.use;
+            break;
+        case 1:
+            Enchants.iCastSpell2 = r.spell;
+            Enchants.iCastSpellUse2 = r.use;
+            break;
+        case 2:
+            Enchants.iCastSpell3 = r.spell;
+            Enchants.iCastSpellUse3 = r.use;
+            break;
+        case 3:
+            Enchants.iCastSpell4 = r.spell;
+            Enchants.iCastSpellUse4 = r.use;
+            break;
+
+        }
+
+        Enchants.iValue += r.cost;
+
+   }
+   return Enchants;
 }
 
 

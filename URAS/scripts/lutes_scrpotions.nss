@@ -115,7 +115,7 @@ void CreateStdScroll1()
     ipAdd = ItemPropertyLimitUseByClass(IP_CONST_CLASS_WIZARD);
     IPSafeAddItemProperty(oScroll,ipAdd);
 
-    SetIdentified(oScroll, TRUE);
+    SetIdentified(oScroll, bIdentified);
 
 }
 
@@ -235,7 +235,7 @@ void CreateStdScroll2()
     itemproperty ipAdd = ItemPropertyLimitUseByClass(IP_CONST_CLASS_CLERIC);
     IPSafeAddItemProperty(oScroll,ipAdd);
 
-    SetIdentified(oScroll, TRUE);
+    SetIdentified(oScroll, bIdentified);
 
 }
 
@@ -354,7 +354,7 @@ void CreateStdScroll3()
     itemproperty ipAdd = ItemPropertyLimitUseByClass(IP_CONST_CLASS_CLERIC);
     IPSafeAddItemProperty(oScroll,ipAdd);
 
-    SetIdentified(oScroll, TRUE);
+    SetIdentified(oScroll, bIdentified);
 
 }
 
@@ -414,7 +414,7 @@ void CreateStdScroll4()
     object oScroll =  CreateItemOnObject(sType, oSack, 1);
     itemproperty ipAdd = ItemPropertyLimitUseByClass(IP_CONST_CLASS_CLERIC);
     IPSafeAddItemProperty(oScroll,ipAdd);
-    SetIdentified(oScroll, TRUE);
+    SetIdentified(oScroll, bIdentified);
 }
 
 void CreateStdScroll()
@@ -448,7 +448,7 @@ void CreateHealingPotion()
     object o = CreateItemOnObject(sPotion,OBJECT_SELF,1);
     object oItem = CreateItemOnObject(sPotion,OBJECT_SELF,1);
     object oldItem=oItem;
-    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(255));
+    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(256));
     if(GetIsObjectValid(oItem)) DestroyObject(oldItem);
 }
 
@@ -458,42 +458,47 @@ void CreateStdPotion()
     string sPotion;
 
 
-    if(d6() < 3) CreateHealingPotion();
-    else
+    int nRandom = Random(23) + 1;
+    switch (nRandom)
     {
-        int nRandom = Random(23) + 1;
-        switch (nRandom)
-        {
-            case 1:sPotion = "x2_it_mpotion001";  break;
-            case 2:sPotion = "x2_it_mpotion002";  break;
-            case 3: sPotion = "nw_it_mpotion001" ; break;
-            case 4: sPotion = "nw_it_mpotion002" ; break;
-            case 5: sPotion = "nw_it_mpotion003" ; break;
-            case 6: sPotion = "nw_it_mpotion004" ; break;
-            case 7: sPotion = "nw_it_mpotion005" ; break;
-            case 8: sPotion = "nw_it_mpotion006";  break;
-            case 9: sPotion = "nw_it_mpotion007";  break;
-            case 10: sPotion = "nw_it_mpotion008";  break;
-            case 11: sPotion = "nw_it_mpotion009";  break;
-            case 12: sPotion = "nw_it_mpotion010";  break;
-            case 13: sPotion = "nw_it_mpotion011";  break;
-            case 14: sPotion = "nw_it_mpotion012";  break;
-            case 15: sPotion = "nw_it_mpotion013";  break;
-            case 16: sPotion = "nw_it_mpotion014";  break;
-            case 17: sPotion = "nw_it_mpotion015";  break;
-            case 18: sPotion = "nw_it_mpotion016";  break;
-            case 19: sPotion = "nw_it_mpotion017";  break;
-            case 20: sPotion = "nw_it_mpotion018";  break;
-            case 21: sPotion = "nw_it_mpotion019";  break;
-            case 22: sPotion = "nw_it_mpotion020";  break;
-            case 23: sPotion = "x2_it_mpotion001";  break;
-        }
+        case 1:sPotion = "x2_it_mpotion001";  break;
+        case 2:sPotion = "x2_it_mpotion002";  break;
+        case 3: sPotion = "nw_it_mpotion001" ; break;
+        case 4: sPotion = "nw_it_mpotion002" ; break;
+        case 5: sPotion = "nw_it_mpotion003" ; break;
+        case 6: sPotion = "nw_it_mpotion004" ; break;
+        case 7: sPotion = "nw_it_mpotion005" ; break;
+        case 8: sPotion = "nw_it_mpotion006";  break;
+        case 9: sPotion = "nw_it_mpotion007";  break;
+        case 10: sPotion = "nw_it_mpotion008";  break;
+        case 11: sPotion = "nw_it_mpotion009";  break;
+        case 12: sPotion = "nw_it_mpotion010";  break;
+        case 13: sPotion = "nw_it_mpotion011";  break;
+        case 14: sPotion = "nw_it_mpotion012";  break;
+        case 15: sPotion = "nw_it_mpotion013";  break;
+        case 16: sPotion = "nw_it_mpotion014";  break;
+        case 17: sPotion = "nw_it_mpotion015";  break;
+        case 18: sPotion = "nw_it_mpotion016";  break;
+        case 19: sPotion = "nw_it_mpotion017";  break;
+        case 20: sPotion = "nw_it_mpotion018";  break;
+        case 21: sPotion = "nw_it_mpotion019";  break;
+        case 22: sPotion = "nw_it_mpotion020";  break;
+        case 23: sPotion = "x2_it_mpotion001";  break;
+        case 24: sPotion="nw_it_mpotion003"; break;
+        case 25: sPotion="nw_it_mpotion001"; break;
+        case 26: sPotion="nw_it_mpotion020"; break;
+        case 27: sPotion="nw_it_mpotion002"; break;
+        case 28: sPotion="nw_it_mpotion012"; break;
+        case 29: sPotion="nw_it_mpotion011"; break;
+
+    }
+    // it looks cool but makes inventory hard to manage when they are always different.
+    if(d6() == 1)
+    {
         object oItem = CreateItemOnObject(sPotion,OBJECT_SELF,1);
         object oldItem=oItem;
-        oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(255));
+        oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(256));
         if(GetIsObjectValid(oItem)) DestroyObject(oldItem);
-
-
     }
 }
 

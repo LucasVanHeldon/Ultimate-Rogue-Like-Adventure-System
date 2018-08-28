@@ -44,7 +44,7 @@ object MMP_GenerateWand()
     Enchants.oItem = oitem;
     Enchants.sName = "Enchanted Wand";
     SetName(oitem,Enchants.sName);
-    SetIdentified(oitem, TRUE);
+    SetIdentified(oitem, bIdentified);
     EnchantMagic(Enchants);
     return oitem;
 }
@@ -76,7 +76,7 @@ object MMP_GenerateRod()
     Enchants.oItem = oitem;
     Enchants.sName = "Enchanted Rod";
     SetName(oitem,Enchants.sName);
-    SetIdentified(oitem, TRUE);
+    SetIdentified(oitem, bIdentified);
     EnchantMagic(Enchants);
     return oitem;
 }

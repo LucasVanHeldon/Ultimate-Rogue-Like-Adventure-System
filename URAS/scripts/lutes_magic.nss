@@ -302,7 +302,7 @@ void GenerateGem()
     Enchants.oItem = oitem;
     Enchants.sName = "Enchanted Gem";
     SetName(oitem,Enchants.sName);
-    SetIdentified(oitem, TRUE);
+    SetIdentified(oitem, bIdentified);
 
     EnchantMagic(Enchants);
 }

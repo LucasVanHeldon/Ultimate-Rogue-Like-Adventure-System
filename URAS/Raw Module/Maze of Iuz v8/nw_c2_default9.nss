@@ -441,7 +441,7 @@ void UpdateSizeBonusIncr(int size)
     effect eF;
     switch(size)
     {
-    // tiny ot small
+    // tiny huge only goes up, not down for now.
     case 2:
         eF = EffectAbilityDecrease(ABILITY_DEXTERITY,2);
         ApplyEffectToObject(DURATION_TYPE_INSTANT,eF,OBJECT_SELF);
@@ -454,7 +454,7 @@ void UpdateSizeBonusIncr(int size)
         eF = EffectDamageIncrease(1);
         ApplyEffectToObject(DURATION_TYPE_INSTANT,eF,OBJECT_SELF);
 
-        SetName(OBJECT_SELF,"Small " + GetName(OBJECT_SELF));
+        SetName(OBJECT_SELF,"(Small) " + GetName(OBJECT_SELF));
 
         break;
       // small to medium
@@ -466,9 +466,11 @@ void UpdateSizeBonusIncr(int size)
         eF = EffectAbilityIncrease(ABILITY_CONSTITUTION,2);
         ApplyEffectToObject(DURATION_TYPE_INSTANT,eF,OBJECT_SELF);
 
+        eF = EffectTemporaryHitpoints(d12(4));
+        ApplyEffectToObject(DURATION_TYPE_INSTANT,eF,OBJECT_SELF);
         eF = EffectDamageIncrease(2);
         ApplyEffectToObject(DURATION_TYPE_INSTANT,eF,OBJECT_SELF);
-        SetName(OBJECT_SELF,"Medium " + GetName(OBJECT_SELF));
+        SetName(OBJECT_SELF,"(Medium) " + GetName(OBJECT_SELF));
         break;
     // medium to large
     case 4:
@@ -482,9 +484,12 @@ void UpdateSizeBonusIncr(int size)
         eF = EffectACIncrease(2,AC_NATURAL_BONUS);
         ApplyEffectToObject(DURATION_TYPE_INSTANT,eF,OBJECT_SELF);
 
+        eF = EffectTemporaryHitpoints(d12(8));
+        ApplyEffectToObject(DURATION_TYPE_INSTANT,eF,OBJECT_SELF);
+
         eF = EffectDamageIncrease(4);
         ApplyEffectToObject(DURATION_TYPE_INSTANT,eF,OBJECT_SELF);
-        SetName(OBJECT_SELF,"Large " + GetName(OBJECT_SELF));
+        SetName(OBJECT_SELF,"(Large) " + GetName(OBJECT_SELF));
         break;
     // large to huge
     case 5:
@@ -498,9 +503,12 @@ void UpdateSizeBonusIncr(int size)
         eF = EffectACIncrease(3,AC_NATURAL_BONUS);
         ApplyEffectToObject(DURATION_TYPE_INSTANT,eF,OBJECT_SELF);
 
+        eF = EffectTemporaryHitpoints(d12(12));
+        ApplyEffectToObject(DURATION_TYPE_INSTANT,eF,OBJECT_SELF);
+
         eF = EffectDamageIncrease(8);
         ApplyEffectToObject(DURATION_TYPE_INSTANT,eF,OBJECT_SELF);
-        SetName(OBJECT_SELF,"Large " + GetName(OBJECT_SELF));
+        SetName(OBJECT_SELF,"(Huge) " + GetName(OBJECT_SELF));
         break;
     }
 }
@@ -508,17 +516,12 @@ void UpdateSizeBonusIncr(int size)
 void IncreaseSizeTemplate()
 {
     int size = GetCreatureSize(OBJECT_SELF);
-    if(size == 0) return;
-    int inc_dec = d2();
-
-    // only increase size for now.
-    size = size + 1;
-
-    float scale = 2.0;
-    float f = SetObjectVisualTransform(OBJECT_SELF, OBJECT_VISUAL_TRANSFORM_SCALE,1.0);
-    float n =SetObjectVisualTransform(OBJECT_SELF, OBJECT_VISUAL_TRANSFORM_SCALE,scale);
-    if( n != f )
+    // only goes to huge right now
+    if(size < 5)
     {
+        size++;
+        float scale = 1.5;
+        float n =SetObjectVisualTransform(OBJECT_SELF, OBJECT_VISUAL_TRANSFORM_SCALE,scale);
         UpdateSizeBonusIncr(size);
     }
 }
@@ -749,6 +752,8 @@ void Upgrade()
         Upgrade();
     }
 
+
+
     if(d6() == 1)
     {
         effect eEffect = EffectSkillIncrease(SKILL_USE_MAGIC_DEVICE,20+GetHitDice(OBJECT_SELF));
@@ -822,24 +827,7 @@ object ModifyWeapon(object oWeapon)
     return oItem;
 }
 
-void ResetEncounters()
-{
-    object oArea = GetFirstArea();
-    while(GetIsObjectValid(oArea))
-    {
-        object oE = GetFirstObjectInArea(oArea);
-        while(GetIsObjectValid(oE))
-        {
-            if(GetObjectType(oE) == OBJECT_TYPE_ENCOUNTER)
-            {
-                SetEncounterActive(TRUE,oE);
-            }
-            oE = GetNextObjectInArea(oArea);
-        }
-        oArea = GetNextArea();
-    }
-    DelayCommand(1000.0,ResetEncounters());
-}
+
 object ModifyShield(object oShield)
 {
     object oldItem=oShield;
@@ -895,45 +883,45 @@ void main()
         // templates
         int rt = GetRacialType(OBJECT_SELF);
 
+        // fixes to OC creatures.
         if(rt == RACIAL_TYPE_GIANT)
             SetLocalInt(OBJECT_SELF,"bGiantKin",TRUE);
 
         if(FindSubString( GetTag(OBJECT_SELF), "TROLL") != -1)
             SetLocalInt(OBJECT_SELF,"bTrolllike",TRUE);
 
+
+        // these are mainly to fix things in OC that won't overide.
         if(FindSubString( GetTag(OBJECT_SELF), "MINOGON") != -1)
         {
 
             object oSkin = GetItemInSlot(INVENTORY_SLOT_CARMOUR);
+            itemproperty ip;
+
             if(!GetIsObjectValid(oSkin))
             {
                 oSkin = CreateItemOnObject("mmp_baseskin");
                 AssignCommand(OBJECT_SELF,SKIN_SupportEquipSkin(oSkin));
             }
+
+            effect eF = EffectACIncrease(8);
+
             SetLocalInt(OBJECT_SELF,"DontUpgradeWeapons",1);
-            itemproperty ip = ItemPropertyImmunityMisc(IP_CONST_IMMUNITYMISC_KNOCKDOWN);
-            IPSafeAddItemProperty(oSkin,ip);
-            ip = ItemPropertyImmunityMisc(IP_CONST_IMMUNITYMISC_CRITICAL_HITS);
-            IPSafeAddItemProperty(oSkin,ip);
-            ip = ItemPropertyImmunityMisc(IP_CONST_IMMUNITYMISC_DEATH_MAGIC);
-            IPSafeAddItemProperty(oSkin,ip);
             ip = ItemPropertyRegeneration(10);
             IPSafeAddItemProperty(oSkin,ip);
             ip = ItemPropertyBonusSpellResistance(20);
             IPSafeAddItemProperty(oSkin,ip);
             SetLocalInt(OBJECT_SELF,"X2_L_NUMBER_OF_ATTACKS",2);
             SetLocalInt(OBJECT_SELF,"bForceLvlUp",1);
+            SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT","x2_ai_minogon");
 
         }
         if(FindSubString( GetTag(OBJECT_SELF), "HELMED_HORROR") != -1)
         {
             object oSkin = GetItemInSlot(INVENTORY_SLOT_CARMOUR);
-            itemproperty ip = ItemPropertyImmunityMisc(IP_CONST_IMMUNITYMISC_KNOCKDOWN);
+            itemproperty ip;
+            effect eF = EffectACIncrease(8);
 
-            IPSafeAddItemProperty(oSkin,ip);
-            ip = ItemPropertyImmunityMisc(IP_CONST_IMMUNITYMISC_CRITICAL_HITS);
-            IPSafeAddItemProperty(oSkin,ip);
-            ip = ItemPropertyImmunityMisc(IP_CONST_IMMUNITYMISC_DEATH_MAGIC);
             IPSafeAddItemProperty(oSkin,ip);
             ip = ItemPropertyBonusSpellResistance(20);
             IPSafeAddItemProperty(oSkin,ip);
@@ -944,6 +932,7 @@ void main()
         {
             SetLocalInt(OBJECT_SELF,"X2_L_NUMBER_OF_ATTACKS",3);
             SetLocalInt(OBJECT_SELF,"bForceLvlUp",1);
+
             effect eF = EffectDamageResistance(DAMAGE_TYPE_SLASHING,50);
             ApplyEffectToObject(DURATION_TYPE_INSTANT,eF,OBJECT_SELF);
             eF = EffectDamageResistance(DAMAGE_TYPE_PIERCING,50);
@@ -956,7 +945,10 @@ void main()
         }
         if(FindSubString( GetTag(OBJECT_SELF), "GARGOYLE") != -1)
         {
+            object oSkin = GetItemInSlot(INVENTORY_SLOT_CARMOUR);
+
             SetLocalInt(OBJECT_SELF,"X2_L_NUMBER_OF_ATTACKS",3);
+
             effect eF = EffectACIncrease(8);
             ApplyEffectToObject(DURATION_TYPE_INSTANT,eF,OBJECT_SELF);
             eF = EffectDamageReduction(50,1);
@@ -969,6 +961,7 @@ void main()
             int nHD = GetHitDice(OBJECT_SELF);
             int nEnhance = nHD/5+1;
             object oCW;
+
             itemproperty ip = ItemPropertyEnhancementBonus(nEnhance);
             oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_L);
             IPSafeAddItemProperty(oCW,ip);
@@ -981,7 +974,30 @@ void main()
             IPSafeAddItemProperty(oSkin,ip);
 
         }
+        if(rt == RACIAL_TYPE_UNDEAD && FindSubString(GetTag(OBJECT_SELF),"GHOUL") != -1
+            && FindSubString(GetTag(OBJECT_SELF),"GHAST") != -1)
+        {
+            int nHD = GetHitDice(OBJECT_SELF);
+            int nEnhance = nHD/5+1;
+            object oCW;
 
+            itemproperty ip = ItemPropertyEnhancementBonus(nEnhance);
+            oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_L);
+            IPSafeAddItemProperty(oCW,ip);
+            oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_R);
+            IPSafeAddItemProperty(oCW,ip);
+            oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_B);
+            IPSafeAddItemProperty(oCW,ip);
+
+            ip = ItemPropertyOnHitCastSpell(IP_CONST_ONHIT_CASTSPELL_PARALYZE_2,GetHitDice(OBJECT_SELF));
+            oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_L);
+            IPSafeAddItemProperty(oCW,ip);
+            oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_R);
+            IPSafeAddItemProperty(oCW,ip);
+            oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_B);
+            IPSafeAddItemProperty(oCW,ip);
+
+        }
 
         if(d20() == 1  && GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) == 100)
         {
@@ -1044,6 +1060,7 @@ void main()
                 case 11: SetLocalInt(OBJECT_SELF,"bLifeDrain", TRUE); break;
                 case 12: SetLocalInt(OBJECT_SELF,"bWraithLife", TRUE); SetLocalInt(OBJECT_SELF,"X2_L_INCORPOREAL",1); break;
                 case 13: SetLocalInt(OBJECT_SELF,"bSpectreLike", TRUE);SetLocalInt(OBJECT_SELF,"X2_L_INCORPOREAL",1); break;
+                case 14: SetLocalInt(OBJECT_SELF,"bGhoulish",TRUE); break;
 
                 }
             }
@@ -1055,24 +1072,11 @@ void main()
         {
             SetLocalInt(OBJECT_SELF,"bForceLvlUp",1);
             SetLocalInt(OBJECT_SELF,"X2_NAME_RANDOM",1);
-            // don't spawn too many creatures
-    //        if(NumAlliesNearby() < 6)
-    //            CreateObject(OBJECT_TYPE_CREATURE,"enc_minions",GetLocation(OBJECT_SELF));
         }
-        /*
-        else if(d10() == 1 && GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) == 100)
-        {
-            if(NumAlliesNearby() < 6)
-                CreateObject(OBJECT_TYPE_CREATURE,"enc_minions",GetLocation(OBJECT_SELF));
-        }
-        */
-
-        /* Creature size templates need alot of work.
-        if(d6() == 1)
+        if(d20() == 1 && GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) == 100)
         {
             IncreaseSizeTemplate();
         }
-        */
     }
 
 
@@ -1327,6 +1331,28 @@ void main()
 
             SetName(OBJECT_SELF,"(Aberration) " + GetName(OBJECT_SELF));
             SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT","x2_ai_aberration");
+        }
+        else if(GetLocalInt(OBJECT_SELF,"bGhoulish")==TRUE)
+        {
+            int nHD = GetHitDice(OBJECT_SELF);
+            int nEnhance = nHD/5+1;
+            object oCW;
+
+            itemproperty ip = ItemPropertyEnhancementBonus(nEnhance);
+            oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_L);
+            IPSafeAddItemProperty(oCW,ip);
+            oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_R);
+            IPSafeAddItemProperty(oCW,ip);
+            oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_B);
+            IPSafeAddItemProperty(oCW,ip);
+
+            ip = ItemPropertyOnHitCastSpell(IP_CONST_ONHIT_CASTSPELL_PARALYZE_2,GetHitDice(OBJECT_SELF));
+            oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_L);
+            IPSafeAddItemProperty(oCW,ip);
+            oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_R);
+            IPSafeAddItemProperty(oCW,ip);
+            oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_B);
+            IPSafeAddItemProperty(oCW,ip);
         }
         else if(GetLocalInt(OBJECT_SELF,"bAbilityDrain") == TRUE)
         {
@@ -2017,15 +2043,31 @@ void main()
             else if(GetIsMagicUser(OBJECT_SELF))
             {
                 if(GetLocalInt(OBJECT_SELF,"bPrestidigator"))
+                {
                     SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT","x2_ai_prestidiga");
+                    SetName(OBJECT_SELF,"(Presitidator) "+ GetName(OBJECT_SELF));
+                }
                 else if(GetLocalInt(OBJECT_SELF,"bConjurer"))
+                {
                     SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT","x2_ai_conjurer");
+                    SetName(OBJECT_SELF,"(Conjurer) "+ GetName(OBJECT_SELF));
+                }
                 else if(GetLocalInt(OBJECT_SELF,"bEvoker"))
+                {
                     SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT","x2_ai_evoker");
+                    SetName(OBJECT_SELF,"(Evoker) "+ GetName(OBJECT_SELF));
+                }
                 else if(GetLocalInt(OBJECT_SELF,"bTheurgist"))
+                {
                     SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT","x2_ai_theurgist");
+                    SetName(OBJECT_SELF,"(Thurgist) "+ GetName(OBJECT_SELF));
+                }
                 else if(GetLocalInt(OBJECT_SELF,"bMagician"))
+                {
                     SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT","x2_ai_magician");
+                    SetName(OBJECT_SELF,"(Magician) "+ GetName(OBJECT_SELF));
+                }
+
                 else
                     SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT","x2_ai_wizard");
             }
@@ -2044,50 +2086,6 @@ void main()
         SetSpawnInCondition(NW_FLAG_SPELL_CAST_AT_EVENT);
         SetSpawnInCondition(NW_FLAG_PERCIEVE_EVENT);
 
-    }
-
-
-    // * Fire User Defined Event 1001 in the OnHeartbeat
-    // *
-    // SetSpawnInCondition(NW_FLAG_HEARTBEAT_EVENT);
-
-    // * Fire User Defined Event 1002
-    // *
-    // SetSpawnInCondition(NW_FLAG_PERCIEVE_EVENT);
-
-    // * Fire User Defined Event 1005
-    // *
-    // SetSpawnInCondition(NW_FLAG_ATTACK_EVENT);
-
-    // * Fire User Defined Event 1006
-    // *
-    // SetSpawnInCondition(NW_FLAG_DAMAGED_EVENT);
-
-    // * Fire User Defined Event 1008
-    // *
-    // SetSpawnInCondition(NW_FLAG_DISTURBED_EVENT);
-
-    // * Fire User Defined Event 1003
-    // *
-    // SetSpawnInCondition(NW_FLAG_END_COMBAT_ROUND_EVENT);
-
-    // * Fire User Defined Event 1004
-    // *
-    // SetSpawnInCondition(NW_FLAG_ON_DIALOGUE_EVENT);
-
-    if(GetLocalInt(GetArea(OBJECT_SELF),"bURASRandomEncounters") == 0)
-    {
-        // this isn't really going to always work and may still cause hostiles to spawn in areas that shouldn't.
-        if(GetStandardFactionReputation(STANDARD_FACTION_HOSTILE,OBJECT_SELF) == 100)
-        {
-            object o = CreateObject(OBJECT_TYPE_PLACEABLE,"randomencounters",GetLocation(OBJECT_SELF));
-            SetLocalInt(GetArea(OBJECT_SELF),"bURASRandomEncounters",1);
-        }
-    }
-    if(GetLocalInt(GetModule(),"bURASRunning") == 0)
-    {
-        SetLocalInt(GetModule(),"bURASRunning",1);
-        ResetEncounters();
     }
 
 

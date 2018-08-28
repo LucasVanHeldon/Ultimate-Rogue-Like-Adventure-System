@@ -714,7 +714,8 @@ struct sEnchantments EnchantWeaponFocus(struct sEnchantments Enchants)
 {
     int iSpecific = NONE;
     // there is a 50% chance items have alignment and are restricted to use
-    if(d100() <= ALIGNMENT_FOCUS)
+    // causes problems when modifying items on creatures.
+    if(d100() <= ALIGNMENT_FOCUS && GetObjectType(oObject) != OBJECT_TYPE_CREATURE)
     {
         switch(d4())
         {
@@ -1050,7 +1051,7 @@ void EnchantWeapon(struct sItemInfo ItemInfo)
                 case 7: Enchants  = DoImbueEnhanceBonus(Enchants); break;
                 case 8: Enchants  = ImbueHolyAvenger(Enchants); break;
                 case 9: Enchants  = ImbueMassiveCritical(Enchants); break;
-                case 10: Enchants  = ImbueRegeneration(Enchants); break;
+                case 10: Enchants = ImbueRegeneration(Enchants); break;
                 case 11: Enchants  = DoImbueEnhanceBonus(Enchants); break;
                 case 12: Enchants = ImbueVampiricRegeneration(Enchants);break;
                 case 13: Enchants = ImbueBonusSpellSlot(Enchants); break;

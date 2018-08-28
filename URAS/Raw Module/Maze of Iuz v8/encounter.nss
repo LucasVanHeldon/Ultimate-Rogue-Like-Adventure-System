@@ -581,10 +581,12 @@ void ENC_Spawner0(object oS, int EL, float CR, int dontlvl=0)
     {
         SpawnTable();
     }
+    /*
     else if(d6() == 1)
     {
         ENC_Spawner0(oS,EL,CR-2.0,TRUE);
     }
+    */
 
 }
 
@@ -678,6 +680,7 @@ void ENC_Spawner(object oS, int EL, int dontlvl = FALSE, int bOneTime=FALSE)
     {
         SpawnTable();
     }
+    /*
     else if(d6() == 1)
     {
         ENC_Spawner0(oS,EL,CR-2.0,TRUE);
@@ -686,12 +689,12 @@ void ENC_Spawner(object oS, int EL, int dontlvl = FALSE, int bOneTime=FALSE)
     {
         SpawnMinions(0.5,oS);
     }
-
     if(d6() < 4 && !bOneTime)
     {
         CR = CR - 2.0;
         if(CR >= 1.0) ENC_Spawner(oS,EL,FALSE,FALSE);
     }
+    */
 }
 
 

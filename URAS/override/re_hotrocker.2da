@@ -1,0 +1,16 @@
+2DA V2.0                                                                                          
+                                                                                                  
+      ResRef               Minimum  Maximum  Treasure              TableLength 
+0     ****                 ****     ****     ****                  12
+1	ENC_GOBLINS	1	1	t1	
+2	ENC_ORC		1	1	t1	
+3	ENC_GNOLLS	1	1	t1
+4	ENC_TROLLS	1	1	t1
+5	ENC_GIANT	1	1	t1
+6	ENC_MINOTAUR	1	1	t1
+7	ENC_ABERRATION	1	1	t1
+8	ENC_OGRES	1	1	t1
+9	EL_UNDEAD4	1	1	t1
+10	ENC_BUGBEAR	1	1	t1
+11	ENC_CONSTRUCT 1` 1 t1
+12 	ENC_BEASTS	1	1	t1

@@ -382,5 +382,7 @@ void main()
         }
 
     }
-
+    __TurnCombatRoundOn(TRUE);
+    MMPABB_SpecialAttack();
+    __TurnCombatRoundOn(FALSE);
 }
