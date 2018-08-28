@@ -1,8 +1,6 @@
 # Template Generator Script
 
-# NPC Generator
-# classes, packages, minions, henchmen
-# give spellbook, items, rings, belts, armor, enhance items and equip them
+
 def GiveSpellbook():
 	print("bHasSpellBook=TRUE;")
 	
@@ -144,70 +142,27 @@ IPSafeAddItemProperty(oCW,ip);
 	print ( template)
 
 
+def NaturalWeaponEnhancePoison():
+	template = """
+ ip = ItemPropertyEnhancementBonus(nEnhance);
+oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_L);
+IPSafeAddItemProperty(oCW,ip);
+oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_R);
+IPSafeAddItemProperty(oCW,ip);
+oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_B);
+IPSafeAddItemProperty(oCW,ip);
+ip = ItemPropertyOnMonsterHitProperites(IP_CONST_ONHIT_ITEMPOISON,IP_CONST_POISON_1D2_STRDAMAGE);
+oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_L);
+IPSafeAddItemProperty(oCW,ip);
+oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_R);
+IPSafeAddItemProperty(oCW,ip);
+oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_B);
+IPSafeAddItemProperty(oCW,ip);
+"""
+	print ( template)
 
 
-def ACBonus(bonus):
-	template = "ip = ItemPropertyACBonus(%d); IPSafeAddItemProperty(oSkin,ip);"
-	print(template % (bonus))
-	
 
-ALIGNMENT_CHAOTIC=3
-ALIGNMENT_EVIL=5
-ALIGNMENT_GOOD=4
-ALIGNMENT_LAWFUL=2
-ALIGNMENT_NEUTRAL=1
-
-def ACBonusVsAlign(bonus,align):
-	template = "ip = ItemPropertyACBonusVsAlign(%d,%d); IPSafeAddItemProperty(oSkin,ip);"
-	print(template % (align,bonus))
-
-DAMAGETYPE_ACID=6
-DAMAGETYPE_BLUDGEON=0
-DAMAGETYPE_COLD=7
-DAMAGETYPE_DIVINE=8
-DAMAGETYPE_ELECTRICAL=9
-DAMAGETYPE_FIRE=10
-DAMAGETYPE_MAGICAL=5
-DAMAGETYPE_NEGATIVE=11
-DAMAGETYPE_PHYSICAL=4
-DAMAGETYPE_PIERCING=1
-DAMAGETYPE_POSITIVE=12
-DAMAGETYPE_SLASHING=2
-DAMAGETYPE_SONIC=13
-DAMAGETYPE_SUBDUAL=3
-
-def ACBonusVsDmgType(dmg_type,bonus):
-	template = "ip = ItemPropertyACBonusVsDmgType(%d,%d); IPSafeAddItemProperty(oSkin,ip);"
-	print(template % (dmg_type,bonus))
-
-RT_ABERRATION=7
-RT_ANIMAL=8
-RT_BEAST=9
-RT_CONSTRUCT=10
-RT_DRAGON=11
-RT_DWARF=0
-RT_ELEMENTAL=16
-RT_ELF=1
-RT_FEY=17
-RT_GIANT=18
-RT_GNOME=2
-RT_HALFELF=4
-RT_HALFLING=3
-RT_HALFORC=5
-RT_HUMAN=6
-RT_GOBLINOID=12
-RT_MONSTROUS=13
-RT_ORC=14
-RT_REPTILIAN=15
-RT_MAGICAL_BEAST=19
-RT_OUTSIDER=20
-RT_SHAPECHANGER=23
-RT_UNDEAD=24
-RT_VERMIN=25
-
-def ACBonusVsRace(race,bonus):
-	template = "ip = ItemPropertyACBonusVsDmgType(%d,%d); IPSafeAddItemProperty(oSkin,ip);"
-	print(template % (dmg_type,bonus))
 
 #print("effect eEffect;\nint nHD = GetHitDice(OBJECT_SELF);")
 
@@ -297,4 +252,35 @@ def Blooded():
 	
 	SetName("(Blooded)")
 	
-Blooded()
+def Lemorian():
+	StrBonus(4)
+	DexBonus(4)
+	ConBonus(2)
+	IntBonus(4)
+	ChaBonus(2)
+	Darkvision()
+	SpellResistance(10,35)
+	NaturalArmorBonus(1)	
+	AcidResistance(10)
+	ColdResistance(10)
+	ElectricalResistance(10)
+	SpellResistance(10,32)
+	DamageReduction(0,11,5)
+	DamageReduction(12,40,10)
+	PoisonImmunity()
+	NaturalWeaponEnhancePoison()
+	
+	CastSpell("SPELL_SCARE",1,3)
+	CastSpell("SPELL_CHARM_PERSON",3,3)
+	CastSpell("SPELL_FEAR",5,1)
+	CastSpell("SPELL_CHARM_MONSTER",7,3)
+	CastSpell("SPELL_DOMINATE_PERSON",9,1)
+	CastSpell("SPELL_MASS_CHARM_PERSON",11,1)
+	CastSpell("SPELL_UNHOLY_AURA",13,1)
+	CastSpell("SPELL_MASS_CHARM_MONSTER",15,1)
+	CastSpell("SPELL_SUMMON_CREATURE_IX",17,1)
+	CastSpell("SPELL_DOMINATE_MONSTER",19,1)
+	
+	
+	
+Lemorian()
