@@ -58,12 +58,11 @@ void main()
 {
     int ticks = GetLocalInt(GetModule(),"nHBTicks");
 
-    if(ticks > 1500)
+    if(ticks > 250)
     {
-        object oPC = GetNearestCreature( CREATURE_TYPE_PLAYER_CHAR, PLAYER_CHAR_IS_PC);
+        object oPC = GetFirstPC();
         if(GetIsObjectValid(oPC) && GetArea(oPC) == GetArea(OBJECT_SELF))
         {
-            SendMessageToPC(GetFirstPC(),"Random Encounter Check");
             if(d20() == 1) SpawnTable(GetLocation(oPC));
         }
         if(d20() == 1) DelayCommand(0.1,ResetEncounters());

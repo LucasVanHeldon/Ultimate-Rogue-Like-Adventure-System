@@ -741,18 +741,10 @@ void RandomTemplate()
 
 void Upgrade()
 {
-    int d = GetLocalInt(GetModule(),"diffulty");
+    int d = GetLocalInt(GetModule(),"difficulty");
 
     if(  d > 0 || GetLocalInt(OBJECT_SELF,"bForceLvlUp")==1)
         LevelUp();
-
-
-    if( (d == 0 && d20()==1) || (d == 1 && d10() == 1) || (d==2 && d6()==1)  )
-    {
-        Upgrade();
-    }
-
-
 
     if(d6() == 1)
     {
@@ -882,8 +874,11 @@ void main()
 
         // templates
         int rt = GetRacialType(OBJECT_SELF);
+        object oSkin = GetItemInSlot(INVENTORY_SLOT_CARMOUR);
 
-        // fixes to OC creatures.
+///////////////////////////////
+// fixes to OC creatures.
+///////////////////////////////
         if(rt == RACIAL_TYPE_GIANT)
             SetLocalInt(OBJECT_SELF,"bGiantKin",TRUE);
 
@@ -999,13 +994,19 @@ void main()
 
         }
 
-        if(d20() == 1  && GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) == 100)
+//////////////////////////////////////
+// Templates
+//////////////////////////////////////
+
+        if(d10() == 1  && GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) == 100)
         {
             int bMagic = FALSE;
 
+            SetLocalInt(OBJECT_SELF,"bForceLvlUp",TRUE);
+            SetLocalInt(OBJECT_SELF,"X2_NAME_RANDOM",1);
+
             if(IsMagicUser(OBJECT_SELF))
             {
-                SetLocalInt(OBJECT_SELF,"bForceLvlUp",TRUE);
                 switch(Random(4))
                 {
                 case 0: SetLocalInt(OBJECT_SELF,"bPrestidigator",TRUE); break;
@@ -1017,13 +1018,10 @@ void main()
                 bMagic = TRUE;
             }
 
-            if( d6() ==1 && !bMagic && (rt == RACIAL_TYPE_HUMANOID_GOBLINOID || rt == RACIAL_TYPE_HUMANOID_ORC || rt == RACIAL_TYPE_HUMANOID_MONSTROUS))
+
+            if(!bMagic && (rt != RACIAL_TYPE_UNDEAD && rt != RACIAL_TYPE_CONSTRUCT && rt != RACIAL_TYPE_ELEMENTAL))
             {
-                SetLocalInt(OBJECT_SELF,"bBloodedOne",1);
-            }
-            else if(!bMagic && (rt != RACIAL_TYPE_UNDEAD && rt != RACIAL_TYPE_CONSTRUCT && rt != RACIAL_TYPE_ELEMENTAL))
-            {
-                switch(Random(13))
+                switch(Random(16))
                 {
                 case 0: SetLocalInt(OBJECT_SELF,"bHalfFiend",TRUE); break;
                 case 1: SetLocalInt(OBJECT_SELF,"bHalfAir",TRUE); break;
@@ -1038,13 +1036,15 @@ void main()
                 case 10: SetLocalInt(OBJECT_SELF,"bAluDemon",TRUE); break;
                 case 11: SetLocalInt(OBJECT_SELF,"bTrolllike",TRUE); break;
                 case 12: SetLocalInt(OBJECT_SELF,"bGiantKin",TRUE); break;
-                case 13: SetLocalInt(OBJECT_SELF,"bRegenerating",TRUE);
-                         break;
+                case 13: SetLocalInt(OBJECT_SELF,"bRegenerating",TRUE); break;
+                case 14: SetLocalInt(OBJECT_SELF,"bLemorian",TRUE); break;
+                case 15: SetLocalInt(OBJECT_SELF,"bBloodedOne",1); break;
+                case 16: SetLocalInt(OBJECT_SELF,"bArachnoid",1); break;
                 }
             }
             else if(rt == RACIAL_TYPE_UNDEAD)
             {
-                switch(Random(13))
+                switch(Random(14))
                 {
                 case 0: SetLocalInt(OBJECT_SELF,"bApostate",TRUE); break;
                 case 1: SetLocalInt(OBJECT_SELF,"bHeretic",TRUE); break;
@@ -1064,239 +1064,23 @@ void main()
 
                 }
             }
-
-        }
-
-        //only make hostiles NPCs it can break the game if it changes a key non-hostile NPC (ex solomon might be hamberg now)
-        if(d6() == 1 && GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) == 100)
-        {
-            SetLocalInt(OBJECT_SELF,"bForceLvlUp",1);
-            SetLocalInt(OBJECT_SELF,"X2_NAME_RANDOM",1);
         }
         if(d20() == 1 && GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) == 100)
         {
+            SetLocalInt(OBJECT_SELF,"bForceLvlUp",TRUE);
             IncreaseSizeTemplate();
         }
-    }
-
-
-/////////////////////////////
-// Default Bioware stuff
-/////////////////////////////
-    if (GetCreatureFlag(OBJECT_SELF, CREATURE_VAR_USE_SPAWN_SEARCH) == TRUE)
-    {
-        SetSpawnInCondition(NW_FLAG_SEARCH);
-    }
-
-    if (GetCreatureFlag(OBJECT_SELF, CREATURE_VAR_USE_SPAWN_AMBIENT_IMMOBILE) == TRUE)
-    {
-        SetSpawnInCondition(NW_FLAG_IMMOBILE_AMBIENT_ANIMATIONS);
-    }
-
-    if (GetCreatureFlag(OBJECT_SELF, CREATURE_VAR_USE_SPAWN_AMBIENT) == TRUE)
-    {
-        SetSpawnInCondition(NW_FLAG_AMBIENT_ANIMATIONS);
-    }
-
-    // ***** DEFAULT GENERIC BEHAVIOR (DO NOT TOUCH) ***** //
-
-    // * Goes through and sets up which shouts the NPC will listen to.
-    // *
-    SetListeningPatterns();
-
-    // * Walk among a set of waypoints.
-    // * 1. Find waypoints with the tag "WP_" + NPC TAG + "_##" and walk
-    // *    among them in order.
-    // * 2. If the tag of the Way Point is "POST_" + NPC TAG, stay there
-    // *    and return to it after combat.
-    //
-    // * Optional Parameters:
-    // * void WalkWayPoints(int nRun = FALSE, float fPause = 1.0)
-    //
-    // * If "NW_FLAG_DAY_NIGHT_POSTING" is set above, you can also
-    // * create waypoints with the tags "WN_" + NPC Tag + "_##"
-    // * and those will be walked at night. (The standard waypoints
-    // * will be walked during the day.)
-    // * The night "posting" waypoint tag is simply "NIGHT_" + NPC tag.
-    WalkWayPoints();
-
-    //* Create a small amount of treasure on the creature
-    if ((GetLocalInt(GetModule(), "X2_L_NOTREASURE") == FALSE)  &&
-        (GetLocalInt(OBJECT_SELF, "X2_L_NOTREASURE") == FALSE)   )
-    {
-        CTG_GenerateNPCTreasure(TREASURE_TYPE_MONSTER, OBJECT_SELF);
-    }
-
-
-    // ***** ADD ANY SPECIAL ON-SPAWN CODE HERE ***** //
-
-    // * If Incorporeal, apply changes
-    if (GetCreatureFlag(OBJECT_SELF, CREATURE_VAR_IS_INCORPOREAL) == TRUE)
-    {
-        effect eConceal = EffectConcealment(50, MISS_CHANCE_TYPE_NORMAL);
-        eConceal = ExtraordinaryEffect(eConceal);
-        effect eGhost = EffectCutsceneGhost();
-        eGhost = ExtraordinaryEffect(eGhost);
-        ApplyEffectToObject(DURATION_TYPE_PERMANENT, eConceal, OBJECT_SELF);
-        ApplyEffectToObject(DURATION_TYPE_PERMANENT, eGhost, OBJECT_SELF);
-
-    }
-
-    // * Give the create a random name.
-    // * If you create a script named x3_name_gen in your module, you can
-    // * set the value of the variable X3_S_RANDOM_NAME on OBJECT_SELF inside
-    // * the script to override the creature's default name.
-    if (GetCreatureFlag(OBJECT_SELF, CREATURE_VAR_RANDOMIZE_NAME) == TRUE)
-    {
-
-        ExecuteScript("x3_name_gen",OBJECT_SELF);
-        string sName = GetLocalString(OBJECT_SELF,"X3_S_RANDOM_NAME");
-        if ( sName == "" )
-        {
-            sName = RandomName();
-        }
-        SetName(OBJECT_SELF,sName);
-    }
-
-
-////////////////////////////////////////////////
-// Treasure - note that talent AI can use this.
-///////////////////////////////////////////////
-
-    // the random generator in this game is not uniform at all.
-    float fLootChance = 0.5* fLootMod;
-    if(fLootChance == 0.0) fLootChance = 0.5;
-    if(fLootChance < 0.0) fLootChance = 0.0;
-
-    int dice = Random(10000);
-    int iChance = FloatToInt(fLootChance*10000);
-
-    if( (dice <= iChance) && (GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) > 50) )
-    {
-        if(GetAbilityScore(OBJECT_SELF,ABILITY_INTELLIGENCE) > 3)
-        {
-            int class = GetClassByPosition(0,OBJECT_SELF);
-
-            if(class == CLASS_TYPE_ASSASSIN) SetLocalInt(sack,"Assassin",TRUE);
-            if(class == CLASS_TYPE_BARD) SetLocalInt(sack,"Bard",1);
-            if(class == CLASS_TYPE_MONK) SetLocalInt(sack,"Monk",1);
-            if(class == CLASS_TYPE_CLERIC) SetLocalInt(sack,"Cleric",1);
-            if(class == CLASS_TYPE_FIGHTER)  SetLocalInt(sack,"Fighter",1);
-            if(class == CLASS_TYPE_GIANT) SetLocalInt(sack,"Giant",1);
-            if(class == CLASS_TYPE_ROGUE) SetLocalInt(sack,"Rogue",1);
-            if(class == CLASS_TYPE_WIZARD) SetLocalInt(sack,"Wizard",1);
-            if(class == CLASS_TYPE_DRUID) SetLocalInt(sack,"Druid",1);
-            if(class == CLASS_TYPE_RANGER) SetLocalInt(sack,"Ranger",1);
-            if(class == CLASS_TYPE_PALADIN) SetLocalInt(sack,"Paladin",1);
-            if(class == CLASS_TYPE_DRAGON) SetLocalInt(sack,"Dragon",1);
-            /*
-            if(class == CLASS_TYPE_OUTSIDER) SetLocalInt(sack,"Outsider",1);
-            if(class == CLASS_TYPE_ABERRATION) SetLocalInt(sack,"Abberation",1);
-            if(class == CLASS_TYPE_UNDEAD) SetLocalInt(sack,"Undead",1);
-            if(class == CLASS_TYPE_MAGICAL_BEAST) SetLocalInt(sack,"MagicalBeast",1);
-            */
-            int rt = GetRacialType(OBJECT_SELF);
-            if( rt != RACIAL_TYPE_ANIMAL &&
-                rt != RACIAL_TYPE_VERMIN &&
-                rt != RACIAL_TYPE_BEAST &&
-                rt != RACIAL_TYPE_CONSTRUCT &&
-                rt != RACIAL_TYPE_OOZE &&
-                rt != RACIAL_TYPE_UNDEAD)
-            {
-                //SendMessageToPC(GetFirstPC(),"Lutes");
-                iChestLevel = GetCharacterLevel(OBJECT_SELF);
-                dice = Random(10000);
-
-                // it will just drop socket way too much no matter what I do.
-                //if(dice <= iSocketedLootChance)
-                //    sd_droploot(OBJECT_SELF,OBJECT_SELF);
-                //else
-                    Lutes(OBJECT_SELF);
-            }
-        }
-    }
-
-/////////////////////////
-// Upgrade and Enhance
-//////////////////////////
-    if(!bMunchkin)
-    {
-        if( (GetLocalInt(GetModule(),"difficulty") >= 0 || GetLocalInt(OBJECT_SELF,"bForceLvlUp")==1) )
-        {
-            if(GetLocalInt(OBJECT_SELF,"bNeverLvlUp")==0)
-            {
-                EnhanceSkin();
-                EnhanceItems();
-                Upgrade();
-            }
-        }
-
-        if( (GetIsMagicUser(OBJECT_SELF) || GetIsCleric(OBJECT_SELF)))
-        {
-            oObject = OBJECT_SELF;
-            iChestLevel = GetCharacterLevel(OBJECT_SELF);
-            PersonalSpellBook();
-        }
-    }
-
-////////////////////////////////////
-// Modify Armour and Weapons
-////////////////////////////////////
-    if(bModifyArmorAndWeapons == TRUE)
-    {
-        object oArmor = GetItemInSlot(INVENTORY_SLOT_CHEST);
-        if(GetIsObjectValid(oArmor))
-        {
-            oArmor = ModifyArmor(oArmor);
-            if(GetIsObjectValid(oArmor)) {
-                ActionEquipItem(oArmor,INVENTORY_SLOT_CHEST);
-                DelayCommand(0.1,ForceArmor(OBJECT_SELF,oArmor));
-            }
-        }
-
-        object oWeapon = GetItemInSlot(INVENTORY_SLOT_RIGHTHAND);
-        if(GetIsObjectValid(oWeapon) && FindSubString(GetTag(oWeapon),"nw_it_cre") == -1)
-        {
-            object oNew = ModifyWeapon(oWeapon);
-            if(GetIsObjectValid(oNew))
-                AssignCommand(OBJECT_SELF,ActionEquipItem(oNew,INVENTORY_SLOT_RIGHTHAND));
-        }
-        if(d20() == 1) IncreaseWeaponSize(oWeapon);
-
-        oWeapon = GetItemInSlot(INVENTORY_SLOT_LEFTHAND);
-        if(GetIsObjectValid(oWeapon))
-        {
-            if(GetMeleeWeapon(oWeapon))
-            {
-                oWeapon = ModifyWeapon(oWeapon);
-                if(GetIsObjectValid(oWeapon))
-                    AssignCommand(OBJECT_SELF,ActionEquipItem(oWeapon,INVENTORY_SLOT_LEFTHAND));
-            }
-            else if(GetBaseItemType(oWeapon) == BASE_ITEM_SMALLSHIELD ||
-                    GetBaseItemType(oWeapon) == BASE_ITEM_LARGESHIELD ||
-                    GetBaseItemType(oWeapon) == BASE_ITEM_TOWERSHIELD)
-            {
-                oWeapon = ModifyShield(oWeapon);
-                if(GetIsObjectValid(oWeapon))
-                    AssignCommand(OBJECT_SELF,ActionEquipItem(oWeapon,INVENTORY_SLOT_LEFTHAND));
-            }
-
-        }
-    }
 
 
 //////////////////////
 // Templates and AI
 //////////////////////
-    if(!bMunchkin)
-    {
-        object oSkin = GetItemInSlot(INVENTORY_SLOT_CARMOUR);
+
 
         if(GetLocalInt(OBJECT_SELF,"bTrolllike") == TRUE)
         {
             itemproperty ip = ItemPropertyRegeneration(15);
             IPSafeAddItemProperty(oSkin,ip);
-            SetName(OBJECT_SELF,"(Troll-kin) "+GetName(OBJECT_SELF));
         }
         if(GetLocalInt(OBJECT_SELF,"bRegenerating") == TRUE)
         {
@@ -1304,7 +1088,6 @@ void main()
             if(nR == 0) nR = d20();
             itemproperty ip = ItemPropertyRegeneration(nR);
             IPSafeAddItemProperty(oSkin,ip);
-
         }
 
         if(GetLocalInt(OBJECT_SELF,"bGiantKin") == TRUE)
@@ -1317,8 +1100,32 @@ void main()
             ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
 
         }
+        else if(GetLocalInt(OBJECT_SELF,"bArachnoid") == TRUE)
+        {
+            effect eEffect;
+            itemproperty ip;
+            object oCW;
+            int nHD = GetHitDice(OBJECT_SELF);
 
-        if(GetLocalInt(OBJECT_SELF,"bAberTable") == TRUE || GetLocalInt(OBJECT_SELF,"bAberration") == TRUE)
+            eEffect = EffectAbilityIncrease(ABILITY_DEXTERITY,4);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect=EffectSkillIncrease(SKILL_HIDE,4); ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect=EffectSkillIncrease(SKILL_SPOT,6); ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            ip = ItemPropertyOnMonsterHitProperties(IP_CONST_ONHIT_ITEMPOISON,IP_CONST_POISON_1D2_STRDAMAGE);
+            oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_L);
+            IPSafeAddItemProperty(oCW,ip);
+            oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_R);
+            IPSafeAddItemProperty(oCW,ip);
+            oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_B);
+            IPSafeAddItemProperty(oCW,ip);
+
+            eEffect = EffectImmunity(IMMUNITY_TYPE_MIND_SPELLS);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            SetName(OBJECT_SELF,"(Arachnoid) " + GetName(OBJECT_SELF));
+        }
+        else if(GetLocalInt(OBJECT_SELF,"bAberTable") == TRUE || GetLocalInt(OBJECT_SELF,"bAberration") == TRUE)
         {
             int i;
             for(i = 0; i < GetHitDice(OBJECT_SELF); i++)
@@ -1353,6 +1160,7 @@ void main()
             IPSafeAddItemProperty(oCW,ip);
             oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_B);
             IPSafeAddItemProperty(oCW,ip);
+            SetLocalInt(OBJECT_SELF,"X2_L_NUMBER_OF_ATTACKS",3);
         }
         else if(GetLocalInt(OBJECT_SELF,"bAbilityDrain") == TRUE)
         {
@@ -1370,7 +1178,8 @@ void main()
             oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_B);
             IPSafeAddItemProperty(oCW,ip);
 
-            switch(d6())
+            int nD = d6();
+            switch(nD)
             {
             case 1: SetLocalInt(OBJECT_SELF,"bPULSE_ABILITY_DRAIN_CHARISMA", d6()); break;
             case 2: SetLocalInt(OBJECT_SELF,"bPULSE_ABILITY_DRAIN_WISDOM", d6()); break;
@@ -1380,7 +1189,7 @@ void main()
             case 6: SetLocalInt(OBJECT_SELF,"bPULSE_ABILITY_DRAIN_INTELLIGENCE", d6()); break;
             }
 
-            switch(d6())
+            switch(nD)
             {
             case 1: SetLocalInt(OBJECT_SELF,"bBOLT_ABILITY_DRAIN_CHARISMA", d6()); break;
             case 2: SetLocalInt(OBJECT_SELF,"bBOLT_ABILITY_DRAIN_WISDOM", d6()); break;
@@ -1464,7 +1273,94 @@ void main()
             SetName(OBJECT_SELF," (Spectral) " + GetName(OBJECT_SELF));
 
         }
+        else if(GetLocalInt(OBJECT_SELF,"bLemorian") == TRUE)
+        {
+            effect eEffect;
+            itemproperty ip;
+            object oCW;
+            int nHD = GetHitDice(OBJECT_SELF);
 
+            eEffect = EffectAbilityIncrease(ABILITY_STRENGTH,4);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect = EffectAbilityIncrease(ABILITY_DEXTERITY,4);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect = EffectAbilityIncrease(ABILITY_CONSTITUTION,2);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect = EffectAbilityIncrease(ABILITY_INTELLIGENCE,4);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect = EffectAbilityIncrease(ABILITY_CHARISMA,2);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            ip = ItemPropertyDarkvision();
+            IPSafeAddItemProperty(oSkin,ip);
+
+            int sr = 10 + nHD;
+            if(sr > 35) sr = 35;
+            eEffect = EffectSpellResistanceIncrease(sr);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            eEffect = EffectACIncrease(1,AC_NATURAL_BONUS);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect = EffectDamageResistance(DAMAGE_TYPE_ACID,10);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect = EffectDamageResistance(DAMAGE_TYPE_COLD,10);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            eEffect = EffectDamageResistance(DAMAGE_TYPE_ELECTRICAL,10);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            if( nHD >= 0 && nHD <= 11)
+            {
+                int nDR = nHD/5+1;
+                if(nDR == 6) nDR = nDR+1;
+                int nAmt = 5;
+                eEffect = EffectDamageReduction(nAmt, nHD);
+                ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            }
+
+
+            if( nHD >= 12 && nHD <= 40)
+            {
+                int nDR = nHD/5+1;
+                if(nDR == 6) nDR = nDR+1;
+                int nAmt = 10;
+                eEffect = EffectDamageReduction(nAmt, nHD);
+                ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+            }
+
+
+            eEffect = EffectImmunity(IMMUNITY_TYPE_POISON);
+            ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
+
+            int nEnhance = nHD/5+1;
+
+            ip = ItemPropertyEnhancementBonus(nEnhance);
+            oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_L);
+            IPSafeAddItemProperty(oCW,ip);
+            oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_R);
+            IPSafeAddItemProperty(oCW,ip);
+            oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_B);
+            IPSafeAddItemProperty(oCW,ip);
+            ip = ItemPropertyOnMonsterHitProperties(IP_CONST_ONHIT_ITEMPOISON,IP_CONST_POISON_1D2_STRDAMAGE);
+            oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_L);
+            IPSafeAddItemProperty(oCW,ip);
+            oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_R);
+            IPSafeAddItemProperty(oCW,ip);
+            oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_B);
+            IPSafeAddItemProperty(oCW,ip);
+
+            if(GetHitDice(OBJECT_SELF) >= 1) SetLocalInt(oSkin,"bNumSPELL_SCARE",3);
+            if(GetHitDice(OBJECT_SELF) >= 3) SetLocalInt(oSkin,"bNumSPELL_CHARM_PERSON",3);
+            if(GetHitDice(OBJECT_SELF) >= 5) SetLocalInt(oSkin,"bNumSPELL_FEAR",1);
+            if(GetHitDice(OBJECT_SELF) >= 7) SetLocalInt(oSkin,"bNumSPELL_CHARM_MONSTER",3);
+            if(GetHitDice(OBJECT_SELF) >= 9) SetLocalInt(oSkin,"bNumSPELL_DOMINATE_PERSON",1);
+            if(GetHitDice(OBJECT_SELF) >= 11) SetLocalInt(oSkin,"bNumSPELL_MASS_CHARM_PERSON",1);
+            if(GetHitDice(OBJECT_SELF) >= 13) SetLocalInt(oSkin,"bNumSPELL_UNHOLY_AURA",1);
+            if(GetHitDice(OBJECT_SELF) >= 15) SetLocalInt(oSkin,"bNumSPELL_MASS_CHARM_MONSTER",1);
+            if(GetHitDice(OBJECT_SELF) >= 17) SetLocalInt(oSkin,"bNumSPELL_SUMMON_CREATURE_IX",1);
+            if(GetHitDice(OBJECT_SELF) >= 19) SetLocalInt(oSkin,"bNumSPELL_DOMINATE_MONSTER",1);
+
+            SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT","x2_ai_template");
+        }
         else if(GetLocalInt(OBJECT_SELF,"bOozeTable") == TRUE || GetLocalInt(OBJECT_SELF,"bOoze") == TRUE)
         {
             int i;
@@ -2072,7 +1968,7 @@ void main()
                     SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT","x2_ai_wizard");
             }
 
-            if(!GetLocalInt(OBJECT_SELF,"bRengenerating"))
+            if(!GetLocalInt(OBJECT_SELF,"bRegenerating"))
             {
                 // give all creatures regeneration so they slowly heal
                 itemproperty ip = ItemPropertyRegeneration(1);
@@ -2080,6 +1976,212 @@ void main()
             }
 
         }
+
+/////////////////////////////
+// Default Bioware stuff
+/////////////////////////////
+    if (GetCreatureFlag(OBJECT_SELF, CREATURE_VAR_USE_SPAWN_SEARCH) == TRUE)
+    {
+        SetSpawnInCondition(NW_FLAG_SEARCH);
+    }
+
+    if (GetCreatureFlag(OBJECT_SELF, CREATURE_VAR_USE_SPAWN_AMBIENT_IMMOBILE) == TRUE)
+    {
+        SetSpawnInCondition(NW_FLAG_IMMOBILE_AMBIENT_ANIMATIONS);
+    }
+
+    if (GetCreatureFlag(OBJECT_SELF, CREATURE_VAR_USE_SPAWN_AMBIENT) == TRUE)
+    {
+        SetSpawnInCondition(NW_FLAG_AMBIENT_ANIMATIONS);
+    }
+
+    // ***** DEFAULT GENERIC BEHAVIOR (DO NOT TOUCH) ***** //
+
+    // * Goes through and sets up which shouts the NPC will listen to.
+    // *
+    SetListeningPatterns();
+
+    // * Walk among a set of waypoints.
+    // * 1. Find waypoints with the tag "WP_" + NPC TAG + "_##" and walk
+    // *    among them in order.
+    // * 2. If the tag of the Way Point is "POST_" + NPC TAG, stay there
+    // *    and return to it after combat.
+    //
+    // * Optional Parameters:
+    // * void WalkWayPoints(int nRun = FALSE, float fPause = 1.0)
+    //
+    // * If "NW_FLAG_DAY_NIGHT_POSTING" is set above, you can also
+    // * create waypoints with the tags "WN_" + NPC Tag + "_##"
+    // * and those will be walked at night. (The standard waypoints
+    // * will be walked during the day.)
+    // * The night "posting" waypoint tag is simply "NIGHT_" + NPC tag.
+    WalkWayPoints();
+
+    //* Create a small amount of treasure on the creature
+    if ((GetLocalInt(GetModule(), "X2_L_NOTREASURE") == FALSE)  &&
+        (GetLocalInt(OBJECT_SELF, "X2_L_NOTREASURE") == FALSE)   )
+    {
+        CTG_GenerateNPCTreasure(TREASURE_TYPE_MONSTER, OBJECT_SELF);
+    }
+
+
+    // ***** ADD ANY SPECIAL ON-SPAWN CODE HERE ***** //
+
+    // * If Incorporeal, apply changes
+    if (GetCreatureFlag(OBJECT_SELF, CREATURE_VAR_IS_INCORPOREAL) == TRUE)
+    {
+        effect eConceal = EffectConcealment(50, MISS_CHANCE_TYPE_NORMAL);
+        eConceal = ExtraordinaryEffect(eConceal);
+        effect eGhost = EffectCutsceneGhost();
+        eGhost = ExtraordinaryEffect(eGhost);
+        ApplyEffectToObject(DURATION_TYPE_PERMANENT, eConceal, OBJECT_SELF);
+        ApplyEffectToObject(DURATION_TYPE_PERMANENT, eGhost, OBJECT_SELF);
+
+    }
+
+    // * Give the create a random name.
+    // * If you create a script named x3_name_gen in your module, you can
+    // * set the value of the variable X3_S_RANDOM_NAME on OBJECT_SELF inside
+    // * the script to override the creature's default name.
+    if (GetCreatureFlag(OBJECT_SELF, CREATURE_VAR_RANDOMIZE_NAME) == TRUE)
+    {
+
+        ExecuteScript("x3_name_gen",OBJECT_SELF);
+        string sName = GetLocalString(OBJECT_SELF,"X3_S_RANDOM_NAME");
+        if ( sName == "" )
+        {
+            sName = RandomName();
+        }
+        SetName(OBJECT_SELF,sName);
+    }
+
+
+////////////////////////////////////////////////
+// Treasure - note that talent AI can use this.
+///////////////////////////////////////////////
+
+    // the random generator in this game is not uniform at all.
+    float fLootChance = 0.5* fLootMod;
+    if(fLootChance == 0.0) fLootChance = 0.5;
+    if(fLootChance < 0.0) fLootChance = 0.0;
+
+    int dice = Random(10000);
+    int iChance = FloatToInt(fLootChance*10000);
+
+    if( (dice <= iChance) && (GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) > 50) )
+    {
+        if(GetAbilityScore(OBJECT_SELF,ABILITY_INTELLIGENCE) > 3)
+        {
+            int class = GetClassByPosition(0,OBJECT_SELF);
+
+            if(class == CLASS_TYPE_ASSASSIN) SetLocalInt(sack,"Assassin",TRUE);
+            if(class == CLASS_TYPE_BARD) SetLocalInt(sack,"Bard",1);
+            if(class == CLASS_TYPE_MONK) SetLocalInt(sack,"Monk",1);
+            if(class == CLASS_TYPE_CLERIC) SetLocalInt(sack,"Cleric",1);
+            if(class == CLASS_TYPE_FIGHTER)  SetLocalInt(sack,"Fighter",1);
+            if(class == CLASS_TYPE_GIANT) SetLocalInt(sack,"Giant",1);
+            if(class == CLASS_TYPE_ROGUE) SetLocalInt(sack,"Rogue",1);
+            if(class == CLASS_TYPE_WIZARD) SetLocalInt(sack,"Wizard",1);
+            if(class == CLASS_TYPE_DRUID) SetLocalInt(sack,"Druid",1);
+            if(class == CLASS_TYPE_RANGER) SetLocalInt(sack,"Ranger",1);
+            if(class == CLASS_TYPE_PALADIN) SetLocalInt(sack,"Paladin",1);
+            if(class == CLASS_TYPE_DRAGON) SetLocalInt(sack,"Dragon",1);
+            /*
+            if(class == CLASS_TYPE_OUTSIDER) SetLocalInt(sack,"Outsider",1);
+            if(class == CLASS_TYPE_ABERRATION) SetLocalInt(sack,"Abberation",1);
+            if(class == CLASS_TYPE_UNDEAD) SetLocalInt(sack,"Undead",1);
+            if(class == CLASS_TYPE_MAGICAL_BEAST) SetLocalInt(sack,"MagicalBeast",1);
+            */
+            int rt = GetRacialType(OBJECT_SELF);
+            if( rt != RACIAL_TYPE_ANIMAL &&
+                rt != RACIAL_TYPE_VERMIN &&
+                rt != RACIAL_TYPE_BEAST &&
+                rt != RACIAL_TYPE_CONSTRUCT &&
+                rt != RACIAL_TYPE_OOZE &&
+                rt != RACIAL_TYPE_UNDEAD)
+            {
+                //SendMessageToPC(GetFirstPC(),"Lutes");
+                iChestLevel = GetCharacterLevel(OBJECT_SELF);
+                dice = Random(10000);
+
+                // it will just drop socket way too much no matter what I do.
+                //if(dice <= iSocketedLootChance)
+                //    sd_droploot(OBJECT_SELF,OBJECT_SELF);
+                //else
+                    Lutes(OBJECT_SELF);
+            }
+        }
+    }
+
+/////////////////////////
+// Upgrade and Enhance
+//////////////////////////
+    if(!bMunchkin)
+    {
+        if( (GetLocalInt(GetModule(),"difficulty") >= 0 || GetLocalInt(OBJECT_SELF,"bForceLvlUp")==1) )
+        {
+            if(GetLocalInt(OBJECT_SELF,"bNeverLvlUp")==0)
+            {
+                EnhanceSkin();
+                EnhanceItems();
+                Upgrade();
+            }
+        }
+
+        if( (GetIsMagicUser(OBJECT_SELF) || GetIsCleric(OBJECT_SELF)))
+        {
+            oObject = OBJECT_SELF;
+            iChestLevel = GetCharacterLevel(OBJECT_SELF);
+            PersonalSpellBook();
+        }
+    }
+
+////////////////////////////////////
+// Modify Armour and Weapons
+////////////////////////////////////
+    if(bModifyArmorAndWeapons == TRUE)
+    {
+        object oArmor = GetItemInSlot(INVENTORY_SLOT_CHEST);
+        if(GetIsObjectValid(oArmor))
+        {
+            oArmor = ModifyArmor(oArmor);
+            if(GetIsObjectValid(oArmor)) {
+                ActionEquipItem(oArmor,INVENTORY_SLOT_CHEST);
+                DelayCommand(0.1,ForceArmor(OBJECT_SELF,oArmor));
+            }
+        }
+
+        object oWeapon = GetItemInSlot(INVENTORY_SLOT_RIGHTHAND);
+        if(GetIsObjectValid(oWeapon) && FindSubString(GetTag(oWeapon),"nw_it_cre") == -1)
+        {
+            object oNew = ModifyWeapon(oWeapon);
+            if(GetIsObjectValid(oNew))
+                AssignCommand(OBJECT_SELF,ActionEquipItem(oNew,INVENTORY_SLOT_RIGHTHAND));
+        }
+        if(d20() == 1) IncreaseWeaponSize(oWeapon);
+
+        oWeapon = GetItemInSlot(INVENTORY_SLOT_LEFTHAND);
+        if(GetIsObjectValid(oWeapon))
+        {
+            if(GetMeleeWeapon(oWeapon))
+            {
+                oWeapon = ModifyWeapon(oWeapon);
+                if(GetIsObjectValid(oWeapon))
+                    AssignCommand(OBJECT_SELF,ActionEquipItem(oWeapon,INVENTORY_SLOT_LEFTHAND));
+            }
+            else if(GetBaseItemType(oWeapon) == BASE_ITEM_SMALLSHIELD ||
+                    GetBaseItemType(oWeapon) == BASE_ITEM_LARGESHIELD ||
+                    GetBaseItemType(oWeapon) == BASE_ITEM_TOWERSHIELD)
+            {
+                oWeapon = ModifyShield(oWeapon);
+                if(GetIsObjectValid(oWeapon))
+                    AssignCommand(OBJECT_SELF,ActionEquipItem(oWeapon,INVENTORY_SLOT_LEFTHAND));
+            }
+
+        }
+    }
+
+
 
         SetSpawnInCondition(NW_FLAG_FAST_BUFF_ENEMY);
         SetSpawnInCondition(NW_FLAG_END_COMBAT_ROUND_EVENT);
