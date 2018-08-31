@@ -293,6 +293,15 @@ int RogueChanceMisc   = 40;
 int RogueChancePotions = 50;
 int RogueChanceScrolls = 50;
 
+
+int MonkChanceBelt = 20;
+int MonkChanceCloak = 20;
+int MonkChanceBoots = 20;
+int MonkChanceGauntlet = 20;
+int MonkChanceRings = 10;
+int MonkChanceAmulets = 10;
+int MonkChancePotions=40;
+
 // base level for item property upgrade
 int IMBUE_ATTACK_BONUS = 1;
 int IMBUE_ATTACK_BONUS_VS_RACE = 1;

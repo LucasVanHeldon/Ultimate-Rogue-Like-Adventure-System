@@ -656,170 +656,170 @@ int PSYCHIC_SpecialAttack(int nPoints)
         return 7;
     }
 
-    if(nPoints > 0 && d6() < 3)
+    if(nPoints > 0 && d6() < 4)
     {
         PSYCHIC_Haste();
         return 1;
     }
-     if(nPoints > 0 && d6() < 3)
+     if(nPoints > 0 && d6() < 4)
     {
         PSYCHIC_Speed();
         return 1;
     }
 
-   if(nPoints > 1 && d6() < 3)
+   if(nPoints > 1 && d6() < 4)
     {
         PSYCHIC_Will();
         return 5;
     }
-   if(nPoints > 1 && d6() < 3)
+   if(nPoints > 1 && d6() < 4)
     {
         PSYCHIC_MindOverMatter();
         return 5;
     }
-   if(nPoints > 1 && d6() < 3)
+   if(nPoints > 1 && d6() < 4)
     {
         PSYCHIC_MindOverReality();
         return 5;
     }
-  if(nPoints > 1 && d6() < 3)
+  if(nPoints > 1 && d6() < 4)
    {
         PSYCHIC_MindOverBody();
         return 5;
    }
-    if(nPoints > 3 && d6() < 3)
+    if(nPoints > 3 && d6() < 4)
     {
         PSYCHIC_MindBlast();
         return 2;
     }
 
-   if(nPoints > 1 && d6() < 3)
+   if(nPoints > 1 && d6() < 4)
    {
         PSYCHIC_BeatTheOdds();
         return 3;
    }
 
-   if(nPoints > 15 && d6() < 3)
+   if(nPoints > 15 && d6() < 4)
     {
         PSYCHIC_Enervation();
         return 10;
     }
 
-   if(nPoints > 10 && d6() < 3)
+   if(nPoints > 10 && d6() < 4)
     {
         PSYCHIC_Entomb();
         return 8;
     }
 
-    if(nPoints > 7 && d6() < 3)
+    if(nPoints > 7 && d6() < 4)
     {
         PSYCHIC_MindCrush();
         return 10;
     }
-    if(nPoints > 7 && d6() < 3)
+    if(nPoints > 7 && d6() < 4)
     {
         PSYCHIC_EgoWhip();
         return 9;
     }
 
-   if(nPoints > 3 && d6() < 3)
+   if(nPoints > 3 && d6() < 4)
     {
         PSYCHIC_Shield();
         return 7;
     }
 
-   if(nPoints > 2 && d6() < 3)
+   if(nPoints > 2 && d6() < 4)
     {
         PSYCHIC_Cripple();
         return 7;
     }
 
-   if(nPoints > 2 && d6() < 3)
+   if(nPoints > 2 && d6() < 4)
     {
         PSYCHIC_Contagion();
         return 7;
     }
 
-   if(nPoints > 3 && d6() < 3)
+   if(nPoints > 3 && d6() < 4)
     {
         PSYCHIC_Confusion();
         return 7;
     }
 
-   if(nPoints > 2 && d6() < 3)
+   if(nPoints > 2 && d6() < 4)
     {
         PSYCHIC_Concealment();
         return 6;
     }
 
-   if(nPoints > 3 && d6() < 3)
+   if(nPoints > 3 && d6() < 4)
     {
         PSYCHIC_Paralysis();
         return 6;
     }
 
-   if(nPoints > 2 && d6() < 3)
+   if(nPoints > 2 && d6() < 4)
     {
         PSYCHIC_Deafness();
         return 5;
     }
 
-   if(nPoints > 1 && d6() < 3)
+   if(nPoints > 1 && d6() < 4)
     {
         PSYCHIC_Adhesive();
         return 5;
     }
 
-   if(nPoints > 1 && d6() < 3)
+   if(nPoints > 1 && d6() < 4)
    {
         PSYCHIC_Silence();
         return 4;
    }
 
-   if(nPoints > 2 && d6() < 3)
+   if(nPoints > 2 && d6() < 4)
    {
         PSYCHIC_Vulnerability();
         return 3;
    }
 
-   if(nPoints > 2 && d6() < 3)
+   if(nPoints > 2 && d6() < 4)
    {
         PSYCHIC_ReducePower();
         return 3;
    }
 
-   if(nPoints > 2 && d6() < 3)
+   if(nPoints > 2 && d6() < 4)
    {
         PSYCHIC_IncreasePower();
         return 3;
    }
 
-   if(nPoints > 1 && d6() < 3)
+   if(nPoints > 1 && d6() < 4)
     {
         PSYCHIC_Strength();
         return 2;
     }
-   if(nPoints > 1 && d6() < 3)
+   if(nPoints > 1 && d6() < 4)
     {
         PSYCHIC_Dexterity();
         return 2;
     }
-   if(nPoints > 1 && d6() < 3)
+   if(nPoints > 1 && d6() < 4)
     {
         PSYCHIC_Constitution();
         return 2;
     }
-    if(nPoints > 0 && d6() < 3)
+    if(nPoints > 0 && d6() < 4)
     {
         PSYCHIC_Charm();
         return 1;
     }
-    if(nPoints > 0 && d6() < 3)
+    if(nPoints > 0 && d6() < 4)
     {
         PSYCHIC_Daze();
         return 1;
     }
-    if(nPoints > 0 && d6() < 3)
+    if(nPoints > 0 && d6() < 4)
     {
         PSYCHIC_DetectInvisibility();
         return 1;

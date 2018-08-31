@@ -202,7 +202,8 @@ void PlacePotions(int max)
 void GenerateWand()
 {
     string item = "lutes_wand";
-    object oitem = CreateObject(OBJECT_TYPE_ITEM,item,GetLocation(GetObjectByTag("DUMMYCHEST")));
+    object oitem; // = CreateObject(OBJECT_TYPE_ITEM,item,GetLocation(GetObjectByTag("DUMMYCHEST")));
+    oitem = CreateItemOnObject(item,oObject);
     SetIdentified(oitem,bIdentified);
     struct sEnchantments Enchants;
 
@@ -238,7 +239,8 @@ void GenerateWand()
 void GenerateStaff()
 {
     string item = "lutes_staff";
-    object oitem = CreateObject(OBJECT_TYPE_ITEM,item,GetLocation(GetObjectByTag("DUMMYCHEST")));
+    object oitem; //CreateObject(OBJECT_TYPE_ITEM,item,GetLocation(GetObjectByTag("DUMMYCHEST")));
+    oitem = CreateItemOnObject(item,oObject);
     SetIdentified(oitem,bIdentified);
     struct sEnchantments Enchants;
 

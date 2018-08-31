@@ -56,7 +56,7 @@ void Fill(int CR,object o = OBJECT_SELF)
 
 void main()
 {
-    SendMessageToPC(GetFirstPC(),"ENC Bugbears");
+    //SendMessageToPC(GetFirstPC(),"ENC Bugbears");
     PopulateVars(OBJECT_SELF,0,sCR0);
 
    // int EL = CalcEL(OBJECT_SELF);

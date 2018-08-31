@@ -77,7 +77,7 @@ void GenerateRing()
 
     object oldItem=oRing;
     oRing = OBJECT_INVALID;
-    oRing= CopyItemAndModify(oldItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(255));
+    oRing= CopyItemAndModify(oldItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(10));
     if(GetIsObjectValid(oRing)) DestroyObject(oldItem);
 
     Enchants.oItem = oRing;
@@ -99,7 +99,7 @@ void GenerateAmulet()
 
     object oldItem=oAmulet;
     oAmulet = OBJECT_INVALID;
-    oAmulet= CopyItemAndModify(oldItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(255));
+    oAmulet= CopyItemAndModify(oldItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(10));
     if(GetIsObjectValid(oAmulet)) DestroyObject(oldItem);
 
     Enchants.oItem = oAmulet;

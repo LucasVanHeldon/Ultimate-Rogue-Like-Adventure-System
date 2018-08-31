@@ -2,6 +2,28 @@
 
 // ranged and other weapons use lutes_roweapons
 
+object ModifyWeapon(object oWeapon)
+{
+
+    object oItem = oWeapon;
+    object old = oWeapon;
+    oItem=    IPGetModifiedWeapon(oItem,ITEM_APPR_WEAPON_COLOR_BOTTOM,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    oItem=    IPGetModifiedWeapon(oItem,ITEM_APPR_WEAPON_COLOR_TOP,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    oItem=    IPGetModifiedWeapon(oItem,ITEM_APPR_WEAPON_MODEL_BOTTOM,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    oItem=    IPGetModifiedWeapon(oItem,ITEM_APPR_WEAPON_MODEL_MIDDLE,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    oItem=    IPGetModifiedWeapon(oItem,ITEM_APPR_WEAPON_MODEL_TOP,X2_IP_ARMORTYPE_RANDOM,TRUE);
+
+    if(GetIsObjectValid(oItem))
+    {
+        AssignCommand(oObject,ActionEquipItem(oItem,INVENTORY_SLOT_RIGHTHAND));
+        DestroyObject(old);
+    }
+
+    return oItem;
+}
+
+
+
 struct sEnchantments EnhanceWeapon(struct sEnchantments Enchants, int amount)
 {
     int iInitEnhance = amount;
@@ -1118,22 +1140,16 @@ void GenerateMeleeWeapon(int type = -1)
 
 
 
-    ItemInfo.oItem = CreateObject(OBJECT_TYPE_ITEM,ItemInfo.sBluePrint,GetLocation(GetObjectByTag("DUMMYCHEST")));
+    //ItemInfo.oItem = CreateObject(OBJECT_TYPE_ITEM,ItemInfo.sBluePrint,GetLocation(GetObjectByTag("DUMMYCHEST")));
+    ItemInfo.oItem = CreateItemOnObject(ItemInfo.sBluePrint,oObject);
     if( !GetIsObjectValid(ItemInfo.oItem) )
     {
         PrintString("Create Weapon " + ItemInfo.sName + " bp="+ItemInfo.sBluePrint+" failed.");
         return;
     }
 
-    ItemInfo.oItem=    IPGetModifiedWeapon(ItemInfo.oItem,ITEM_APPR_WEAPON_COLOR_BOTTOM,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    ItemInfo.oItem=    IPGetModifiedWeapon(ItemInfo.oItem,ITEM_APPR_WEAPON_COLOR_TOP,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    ItemInfo.oItem=    IPGetModifiedWeapon(ItemInfo.oItem,ITEM_APPR_WEAPON_MODEL_BOTTOM,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    ItemInfo.oItem=    IPGetModifiedWeapon(ItemInfo.oItem,ITEM_APPR_WEAPON_MODEL_MIDDLE,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    ItemInfo.oItem=    IPGetModifiedWeapon(ItemInfo.oItem,ITEM_APPR_WEAPON_MODEL_TOP,X2_IP_ARMORTYPE_RANDOM,TRUE);
 
-    object o = CopyItem(ItemInfo.oItem,oObject);
-    DestroyObject(ItemInfo.oItem);
-    ItemInfo.oItem = o;
+    ItemInfo.oItem = ModifyWeapon(ItemInfo.oItem);
 
     EnchantWeapon(ItemInfo);
 }

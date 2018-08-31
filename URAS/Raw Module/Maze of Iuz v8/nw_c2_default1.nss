@@ -98,7 +98,8 @@ void main()
         SignalEvent(OBJECT_SELF, EventUserDefined(EVENT_HEARTBEAT));
     }
 
-    if(GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) == 100)
+    /*
+    if(GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) > 50)
         ExecuteScript("random_encounter",OBJECT_SELF);
-
+   */
 }

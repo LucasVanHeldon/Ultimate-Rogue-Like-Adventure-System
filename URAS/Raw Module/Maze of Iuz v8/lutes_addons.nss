@@ -31,7 +31,7 @@ void GenerateMiscItem()
 
     object oItem = CreateItemOnObject(s,oObject);
     object oldItem=oItem;
-    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(255));
+    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(10));
     if(GetIsObjectValid(oItem)) DestroyObject(oldItem);
 
 }
@@ -3679,3 +3679,8 @@ void GenerateTrash()
     CreateItemOnObject(s,oObject);
 }
 
+void PlaceTrash(int n)
+{
+    int i;
+    for(i = 0; i < n; i++) GenerateTrash();
+}

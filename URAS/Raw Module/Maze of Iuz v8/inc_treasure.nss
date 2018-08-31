@@ -70,14 +70,9 @@ void TRS_CreateScroll(int n)
     for(i = 0; i < n; i++)
     {
         int n = d2();
-        if( IsCleric(OBJECT_SELF) ) n = 2;
-        else n = 1;
-        switch(n)
-        {
-        case 1: CreateArcaneScroll(OBJECT_SELF,GetLastOpener(), Random(100)); break;
-        case 2: CreateDivineScroll(OBJECT_SELF,GetLastOpener(), Random(100)); break;
-        }
+        CreateStdScroll();
     }
+
 }
 
 

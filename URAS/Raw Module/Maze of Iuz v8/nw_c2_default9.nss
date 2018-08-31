@@ -22,7 +22,7 @@
 int iSocketedLootChance = 0;
 int bMunchkin = FALSE;          // Set to TRUE if you want to use the munchkin (no monster upgrades)
 int bOC = TRUE;                 // Set to TRUE if compiling for Official campaign
-int bModifyArmorAndWeapons=TRUE;
+int bModifyArmorAndWeapons=FALSE;
 
 
 void PersonalSpellBook()
@@ -31,7 +31,7 @@ void PersonalSpellBook()
     info.sBluePrint = "lutes_spells";
     info.oItem = CreateItemOnObject("lutes_spells",oObject);
     object oldItem=info.oItem;
-    info.oItem= CopyItemAndModify(info.oItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(255));
+    info.oItem= CopyItemAndModify(info.oItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(10));
     if(GetIsObjectValid(info.oItem)) DestroyObject(oldItem);
 
     int i;
@@ -159,7 +159,7 @@ void LevelUp()
         if(!LevelUpHenchman(OBJECT_SELF,class1,TRUE))
             if(!LevelUpHenchman(OBJECT_SELF,class2,TRUE))
                 if(!LevelUpHenchman(OBJECT_SELF,class3,TRUE))
-                    if(!LevelUpHenchman(OBJECT_SELF,Random(41),TRUE,Random(255)))
+                    if(!LevelUpHenchman(OBJECT_SELF,Random(41),TRUE,Random(256)))
                     {
                         SendMessageToPC(GetFirstPC(),GetName(OBJECT_SELF) + " failed to lvl up.");
                         break;
@@ -169,91 +169,6 @@ void LevelUp()
 
 }
 
-object ModifyArmor(object oItem)
-{
-    int color1=Random(63);
-    int color2=Random(63);
-    int color3=Random(63);
-
-    oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_CLOTH1,color1);
-    oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_CLOTH2,color2);
-    // fashion power, gaudy
-    if(d10()==1) {
-        color1 = Random(63);
-        color2 = Random(63);
-    }
-    oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_LEATHER1,color1);
-    oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_LEATHER2,color2);
-    if(d10()==1) {
-        color1 = Random(63);
-        color2 = Random(63);
-    }
-
-    oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_METAL1,color1);
-    oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_METAL2,color2);
-
-    oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LBICEP,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LFOOT,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LFOREARM,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LHAND,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LSHIN,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LSHOULDER,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LTHIGH,X2_IP_ARMORTYPE_RANDOM,TRUE);
-
-    int nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LTHIGH);
-    object oOld = oItem;
-    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RTHIGH,nPart);
-    DestroyObject(oOld);
-
-    oOld = oItem;
-    nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LBICEP);
-    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RBICEP,nPart);
-    DestroyObject(oOld);
-
-    oOld = oItem;
-    nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LFOOT);
-    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RFOOT,nPart);
-    DestroyObject(oOld);
-
-    oOld = oItem;
-    nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LFOREARM);
-    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RFOREARM,nPart);
-    DestroyObject(oOld);
-
-    oOld = oItem;
-    nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LHAND);
-    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RHAND,nPart);
-    DestroyObject(oOld);
-
-    oOld = oItem;
-    nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LSHIN);
-    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RSHIN,nPart);
-    DestroyObject(oOld);
-
-    oOld = oItem;
-    nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LSHOULDER);
-    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RSHOULDER,nPart);
-    DestroyObject(oOld);
-
-    oOld = oItem;
-    nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LTHIGH);
-    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RTHIGH,nPart);
-    DestroyObject(oOld);
-
-
-    //oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_TORSO,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    //oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_ROBE,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    //oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_BELT,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    //oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_NECK,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    //oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_PELVIS,X2_IP_ARMORTYPE_RANDOM,TRUE);
-
-    // chance it will be a robe.
-    if(GetItemACValue(oItem) == 0 && d6() < 2)
-    {
-        oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_ROBE,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    }
-    return oItem;
-}
 
 object GetSkin()
 {
@@ -800,37 +715,7 @@ void ForceArmor(object o, object oArmor)
 
 
 
-object ModifyWeapon(object oWeapon)
-{
 
-    object oItem = oWeapon;
-    object old = oWeapon;
-    oItem=    IPGetModifiedWeapon(oItem,ITEM_APPR_WEAPON_COLOR_BOTTOM,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    oItem=    IPGetModifiedWeapon(oItem,ITEM_APPR_WEAPON_COLOR_TOP,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    oItem=    IPGetModifiedWeapon(oItem,ITEM_APPR_WEAPON_MODEL_BOTTOM,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    oItem=    IPGetModifiedWeapon(oItem,ITEM_APPR_WEAPON_MODEL_MIDDLE,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    oItem=    IPGetModifiedWeapon(oItem,ITEM_APPR_WEAPON_MODEL_TOP,X2_IP_ARMORTYPE_RANDOM,TRUE);
-
-    if(GetIsObjectValid(oItem))
-    {
-        DestroyObject(old);
-    }
-
-    return oItem;
-}
-
-
-object ModifyShield(object oShield)
-{
-    object oldItem=oShield;
-    object oItem= CopyItemAndModify(oShield, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(255));
-    if(GetIsObjectValid(oItem))
-    {
-        DestroyObject(oldItem);
-    }
-
-    return oItem;
-}
 
 int NumAlliesNearby()
 {
@@ -998,12 +883,11 @@ void main()
 // Templates
 //////////////////////////////////////
 
-        if(d10() == 1  && GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) == 100)
+        if(d10() == 1  && GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) > 10)
         {
-            int bMagic = FALSE;
 
             SetLocalInt(OBJECT_SELF,"bForceLvlUp",TRUE);
-            SetLocalInt(OBJECT_SELF,"X2_NAME_RANDOM",1);
+            //SetLocalInt(OBJECT_SELF,"X2_NAME_RANDOM",1);
 
             if(IsMagicUser(OBJECT_SELF))
             {
@@ -1015,13 +899,13 @@ void main()
                 case 3: SetLocalInt(OBJECT_SELF,"bTheurgist",TRUE); break;
                 case 4: SetLocalInt(OBJECT_SELF,"bEvoker",TRUE); break;
                 }
-                bMagic = TRUE;
+
             }
-
-
-            if(!bMagic && (rt != RACIAL_TYPE_UNDEAD && rt != RACIAL_TYPE_CONSTRUCT && rt != RACIAL_TYPE_ELEMENTAL))
+            else if(rt != RACIAL_TYPE_UNDEAD && rt != RACIAL_TYPE_CONSTRUCT && rt != RACIAL_TYPE_ELEMENTAL)
             {
-                switch(Random(16))
+                int n = Random(16);
+                SendMessageToPC(GetFirstPC(),IntToString(n));
+                switch(n)
                 {
                 case 0: SetLocalInt(OBJECT_SELF,"bHalfFiend",TRUE); break;
                 case 1: SetLocalInt(OBJECT_SELF,"bHalfAir",TRUE); break;
@@ -1065,7 +949,7 @@ void main()
                 }
             }
         }
-        if(d20() == 1 && GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) == 100)
+        if(d20() == 1 && GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) > 10)
         {
             SetLocalInt(OBJECT_SELF,"bForceLvlUp",TRUE);
             IncreaseSizeTemplate();
@@ -1348,16 +1232,16 @@ void main()
             oCW = GetItemInSlot(INVENTORY_SLOT_CWEAPON_B);
             IPSafeAddItemProperty(oCW,ip);
 
-            if(GetHitDice(OBJECT_SELF) >= 1) SetLocalInt(oSkin,"bNumSPELL_SCARE",3);
-            if(GetHitDice(OBJECT_SELF) >= 3) SetLocalInt(oSkin,"bNumSPELL_CHARM_PERSON",3);
-            if(GetHitDice(OBJECT_SELF) >= 5) SetLocalInt(oSkin,"bNumSPELL_FEAR",1);
-            if(GetHitDice(OBJECT_SELF) >= 7) SetLocalInt(oSkin,"bNumSPELL_CHARM_MONSTER",3);
-            if(GetHitDice(OBJECT_SELF) >= 9) SetLocalInt(oSkin,"bNumSPELL_DOMINATE_PERSON",1);
-            if(GetHitDice(OBJECT_SELF) >= 11) SetLocalInt(oSkin,"bNumSPELL_MASS_CHARM_PERSON",1);
-            if(GetHitDice(OBJECT_SELF) >= 13) SetLocalInt(oSkin,"bNumSPELL_UNHOLY_AURA",1);
-            if(GetHitDice(OBJECT_SELF) >= 15) SetLocalInt(oSkin,"bNumSPELL_MASS_CHARM_MONSTER",1);
-            if(GetHitDice(OBJECT_SELF) >= 17) SetLocalInt(oSkin,"bNumSPELL_SUMMON_CREATURE_IX",1);
-            if(GetHitDice(OBJECT_SELF) >= 19) SetLocalInt(oSkin,"bNumSPELL_DOMINATE_MONSTER",1);
+            if(GetHitDice(OBJECT_SELF) >= 1) SetLocalInt(OBJECT_SELF,"bNumSPELL_SCARE",3);
+            if(GetHitDice(OBJECT_SELF) >= 3) SetLocalInt(OBJECT_SELF,"bNumSPELL_CHARM_PERSON",3);
+            if(GetHitDice(OBJECT_SELF) >= 5) SetLocalInt(OBJECT_SELF,"bNumSPELL_FEAR",1);
+            if(GetHitDice(OBJECT_SELF) >= 7) SetLocalInt(OBJECT_SELF,"bNumSPELL_CHARM_MONSTER",3);
+            if(GetHitDice(OBJECT_SELF) >= 9) SetLocalInt(OBJECT_SELF,"bNumSPELL_DOMINATE_PERSON",1);
+            if(GetHitDice(OBJECT_SELF) >= 11) SetLocalInt(OBJECT_SELF,"bNumSPELL_MASS_CHARM_PERSON",1);
+            if(GetHitDice(OBJECT_SELF) >= 13) SetLocalInt(OBJECT_SELF,"bNumSPELL_UNHOLY_AURA",1);
+            if(GetHitDice(OBJECT_SELF) >= 15) SetLocalInt(OBJECT_SELF,"bNumSPELL_MASS_CHARM_MONSTER",1);
+            if(GetHitDice(OBJECT_SELF) >= 17) SetLocalInt(OBJECT_SELF,"bNumSPELL_SUMMON_CREATURE_IX",1);
+            if(GetHitDice(OBJECT_SELF) >= 19) SetLocalInt(OBJECT_SELF,"bNumSPELL_DOMINATE_MONSTER",1);
 
             SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT","x2_ai_template");
         }
@@ -1779,15 +1663,15 @@ void main()
             }
 
             ip = ItemPropertyDarkvision(); IPSafeAddItemProperty(oSkin,ip);
-            if(GetHitDice(OBJECT_SELF) >= 1) SetLocalInt(oSkin,"bNumSPELL_BLESS",1);
-            if(GetHitDice(OBJECT_SELF) >= 1) SetLocalInt(oSkin,"bNumSPELL_LIGHT",-1);
-            if(GetHitDice(OBJECT_SELF) >= 2) SetLocalInt(oSkin,"bNumSPELL_PROTECTION_FROM_EVIL",3);
-            if(GetHitDice(OBJECT_SELF) >= 3) SetLocalInt(oSkin,"bNumSPELL_AID",1);
-            if(GetHitDice(OBJECT_SELF) >= 5) SetLocalInt(oSkin,"bNumSPELL_CURE_SERIOUS_WOUNDS",1);
-            if(GetHitDice(OBJECT_SELF) >= 6) SetLocalInt(oSkin,"bNumSPELL_REMOVE_DISEASE",1);
-            if(GetHitDice(OBJECT_SELF) >= 15) SetLocalInt(oSkin,"bNumSPELL_MASS_CHARM_MONSTER",1);
-            if(GetHitDice(OBJECT_SELF) >= 17) SetLocalInt(oSkin,"bNumSPELL_SUMMON_MONSTER_IX",1);
-            if(GetHitDice(OBJECT_SELF) >= 19) SetLocalInt(oSkin,"bNumSPELL_RESSURECTION",1);
+            if(GetHitDice(OBJECT_SELF) >= 1) SetLocalInt(OBJECT_SELF,"bNumSPELL_BLESS",1);
+            if(GetHitDice(OBJECT_SELF) >= 1) SetLocalInt(OBJECT_SELF,"bNumSPELL_LIGHT",-1);
+            if(GetHitDice(OBJECT_SELF) >= 2) SetLocalInt(OBJECT_SELF,"bNumSPELL_PROTECTION_FROM_EVIL",3);
+            if(GetHitDice(OBJECT_SELF) >= 3) SetLocalInt(OBJECT_SELF,"bNumSPELL_AID",1);
+            if(GetHitDice(OBJECT_SELF) >= 5) SetLocalInt(OBJECT_SELF,"bNumSPELL_CURE_SERIOUS_WOUNDS",1);
+            if(GetHitDice(OBJECT_SELF) >= 6) SetLocalInt(OBJECT_SELF,"bNumSPELL_REMOVE_DISEASE",1);
+            if(GetHitDice(OBJECT_SELF) >= 15) SetLocalInt(OBJECT_SELF,"bNumSPELL_MASS_CHARM_MONSTER",1);
+            if(GetHitDice(OBJECT_SELF) >= 17) SetLocalInt(OBJECT_SELF,"bNumSPELL_SUMMON_MONSTER_IX",1);
+            if(GetHitDice(OBJECT_SELF) >= 19) SetLocalInt(OBJECT_SELF,"bNumSPELL_RESSURECTION",1);
 
             if(GetHitDice(OBJECT_SELF) > 7)
             {
@@ -1861,17 +1745,17 @@ void main()
             ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
 
             ip = ItemPropertyDarkvision(); IPSafeAddItemProperty(oSkin,ip);
-            if(GetHitDice(OBJECT_SELF) >= 1) SetLocalInt(oSkin,"bSPELL_DARKNESS",3);
-            if(GetHitDice(OBJECT_SELF) >= 3) SetLocalInt(oSkin,"bSPELL_BANE",1);
-            if(GetHitDice(OBJECT_SELF) >= 3) SetLocalInt(oSkin,"bSPELL_DOOM",1);
-            if(GetHitDice(OBJECT_SELF) >= 7) SetLocalInt(oSkin,"bSPELL_POISON",1);
-            if(GetHitDice(OBJECT_SELF) >= 8) SetLocalInt(oSkin,"bSPELL_CONTAGION",1);
-            if(GetHitDice(OBJECT_SELF) >= 9) SetLocalInt(oSkin,"bSPELL_CIRCLE_OF_DOOM",1);
-            if(GetHitDice(OBJECT_SELF) >= 11) SetLocalInt(oSkin,"bSPELL_UNHOLY_AURA",1);
-            if(GetHitDice(OBJECT_SELF) >= 13) SetLocalInt(oSkin,"bSPELL_MASS_CHARM_MONSTER",1);
-            if(GetHitDice(OBJECT_SELF) >= 15) SetLocalInt(oSkin,"bSPELL_HORRID_WILTING",1);
-            if(GetHitDice(OBJECT_SELF) >= 17) SetLocalInt(oSkin,"bSPELL_SUMMON_CREATURE_IX",1);
-            if(GetHitDice(OBJECT_SELF) >= 19) SetLocalInt(oSkin,"bSPELL_DESTRUCTION",1);
+            if(GetHitDice(OBJECT_SELF) >  0) SetLocalInt(OBJECT_SELF,"bSPELL_DARKNESS",3);
+            if(GetHitDice(OBJECT_SELF) >= 3) SetLocalInt(OBJECT_SELF,"bSPELL_BANE",1);
+            if(GetHitDice(OBJECT_SELF) >= 3) SetLocalInt(OBJECT_SELF,"bSPELL_DOOM",1);
+            if(GetHitDice(OBJECT_SELF) >= 7) SetLocalInt(OBJECT_SELF,"bSPELL_POISON",1);
+            if(GetHitDice(OBJECT_SELF) >= 8) SetLocalInt(OBJECT_SELF,"bSPELL_CONTAGION",1);
+            if(GetHitDice(OBJECT_SELF) >= 9) SetLocalInt(OBJECT_SELF,"bSPELL_CIRCLE_OF_DOOM",1);
+            if(GetHitDice(OBJECT_SELF) >= 11) SetLocalInt(OBJECT_SELF,"bSPELL_UNHOLY_AURA",1);
+            if(GetHitDice(OBJECT_SELF) >= 13) SetLocalInt(OBJECT_SELF,"bSPELL_MASS_CHARM_MONSTER",1);
+            if(GetHitDice(OBJECT_SELF) >= 15) SetLocalInt(OBJECT_SELF,"bSPELL_HORRID_WILTING",1);
+            if(GetHitDice(OBJECT_SELF) >= 17) SetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_IX",1);
+            if(GetHitDice(OBJECT_SELF) >= 19) SetLocalInt(OBJECT_SELF,"bSPELL_DESTRUCTION",1);
 
             if(GetHitDice(OBJECT_SELF) > 1)
             {
@@ -1898,7 +1782,7 @@ void main()
             if(GetHitDice(OBJECT_SELF) >= 1) SetLocalInt(oSkin,"bNumSPELL_WAR_CRY",3);
             SetName(OBJECT_SELF,"(Blooded)"+ GetName(OBJECT_SELF));
         }
-        else if(GetStandardFactionReputation(STANDARD_FACTION_HOSTILE,OBJECT_SELF) > 75)
+        else if(GetStandardFactionReputation(STANDARD_FACTION_HOSTILE,OBJECT_SELF) > 50)
         {
             if(d10() == 1)
             {
@@ -1906,10 +1790,10 @@ void main()
                 SetName(OBJECT_SELF,"(Mutant) " + GetName(OBJECT_SELF));
             }
         }
-        //else if(GetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT")=="" && d20()==1)
-        //    TemplateType();
+        else if(GetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT")=="" && d10()==1)
+            TemplateType();
 
-        /* This can cause a recursive mess to happen if too many spawn with them.
+
         if(GetLocalInt(OBJECT_SELF,"bMinions")==TRUE)
         {
             ExecuteScript(GetLocalString(OBJECT_SELF,"sMinionScript"),OBJECT_SELF);
@@ -1918,7 +1802,7 @@ void main()
         {
             ExecuteScript(GetLocalString(OBJECT_SELF,"sHenchmenScript"),OBJECT_SELF);
         }
-        */
+
 
         else if(GetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT")=="")
         {
@@ -2179,6 +2063,7 @@ void main()
             }
 
         }
+
     }
 
 

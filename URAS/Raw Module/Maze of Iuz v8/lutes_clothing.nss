@@ -7,7 +7,7 @@ void GenerateBelt()
 
     object oldItem=oBelt;
     oBelt = OBJECT_INVALID;
-    oBelt = CopyItemAndModify(oldItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(255));
+    oBelt = CopyItemAndModify(oldItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(10));
     if(GetIsObjectValid(oBelt)) DestroyObject(oldItem);
     else oBelt = oldItem;
 
@@ -26,7 +26,7 @@ void GenerateBoots()
 
     object oldItem=oItem;
     oItem = OBJECT_INVALID;
-    oItem= CopyItemAndModify(oldItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(255));
+    oItem= CopyItemAndModify(oldItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(10));
     if(GetIsObjectValid(oItem)) DestroyObject(oldItem);
     else oItem = oldItem;
 
@@ -47,7 +47,7 @@ void GenerateBracer()
 
     object oldItem=oItem;
     oItem = OBJECT_INVALID;
-    oItem= CopyItemAndModify(oldItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(255));
+    oItem= CopyItemAndModify(oldItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(10));
     if(GetIsObjectValid(oItem)) DestroyObject(oldItem);
     else oItem = oldItem;
     Enchants.oItem = oItem;
@@ -65,7 +65,7 @@ void GenerateGauntlet()
 
     object oldItem=oItem;
     oItem = OBJECT_INVALID;
-    oItem= CopyItemAndModify(oldItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(255));
+    oItem= CopyItemAndModify(oldItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(10));
     if(GetIsObjectValid(oItem)) DestroyObject(oldItem);
     else oItem = oldItem;
 
@@ -85,7 +85,7 @@ void GenerateCloak()
 
     object oldItem=oItem;
     oItem = OBJECT_INVALID;
-    oItem= CopyItemAndModify(oldItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(255));
+    oItem= CopyItemAndModify(oldItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(10));
     if(GetIsObjectValid(oItem)) DestroyObject(oldItem);
     else oItem = oldItem;
     Enchants.oItem = oItem;

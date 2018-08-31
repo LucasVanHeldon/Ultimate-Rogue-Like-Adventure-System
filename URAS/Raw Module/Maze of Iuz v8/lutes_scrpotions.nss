@@ -108,13 +108,14 @@ void CreateStdScroll1()
        }
 
     object oScroll =  CreateItemOnObject(sType, oSack, 1);
+    /*
     itemproperty ipAdd = ItemPropertyLimitUseByClass(IP_CONST_CLASS_CLERIC);
     IPSafeAddItemProperty(oScroll,ipAdd);
     ipAdd = ItemPropertyLimitUseByClass(IP_CONST_CLASS_SORCERER);
     IPSafeAddItemProperty(oScroll,ipAdd);
     ipAdd = ItemPropertyLimitUseByClass(IP_CONST_CLASS_WIZARD);
     IPSafeAddItemProperty(oScroll,ipAdd);
-
+    */
     SetIdentified(oScroll, bIdentified);
 
 }
@@ -232,9 +233,10 @@ void CreateStdScroll2()
        }
 
     object oScroll =  CreateItemOnObject(sType, oSack, 1);
+    /*
     itemproperty ipAdd = ItemPropertyLimitUseByClass(IP_CONST_CLASS_CLERIC);
     IPSafeAddItemProperty(oScroll,ipAdd);
-
+    */
     SetIdentified(oScroll, bIdentified);
 
 }
@@ -350,10 +352,13 @@ void CreateStdScroll3()
     case 99: sType = "x2_it_sparscr703";break;
     case 100: sType = "nw_it_sparscr701";break;
    }
+
     object oScroll =  CreateItemOnObject(sType, oSack, 1);
+    /*
+
     itemproperty ipAdd = ItemPropertyLimitUseByClass(IP_CONST_CLASS_CLERIC);
     IPSafeAddItemProperty(oScroll,ipAdd);
-
+    */
     SetIdentified(oScroll, bIdentified);
 
 }
@@ -412,19 +417,31 @@ void CreateStdScroll4()
    }
 
     object oScroll =  CreateItemOnObject(sType, oSack, 1);
+    /*
     itemproperty ipAdd = ItemPropertyLimitUseByClass(IP_CONST_CLASS_CLERIC);
     IPSafeAddItemProperty(oScroll,ipAdd);
+    */
     SetIdentified(oScroll, bIdentified);
 }
 
 void CreateStdScroll()
 {
 
-
+    /*
     switch(d2())
     {
     case 1: CreateArcaneScroll(OBJECT_SELF,OBJECT_SELF); break;
     case 2: CreateDivineScroll(OBJECT_SELF,OBJECT_SELF); break;
+    }
+    */
+    int n = iChestLevel /10;
+    if(d10()==1) n++;
+    switch(n)
+    {
+    case 0: CreateStdScroll1(); break;
+    case 1: CreateStdScroll2(); break;
+    case 2: CreateStdScroll3(); break;
+    default: CreateStdScroll4(); break;
     }
 }
 

@@ -127,6 +127,92 @@ void EnchantArmor(struct sItemInfo ItemInfo)
 
 }
 
+object ModifyArmor(object oItem)
+{
+    int color1=Random(63);
+    int color2=Random(63);
+    int color3=Random(63);
+
+    oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_CLOTH1,color1);
+    oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_CLOTH2,color2);
+    // fashion power, gaudy
+    if(d10()==1) {
+        color1 = Random(63);
+        color2 = Random(63);
+    }
+    oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_LEATHER1,color1);
+    oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_LEATHER2,color2);
+    if(d10()==1) {
+        color1 = Random(63);
+        color2 = Random(63);
+    }
+
+    oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_METAL1,color1);
+    oItem=    IPDyeArmor(oItem,ITEM_APPR_ARMOR_COLOR_METAL2,color2);
+
+    oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LBICEP,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LFOOT,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LFOREARM,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LHAND,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LSHIN,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LSHOULDER,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_LTHIGH,X2_IP_ARMORTYPE_RANDOM,TRUE);
+
+    int nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LTHIGH);
+    object oOld = oItem;
+    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RTHIGH,nPart);
+    DestroyObject(oOld);
+
+    oOld = oItem;
+    nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LBICEP);
+    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RBICEP,nPart);
+    DestroyObject(oOld);
+
+    oOld = oItem;
+    nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LFOOT);
+    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RFOOT,nPart);
+    DestroyObject(oOld);
+
+    oOld = oItem;
+    nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LFOREARM);
+    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RFOREARM,nPart);
+    DestroyObject(oOld);
+
+    oOld = oItem;
+    nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LHAND);
+    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RHAND,nPart);
+    DestroyObject(oOld);
+
+    oOld = oItem;
+    nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LSHIN);
+    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RSHIN,nPart);
+    DestroyObject(oOld);
+
+    oOld = oItem;
+    nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LSHOULDER);
+    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RSHOULDER,nPart);
+    DestroyObject(oOld);
+
+    oOld = oItem;
+    nPart = GetItemAppearance(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LTHIGH);
+    oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RTHIGH,nPart);
+    DestroyObject(oOld);
+
+
+    //oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_TORSO,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    //oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_ROBE,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    //oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_BELT,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    //oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_NECK,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    //oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_PELVIS,X2_IP_ARMORTYPE_RANDOM,TRUE);
+
+    // chance it will be a robe.
+    if(GetItemACValue(oItem) == 0 && d6() < 2)
+    {
+        oItem=    IPGetModifiedArmor(oItem,ITEM_APPR_ARMOR_MODEL_ROBE,X2_IP_ARMORTYPE_RANDOM,TRUE);
+    }
+    return oItem;
+}
+
 
 void GenerateArmor()
 {
@@ -148,64 +234,29 @@ void GenerateArmor()
     case 12: ItemInfo = GenerateChainMail(); break;
     }
 
-    ItemInfo.oItem = CreateObject(OBJECT_TYPE_ITEM,ItemInfo.sBluePrint,GetLocation(GetObjectByTag("DUMMYCHEST")));
+    ItemInfo.oItem = CreateItemOnObject(ItemInfo.sBluePrint,oObject);
     if( !GetIsObjectValid(ItemInfo.oItem) )
     {
         PrintString("Create Armor " + ItemInfo.sName + " bp="+ItemInfo.sBluePrint+" failed.");
         return;
     }
 
-
-    int color1=Random(64);
-    int color2=Random(64);
-    int color3=Random(64);
-    ItemInfo.oItem=    IPDyeArmor(ItemInfo.oItem,ITEM_APPR_ARMOR_COLOR_CLOTH1,color1);
-    ItemInfo.oItem=    IPDyeArmor(ItemInfo.oItem,ITEM_APPR_ARMOR_COLOR_CLOTH2,color2);
-    ItemInfo.oItem=    IPDyeArmor(ItemInfo.oItem,ITEM_APPR_ARMOR_COLOR_LEATHER1,color1);
-    ItemInfo.oItem=    IPDyeArmor(ItemInfo.oItem,ITEM_APPR_ARMOR_COLOR_LEATHER2,color2);
-    ItemInfo.oItem=    IPDyeArmor(ItemInfo.oItem,ITEM_APPR_ARMOR_COLOR_METAL1,color1);
-    ItemInfo.oItem=    IPDyeArmor(ItemInfo.oItem,ITEM_APPR_ARMOR_COLOR_METAL2,color2);
-
-
-    ItemInfo.oItem=    IPGetModifiedArmor(ItemInfo.oItem,ITEM_APPR_ARMOR_MODEL_LBICEP,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    ItemInfo.oItem=    IPGetModifiedArmor(ItemInfo.oItem,ITEM_APPR_ARMOR_MODEL_LFOOT,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    ItemInfo.oItem=    IPGetModifiedArmor(ItemInfo.oItem,ITEM_APPR_ARMOR_MODEL_LFOREARM,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    ItemInfo.oItem=    IPGetModifiedArmor(ItemInfo.oItem,ITEM_APPR_ARMOR_MODEL_LHAND,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    ItemInfo.oItem=    IPGetModifiedArmor(ItemInfo.oItem,ITEM_APPR_ARMOR_MODEL_LSHIN,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    ItemInfo.oItem=    IPGetModifiedArmor(ItemInfo.oItem,ITEM_APPR_ARMOR_MODEL_LSHOULDER,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    ItemInfo.oItem=    IPGetModifiedArmor(ItemInfo.oItem,ITEM_APPR_ARMOR_MODEL_LTHIGH,X2_IP_ARMORTYPE_RANDOM,TRUE);
-
-    int nPart = GetItemAppearance(ItemInfo.oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LTHIGH);
-    ItemInfo.oItem= CopyItemAndModify(ItemInfo.oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RTHIGH,nPart);
-    nPart = GetItemAppearance(ItemInfo.oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LBICEP);
-    ItemInfo.oItem= CopyItemAndModify(ItemInfo.oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RBICEP,nPart);
-    nPart = GetItemAppearance(ItemInfo.oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LFOOT);
-    ItemInfo.oItem= CopyItemAndModify(ItemInfo.oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RFOOT,nPart);
-    nPart = GetItemAppearance(ItemInfo.oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LFOREARM);
-    ItemInfo.oItem= CopyItemAndModify(ItemInfo.oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RFOREARM,nPart);
-    nPart = GetItemAppearance(ItemInfo.oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LHAND);
-    ItemInfo.oItem= CopyItemAndModify(ItemInfo.oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RHAND,nPart);
-    nPart = GetItemAppearance(ItemInfo.oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LSHIN);
-    ItemInfo.oItem= CopyItemAndModify(ItemInfo.oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RSHIN,nPart);
-    nPart = GetItemAppearance(ItemInfo.oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LSHOULDER);
-    ItemInfo.oItem= CopyItemAndModify(ItemInfo.oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RSHOULDER,nPart);
-    nPart = GetItemAppearance(ItemInfo.oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_LTHIGH);
-    ItemInfo.oItem= CopyItemAndModify(ItemInfo.oItem, ITEM_APPR_TYPE_ARMOR_MODEL ,ITEM_APPR_ARMOR_MODEL_RTHIGH,nPart);
-
-    //ItemInfo.oItem=    IPGetModifiedArmor(ItemInfo.oItem,ITEM_APPR_ARMOR_MODEL_TORSO,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    //ItemInfo.oItem=    IPGetModifiedArmor(ItemInfo.oItem,ITEM_APPR_ARMOR_MODEL_ROBE,X2_IP_ARMORTYPE_RANDOM,TRUE);
-
-    ItemInfo.oItem=    IPGetModifiedArmor(ItemInfo.oItem,ITEM_APPR_ARMOR_MODEL_BELT,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    ItemInfo.oItem=    IPGetModifiedArmor(ItemInfo.oItem,ITEM_APPR_ARMOR_MODEL_NECK,X2_IP_ARMORTYPE_RANDOM,TRUE);
-    ItemInfo.oItem=    IPGetModifiedArmor(ItemInfo.oItem,ITEM_APPR_ARMOR_MODEL_PELVIS,X2_IP_ARMORTYPE_RANDOM,TRUE);
-
-
-    object o = CopyItem(ItemInfo.oItem,oObject);
-    DestroyObject(ItemInfo.oItem);
-    ItemInfo.oItem = o;
+    ItemInfo.oItem = ModifyArmor(ItemInfo.oItem);
 
     EnchantArmor(ItemInfo);
 
+}
+
+object ModifyShield(object oShield)
+{
+    object oldItem=oShield;
+    object oItem= CopyItemAndModify(oShield, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(255));
+    if(GetIsObjectValid(oItem))
+    {
+        AssignCommand(oObject,ActionEquipItem(oItem,INVENTORY_SLOT_LEFTHAND));
+        DestroyObject(oldItem);
+    }
+    return oItem;
 }
 
 void GenerateShield()
@@ -220,6 +271,7 @@ void GenerateShield()
     case 3: ItemInfo = GenerateTowerShield(); break;
     }
 
+
     ItemInfo.oItem = CreateItemOnObject(ItemInfo.sBluePrint,oObject);
     if( !GetIsObjectValid(ItemInfo.oItem) )
     {
@@ -227,9 +279,9 @@ void GenerateShield()
         return;
     }
 
-    object oldItem=ItemInfo.oItem;
-    ItemInfo.oItem= CopyItemAndModify(ItemInfo.oItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(255));
-    if(GetIsObjectValid(ItemInfo.oItem)) DestroyObject(oldItem);
+
+    ItemInfo.oItem= ModifyShield(ItemInfo.oItem);
+
 
     EnchantArmor(ItemInfo);
 
@@ -249,8 +301,9 @@ void GenerateHelmet()
         return;
     }
 
+
     object oldItem=ItemInfo.oItem;
-    ItemInfo.oItem= CopyItemAndModify(ItemInfo.oItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(255));
+    ItemInfo.oItem= CopyItemAndModify(ItemInfo.oItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(10));
     if(GetIsObjectValid(ItemInfo.oItem)) DestroyObject(oldItem);
 
     EnchantArmor(ItemInfo);

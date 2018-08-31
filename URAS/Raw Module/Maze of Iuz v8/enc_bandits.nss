@@ -25,8 +25,6 @@ void Fill(int CR,object o = OBJECT_SELF)
     case 4:    PopulateVars(o,4,sCR4); break;
     case 5:    PopulateVars(o,5,sCR5); break;
     case 6:    PopulateVars(o,6,sCR6); break;
-    case 7:    PopulateVars(o,7,sCR6); break;
-    case 8:    PopulateVars(o,8,sCR6); break;
     case 10:   PopulateVars(o,10,sCR10);break;
 
     }

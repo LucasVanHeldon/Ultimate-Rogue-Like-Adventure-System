@@ -633,7 +633,7 @@ void ENC_Spawner(object oS, int EL, int dontlvl = FALSE, int bOneTime=FALSE)
     int   nCR = FloatToInt(CR);
     if(nCR < EL/2) n = n * 2;
 
-    SendMessageToPC(GetFirstPC(),"EL="+IntToString(EL)+" CR="+FloatToString(CR) + " num="+IntToString(num));
+    //SendMessageToPC(GetFirstPC(),"EL="+IntToString(EL)+" CR="+FloatToString(CR) + " num="+IntToString(num));
     Fill(nCR);
 
     int     i;
@@ -644,7 +644,7 @@ void ENC_Spawner(object oS, int EL, int dontlvl = FALSE, int bOneTime=FALSE)
 
     int c = 0;
     int bHero=FALSE;
-    if(nNum > 0)
+    if(num > 0)
     {
         sTag = GetLocalString(oS,"BP"+IntToString(nCR)+"_"+IntToString(nNum));
 
@@ -671,7 +671,7 @@ void ENC_Spawner(object oS, int EL, int dontlvl = FALSE, int bOneTime=FALSE)
                 if(dontlvl == 1) SetLocalInt(o,"bNeverLvlUp",1);
                 AssignCommand(o,ActionRandomWalk());
             }
-            else SendMessageToPC(GetFirstPC(),"Failed to spawn creature");
+            else SendMessageToPC(GetFirstPC(),"Failed to spawn creature " + sTag);
         }
     }
 
@@ -728,7 +728,7 @@ void ENC_SpawnFromCR(object oS, int EL, int dontlvl = FALSE, int once=FALSE)
 
     int c = 0;
     int bHero=FALSE;
-    if(nNum > 0)
+    if(num > 0)
     {
         sTag = GetLocalString(oS,"BP"+IntToString(nCR)+"_"+IntToString(nNum));
 
@@ -755,7 +755,7 @@ void ENC_SpawnFromCR(object oS, int EL, int dontlvl = FALSE, int once=FALSE)
                 if(dontlvl == 1) SetLocalInt(o,"bNeverLvlUp",1);
                 AssignCommand(o,ActionRandomWalk());
             }
-            else SendMessageToPC(GetFirstPC(),"Failed to spawn creature");
+            else SendMessageToPC(GetFirstPC(),"Failed to spawn creature " + sTag);
         }
     }
 }
