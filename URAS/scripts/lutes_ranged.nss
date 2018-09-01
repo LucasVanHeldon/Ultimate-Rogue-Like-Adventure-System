@@ -111,6 +111,7 @@ void EnchantAmmo(struct sItemInfo ItemInfo)
     Enchants.iOnHitDC=-1;
     Enchants.iSpellResistance=-1;
 
+    /*
     if(tier > 3 && d100() >= SPECIAL)
     {
         Enchants.iPoints = iPoints;
@@ -118,6 +119,7 @@ void EnchantAmmo(struct sItemInfo ItemInfo)
         iTotalCost       = Enchants.iValue;
     }
     else
+    */
     {
         int bonus = 0;
 
@@ -203,6 +205,7 @@ void EnchantRangedWeapon(struct sItemInfo ItemInfo)
     Enchants.iOnHitDC=-1;
     Enchants.iSpellResistance=-1;
 
+    /*
     if(tier > 3 && d100() >= SPECIAL)
     {
         Enchants.iPoints = iPoints;
@@ -210,6 +213,7 @@ void EnchantRangedWeapon(struct sItemInfo ItemInfo)
         iTotalCost       = Enchants.iValue;
     }
     else
+    */
     {
         int bonus = 0;
 

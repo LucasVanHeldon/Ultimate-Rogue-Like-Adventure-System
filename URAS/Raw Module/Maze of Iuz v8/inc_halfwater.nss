@@ -2,6 +2,15 @@ int WATER_SpecialAttack(object oTarget = OBJECT_INVALID)
 {
     int nHD = GetHitDice(OBJECT_SELF);
 
+    if(!GetIsObjectValid(oTarget))
+    {
+        switch(d3())
+        {
+        case 1: oTarget = FindWeakestEnemy(OBJECT_SELF); break;
+        case 2: oTarget = FindStrongestEnemy(OBJECT_SELF); break;
+        case 3: oTarget = FindNearestEnemy(OBJECT_SELF); break;
+        }
+    }
     if(nHD > 20)
         if(d6() < 4)
         {

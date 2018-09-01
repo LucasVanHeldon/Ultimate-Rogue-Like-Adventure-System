@@ -475,11 +475,11 @@ void CreateStdPotion()
     string sPotion;
 
 
-    int nRandom = Random(23) + 1;
+    int nRandom = Random(28) + 1;
     switch (nRandom)
     {
-        case 1:sPotion = "x2_it_mpotion001";  break;
-        case 2:sPotion = "x2_it_mpotion002";  break;
+        case 1: sPotion = "x2_it_mpotion001";  break;
+        case 2: sPotion = "x2_it_mpotion002";  break;
         case 3: sPotion = "nw_it_mpotion001" ; break;
         case 4: sPotion = "nw_it_mpotion002" ; break;
         case 5: sPotion = "nw_it_mpotion003" ; break;
@@ -509,10 +509,11 @@ void CreateStdPotion()
         case 29: sPotion="nw_it_mpotion011"; break;
 
     }
+    object oItem = CreateItemOnObject(sPotion,OBJECT_SELF,1);
     // it looks cool but makes inventory hard to manage when they are always different.
     if(d6() == 1)
     {
-        object oItem = CreateItemOnObject(sPotion,OBJECT_SELF,1);
+
         object oldItem=oItem;
         oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(256));
         if(GetIsObjectValid(oItem)) DestroyObject(oldItem);
@@ -542,5 +543,11 @@ void CreateHealingPotions(int n)
 {
     int i;
     for(i = 0; i < n; i++) CreateHealingPotion();
+}
+
+void CreateScrolls(int n)
+{
+    int i;
+    for(i = 0; i < n; i++) CreateStdScroll();
 }
 

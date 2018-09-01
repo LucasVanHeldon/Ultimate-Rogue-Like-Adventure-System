@@ -113,6 +113,8 @@ void main()
    if(GetCurrentAction(OBJECT_SELF) == ACTION_CASTSPELL)
     return;
 
+    if(GetIsDead(OBJECT_SELF)) return;
+
    // process entangled victims
    if((!GetIsObjectValid(oVictim) && d6()==1) || GetCurrentHitPoints(oVictim) <= 0)
    {

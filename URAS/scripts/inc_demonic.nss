@@ -1,3 +1,32 @@
+
+void GRAYSLAAD_Summon()
+{
+
+    string bp;
+    int num;
+    int nChance = 0;
+    switch(d3())
+    {
+    case 1: bp = "NW_SLAADRED"; num = d2(); nChance=40; break;
+    case 2: bp = "NW_SLAADBLUE"; num = 1; nChance = 40; break;
+    case 3: bp = "NW_SLAADGRAY"; num = 1; nChance = 20;
+    }
+    int nGated = GetLocalInt(OBJECT_SELF,"nGated");
+    if(nGated < 2)
+    {
+        SetLocalInt(OBJECT_SELF,"nGated",nGated+1);
+        ClearAllActions(TRUE);
+        ActionCastFakeSpellAtLocation(SPELL_GATE,GetLocation(OBJECT_SELF));
+        int chance = Random(100);
+        if(chance < nChance)
+        {
+            int i;
+            for(i = 0; i < num; i++)
+                EffectSummonCreature(bp,VFX_FNF_SUMMON_MONSTER_1,1.0);
+        }
+    }
+}
+
 void DEMONIC_SpecialAttack()
 {
     int nDarkness = GetLocalInt(OBJECT_SELF,"nDarkness");
@@ -45,7 +74,7 @@ void DEMONIC_SpecialAttack()
         DEMON_Blink();
         break;
     case 6:
-        if(nUnholyBlight < (GetHitDice(OBJECT_SELF)/2+1))
+        if(nChaosHammer < (GetHitDice(OBJECT_SELF)/2+1))
         {
             SendMessageToPC(GetFirstPC(),"Chaos Hammer");
             SetLocalInt(OBJECT_SELF,"nChaosHammer",nChaosHammer+1);

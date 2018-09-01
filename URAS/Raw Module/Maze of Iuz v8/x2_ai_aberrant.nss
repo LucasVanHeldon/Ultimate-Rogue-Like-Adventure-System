@@ -16,6 +16,6 @@
 void main()
 {
       __TurnCombatRoundOn(TRUE);
-    MMPABB_SpecialAttack();
+    ABERRATION_SpecialAttack();
       __TurnCombatRoundOn(FALSE);
 }

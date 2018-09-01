@@ -44,12 +44,12 @@ void Lutes(object oTarget)
     int nGems= 0;
     int nJewls=0;
     int nMagic=0;
-    int nMisc2 = d4();
+    int nMisc2 = 0;
     int nWeapon=0;
     int nArmor=0;
     int nAScrolls=0;
     int nDScrolls=0;
-    int nPotions=0;
+    int nPotions=d2();
     int nShield=0;
     int nHelmet=0;
     int nMisc=0;
@@ -70,7 +70,7 @@ void Lutes(object oTarget)
     int nBelt =0;
     int nGauntlet =0;
     int nCloak =0;
-    int nTrash =d3();
+    int nTrash =0;
 
 
     float fLootMod = 0.5*GetLocalFloat(GetModule(),"fLootMod");

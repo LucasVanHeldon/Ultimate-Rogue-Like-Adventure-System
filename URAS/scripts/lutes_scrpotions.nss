@@ -108,13 +108,14 @@ void CreateStdScroll1()
        }
 
     object oScroll =  CreateItemOnObject(sType, oSack, 1);
+    /*
     itemproperty ipAdd = ItemPropertyLimitUseByClass(IP_CONST_CLASS_CLERIC);
     IPSafeAddItemProperty(oScroll,ipAdd);
     ipAdd = ItemPropertyLimitUseByClass(IP_CONST_CLASS_SORCERER);
     IPSafeAddItemProperty(oScroll,ipAdd);
     ipAdd = ItemPropertyLimitUseByClass(IP_CONST_CLASS_WIZARD);
     IPSafeAddItemProperty(oScroll,ipAdd);
-
+    */
     SetIdentified(oScroll, bIdentified);
 
 }
@@ -232,9 +233,10 @@ void CreateStdScroll2()
        }
 
     object oScroll =  CreateItemOnObject(sType, oSack, 1);
+    /*
     itemproperty ipAdd = ItemPropertyLimitUseByClass(IP_CONST_CLASS_CLERIC);
     IPSafeAddItemProperty(oScroll,ipAdd);
-
+    */
     SetIdentified(oScroll, bIdentified);
 
 }
@@ -350,10 +352,13 @@ void CreateStdScroll3()
     case 99: sType = "x2_it_sparscr703";break;
     case 100: sType = "nw_it_sparscr701";break;
    }
+
     object oScroll =  CreateItemOnObject(sType, oSack, 1);
+    /*
+
     itemproperty ipAdd = ItemPropertyLimitUseByClass(IP_CONST_CLASS_CLERIC);
     IPSafeAddItemProperty(oScroll,ipAdd);
-
+    */
     SetIdentified(oScroll, bIdentified);
 
 }
@@ -412,19 +417,31 @@ void CreateStdScroll4()
    }
 
     object oScroll =  CreateItemOnObject(sType, oSack, 1);
+    /*
     itemproperty ipAdd = ItemPropertyLimitUseByClass(IP_CONST_CLASS_CLERIC);
     IPSafeAddItemProperty(oScroll,ipAdd);
+    */
     SetIdentified(oScroll, bIdentified);
 }
 
 void CreateStdScroll()
 {
 
-
+    /*
     switch(d2())
     {
     case 1: CreateArcaneScroll(OBJECT_SELF,OBJECT_SELF); break;
     case 2: CreateDivineScroll(OBJECT_SELF,OBJECT_SELF); break;
+    }
+    */
+    int n = iChestLevel /10;
+    if(d10()==1) n++;
+    switch(n)
+    {
+    case 0: CreateStdScroll1(); break;
+    case 1: CreateStdScroll2(); break;
+    case 2: CreateStdScroll3(); break;
+    default: CreateStdScroll4(); break;
     }
 }
 
@@ -458,11 +475,11 @@ void CreateStdPotion()
     string sPotion;
 
 
-    int nRandom = Random(23) + 1;
+    int nRandom = Random(28) + 1;
     switch (nRandom)
     {
-        case 1:sPotion = "x2_it_mpotion001";  break;
-        case 2:sPotion = "x2_it_mpotion002";  break;
+        case 1: sPotion = "x2_it_mpotion001";  break;
+        case 2: sPotion = "x2_it_mpotion002";  break;
         case 3: sPotion = "nw_it_mpotion001" ; break;
         case 4: sPotion = "nw_it_mpotion002" ; break;
         case 5: sPotion = "nw_it_mpotion003" ; break;
@@ -492,10 +509,11 @@ void CreateStdPotion()
         case 29: sPotion="nw_it_mpotion011"; break;
 
     }
+    object oItem = CreateItemOnObject(sPotion,OBJECT_SELF,1);
     // it looks cool but makes inventory hard to manage when they are always different.
     if(d6() == 1)
     {
-        object oItem = CreateItemOnObject(sPotion,OBJECT_SELF,1);
+
         object oldItem=oItem;
         oItem= CopyItemAndModify(oItem, ITEM_APPR_TYPE_SIMPLE_MODEL,0,Random(256));
         if(GetIsObjectValid(oItem)) DestroyObject(oldItem);
@@ -525,5 +543,11 @@ void CreateHealingPotions(int n)
 {
     int i;
     for(i = 0; i < n; i++) CreateHealingPotion();
+}
+
+void CreateScrolls(int n)
+{
+    int i;
+    for(i = 0; i < n; i++) CreateStdScroll();
 }
 

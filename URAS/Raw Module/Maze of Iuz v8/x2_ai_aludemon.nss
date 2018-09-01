@@ -140,7 +140,16 @@ void SpellCast(object oTarget)
 
 void main()
 {
-    if(d6() < 3)
+    if(GetLastSpellHarmful() && GetIsEnemy(GetLastSpellCaster()) )
+    {
+        if(d6() < 4)
+        {
+            __TurnCombatRoundOn(TRUE);
+            SpellCast(GetLastSpellCaster());
+            __TurnCombatRoundOn(FALSE);
+        }
+    }
+    else if(d6() < 4)
     {
         __TurnCombatRoundOn(TRUE);
         SpecialAttack();

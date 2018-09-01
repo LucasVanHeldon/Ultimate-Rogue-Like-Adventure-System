@@ -194,12 +194,14 @@ void EnhanceSkin()
     if(GetRacialType(OBJECT_SELF)== RACIAL_TYPE_UNDEAD || GetRacialType(OBJECT_SELF)== RACIAL_TYPE_OUTSIDER)
     {
         itemproperty ip;
+        // they are dead, internal organs don't feel anything.
         ip = ItemPropertyDamageImmunity(IP_CONST_DAMAGETYPE_BLUDGEONING,4);
         IPSafeAddItemProperty(oSkin,ip);
+        // they are dead, it sticks in their rotting flesh.
         ip = ItemPropertyDamageImmunity(IP_CONST_DAMAGETYPE_PIERCING,4);
         IPSafeAddItemProperty(oSkin,ip);
         int nRed = GetHitDice(OBJECT_SELF)/4;
-        int soak = GetHitDice(OBJECT_SELF)/4+1;
+        int soak = 2; // soak 10, don't make it impossible.
         ip = ItemPropertyDamageReduction(nRed,soak);
         IPSafeAddItemProperty(oSkin,ip);
     }
@@ -883,6 +885,7 @@ void main()
 // Templates
 //////////////////////////////////////
 
+
         if(d10() == 1  && GetStandardFactionReputation(STANDARD_FACTION_HOSTILE) > 10)
         {
 
@@ -891,20 +894,17 @@ void main()
 
             if(IsMagicUser(OBJECT_SELF))
             {
-                switch(Random(4))
-                {
-                case 0: SetLocalInt(OBJECT_SELF,"bPrestidigator",TRUE); break;
-                case 1: SetLocalInt(OBJECT_SELF,"bConjurer",TRUE); break;
-                case 2: SetLocalInt(OBJECT_SELF,"bMagician",TRUE); break;
-                case 3: SetLocalInt(OBJECT_SELF,"bTheurgist",TRUE); break;
-                case 4: SetLocalInt(OBJECT_SELF,"bEvoker",TRUE); break;
-                }
-
+                int lvl = GetCharacterLevel(OBJECT_SELF);
+                if(lvl == 1) SetLocalInt(OBJECT_SELF,"bPrestidigator",TRUE);
+                else if(lvl < 3) SetLocalInt(OBJECT_SELF,"bEvoker",TRUE);
+                else if(lvl < 5) SetLocalInt(OBJECT_SELF,"bConjurer",TRUE);
+                else if(lvl < 7) SetLocalInt(OBJECT_SELF,"bTheurgist",TRUE);
+                else if(lvl < 9) SetLocalInt(OBJECT_SELF,"bMagician",TRUE);
             }
             else if(rt != RACIAL_TYPE_UNDEAD && rt != RACIAL_TYPE_CONSTRUCT && rt != RACIAL_TYPE_ELEMENTAL)
             {
                 int n = Random(16);
-                SendMessageToPC(GetFirstPC(),IntToString(n));
+
                 switch(n)
                 {
                 case 0: SetLocalInt(OBJECT_SELF,"bHalfFiend",TRUE); break;
@@ -960,6 +960,8 @@ void main()
 // Templates and AI
 //////////////////////
 
+        effect eCon = EffectSkillIncrease(SKILL_CONCENTRATION,GetHitDice(OBJECT_SELF));
+        ApplyEffectToObject(DURATION_TYPE_INSTANT,eCon,OBJECT_SELF);
 
         if(GetLocalInt(OBJECT_SELF,"bTrolllike") == TRUE)
         {
@@ -984,7 +986,8 @@ void main()
             ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
 
         }
-        else if(GetLocalInt(OBJECT_SELF,"bArachnoid") == TRUE)
+
+        if(GetLocalInt(OBJECT_SELF,"bArachnoid") == TRUE)
         {
             effect eEffect;
             itemproperty ip;
@@ -1453,7 +1456,7 @@ void main()
             SetLocalString(OBJECT_SELF,"X2_SPECIAL_COMBAT_AI_SCRIPT","x2_ai_psionic");
         }
 
-        else if(GetLocalInt(OBJECT_SELF,"bHalfAir") == TRUE && GetRacialType(OBJECT_SELF) != RACIAL_TYPE_UNDEAD)
+        else if(GetLocalInt(OBJECT_SELF,"bHalfAir") == TRUE )
         {
             effect eEffect;
             eEffect = EffectAbilityIncrease(
@@ -1476,7 +1479,7 @@ void main()
             eEffect = EffectTemporaryHitpoints(d12(4));
             ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
 
-            // natural weapons can have cold, sonic properties
+            // natural weapons can have cold, electrical, and sonic properties
             int nHD = GetHitDice(OBJECT_SELF);
             effect eDR;
             eDR = EffectACIncrease(1,AC_NATURAL_BONUS);
@@ -1492,7 +1495,7 @@ void main()
             SetName(OBJECT_SELF," (Half-Air Elemental) " + GetName(OBJECT_SELF));
 
         }
-        else if(GetLocalInt(OBJECT_SELF,"bHalfEarth") == TRUE&& GetRacialType(OBJECT_SELF) != RACIAL_TYPE_UNDEAD)
+        else if(GetLocalInt(OBJECT_SELF,"bHalfEarth") == TRUE)
         {
             effect eEffect = EffectAbilityIncrease(ABILITY_STRENGTH,4);
             ApplyEffectToObject(DURATION_TYPE_INSTANT,eEffect,OBJECT_SELF);
@@ -1523,7 +1526,7 @@ void main()
             SetName(OBJECT_SELF," (Half-Earth Elemental) " + GetName(OBJECT_SELF));
 
         }
-        else if(GetLocalInt(OBJECT_SELF,"bHalfFire") == TRUE && GetRacialType(OBJECT_SELF) != RACIAL_TYPE_UNDEAD)
+        else if(GetLocalInt(OBJECT_SELF,"bHalfFire") == TRUE )
         {
             effect eEffect;
 
@@ -1558,7 +1561,7 @@ void main()
             SetName(OBJECT_SELF," (Half-Fire Elemental) " + GetName(OBJECT_SELF));
 
         }
-        else if(GetLocalInt(OBJECT_SELF,"bHalfWater") == TRUE && GetRacialType(OBJECT_SELF) != RACIAL_TYPE_UNDEAD)
+        else if(GetLocalInt(OBJECT_SELF,"bHalfWater") == TRUE)
         {
             effect eEffect;
 

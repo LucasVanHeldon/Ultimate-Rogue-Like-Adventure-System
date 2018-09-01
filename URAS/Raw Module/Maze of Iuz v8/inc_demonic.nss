@@ -74,7 +74,7 @@ void DEMONIC_SpecialAttack()
         DEMON_Blink();
         break;
     case 6:
-        if(nUnholyBlight < (GetHitDice(OBJECT_SELF)/2+1))
+        if(nChaosHammer < (GetHitDice(OBJECT_SELF)/2+1))
         {
             SendMessageToPC(GetFirstPC(),"Chaos Hammer");
             SetLocalInt(OBJECT_SELF,"nChaosHammer",nChaosHammer+1);

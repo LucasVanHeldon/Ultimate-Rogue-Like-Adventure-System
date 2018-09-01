@@ -1,12 +1,19 @@
 // Aberration Template
 #include "x0_i0_spawncond"
-#include "ai_inc"
-#include "inc_aberooze"
+#include "inc_demons"
+#include "inc_mmp"
+#include "inc_demonic"
+#include "inc_aberration"
+#include "inc_ooze"
 
 void main()
 {
     __TurnCombatRoundOn(TRUE);
-    MMPABB_SpecialAttack();
+    switch(d2())
+    {
+    case 1: OOZE_SpecialAttack(); break;
+    case 2: ABERRATION_SpecialAttack(); break;
+    }
     __TurnCombatRoundOn(FALSE);
 }
 

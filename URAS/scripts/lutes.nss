@@ -25,13 +25,6 @@
 // set this higher if you want munchkin style treasure
 int iLootModifier = 1;
 
-int MonkChanceBelt = 20;
-int MonkChanceCloak = 20;
-int MonkChanceBoots = 20;
-int MonkChanceGauntlet = 20;
-int MonkChanceRings = 10;
-int MonkChanceAmulets = 10;
-int MonkChancePotions=40;
 
 float random()
 {
@@ -56,7 +49,7 @@ void Lutes(object oTarget)
     int nArmor=0;
     int nAScrolls=0;
     int nDScrolls=0;
-    int nPotions=0;
+    int nPotions=d2();
     int nShield=0;
     int nHelmet=0;
     int nMisc=0;
@@ -232,11 +225,12 @@ void Lutes(object oTarget)
     if(nCloak > 0) GenerateCloak();
     if(bUseAddons == TRUE)
     {
+        //SendMessageToPC(GetFirstPC(),"Addons");
         // need to sort only useful properties for these
         //if(nGrenades > 0)   PlaceGrenades(nGrenades);
-        if(nTrash > 0) GenerateTrash();
-        if(nMisc > 0)      CreateMisc(nMisc);
-        if(nMisc2 > 0)     PlaceMiscItems(nMisc);
+        if(nTrash > 0) PlaceTrash(nTrash);
+        if(nMisc > 0)  CreateMisc(nMisc);
+        if(nMisc2 > 0) PlaceMiscItems(nMisc2);
     }
 }
 

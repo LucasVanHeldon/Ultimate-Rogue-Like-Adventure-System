@@ -56,17 +56,12 @@ void SpawnTable(location loc)
 }
 void main()
 {
-    int ticks = GetLocalInt(GetModule(),"nHBTicks");
-
-    if(ticks > 250)
+    object oPC = GetFirstPC();
+    if(GetIsObjectValid(oPC))
     {
-        object oPC = GetFirstPC();
-        if(GetIsObjectValid(oPC) && GetArea(oPC) == GetArea(OBJECT_SELF))
-        {
-            if(d20() == 1) SpawnTable(GetLocation(oPC));
-        }
-        if(d20() == 1) DelayCommand(0.1,ResetEncounters());
-        ticks = -1;
+        //float f = IntToFloat(Random(32000))/32000.0;
+        //if(f < 0.00075 || f > 0.9995) SpawnTable(GetLocation(oPC));
+        //if(f < 0.00095 || f > 0.9991)
+
     }
-    SetLocalInt(GetModule(),"nHBTicks",ticks+1);
 }
