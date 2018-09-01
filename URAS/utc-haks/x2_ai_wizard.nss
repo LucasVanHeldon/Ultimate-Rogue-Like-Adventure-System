@@ -6,12 +6,24 @@
 // special
 /*
 if(GetHasSpell(SPELL_GREATER_PLANAR_BINDING)) {ActionCastSpellAtObject(SPELL_GREATER_PLANAR_BINDING,oTarget); return 1;}
-if(GetHasSpell(SPELL_GREATER_RESTORATION)) {ActionCastSpellAtObject(SPELL_GREATER_RESTORATION,oTarget); return 1;}
-if(GetHasSpell(SPELL_GUST_OF_WIND)) {ActionCastSpellAtObject(SPELL_GUST_OF_WIND,oTarget); return 1;}
-if(GetHasSpell(SPELL_EXPEDITIOUS_RETREAT)) {ActionCastSpellAtObject(SPELL_EXPEDITIOUS_RETREAT,oTarget); return 1;}
-if(GetHasSpell(SPELL_GLYPH_OF_WARDING)) {ActionCastSpellAtObject(SPELL_GLYPH_OF_WARDING,oTarget); return 1;}
-if(GetHasSpell(SPELL_MAGIC_FANG)) {ActionCastSpellAtObject(SPELL_MAGIC_FANG,oTarget); return 1;}
 if(GetHasSpell(SPELL_LESSER_PLANAR_BINDING)) {ActionCastSpellAtObject(SPELL_LESSER_PLANAR_BINDING,oTarget); return 1;}
+
+if(GetHasSpell(SPELL_GREATER_RESTORATION)) {ActionCastSpellAtObject(SPELL_GREATER_RESTORATION,oTarget); return 1;}
+if(GetHasSpell(SPELL_RESTORATION)) {ActionCastSpellAtObject(SPELL_RESTORATION,oTarget); return 1;}
+
+if(GetHasSpell(SPELL_RAISE_DEAD)) {ActionCastSpellAtObject(SPELL_RAISE_DEAD,oTarget); return 1;}
+if(GetHasSpell(SPELL_RESURRECTION)) {ActionCastSpellAtObject(SPELL_RESURRECTION,oTarget); return 1;}
+
+
+if(GetHasSpell(SPELL_GUST_OF_WIND)) {ActionCastSpellAtObject(SPELL_GUST_OF_WIND,oTarget); return 1;}
+
+if(GetHasSpell(SPELL_EXPEDITIOUS_RETREAT)) {ActionCastSpellAtObject(SPELL_EXPEDITIOUS_RETREAT,oTarget); return 1;}
+
+if(GetHasSpell(SPELL_GLYPH_OF_WARDING)) {ActionCastSpellAtObject(SPELL_GLYPH_OF_WARDING,oTarget); return 1;}
+
+if(GetHasSpell(SPELL_MAGIC_FANG)) {ActionCastSpellAtObject(SPELL_MAGIC_FANG,oTarget); return 1;}
+
+
 if(GetHasSpell(SPELL_IOUN_STONE_BLUE)) {ActionCastSpellAtObject(SPELL_IOUN_STONE_BLUE,oTarget); return 1;}
 if(GetHasSpell(SPELL_IOUN_STONE_DEEP_RED)) {ActionCastSpellAtObject(SPELL_IOUN_STONE_DEEP_RED,oTarget); return 1;}
 if(GetHasSpell(SPELL_IOUN_STONE_DUSTY_ROSE)) {ActionCastSpellAtObject(SPELL_IOUN_STONE_DUSTY_ROSE,oTarget); return 1;}
@@ -23,7 +35,6 @@ if(GetHasSpell(SPELL_LEGEND_LORE)) {ActionCastSpellAtObject(SPELL_LEGEND_LORE,oT
 if(GetHasSpell(SPELL_KNOCK)) {ActionCastSpellAtObject(SPELL_KNOCK,oTarget); return 1;}
 if(GetHasSpell(SPELL_BLACK_BLADE_OF_DISASTER)) {ActionCastSpellAtObject(SPELL_BLACK_BLADE_OF_DISASTER,oTarget); return 1;}
 if(GetHasSpell(SPELL_QUILLFIRE)) {ActionCastSpellAtObject(SPELL_QUILLFIRE,oTarget); return 1;}
-if(GetHasSpell(SPELL_RAISE_DEAD)) {ActionCastSpellAtObject(SPELL_RAISE_DEAD,oTarget); return 1;}
 
 
 if(GetHasSpell(SPELL_MORDENKAINENS_SWORD)) {ActionCastSpellAtObject(SPELL_MORDENKAINENS_SWORD,oTarget); return 1;}
@@ -49,8 +60,7 @@ if(GetHasSpell(SPELL_REMOVE_FEAR)) {ActionCastSpellAtObject(SPELL_REMOVE_FEAR,oT
 if(GetHasSpell(SPELL_REMOVE_PARALYSIS)) {ActionCastSpellAtObject(SPELL_REMOVE_PARALYSIS,oTarget); return 1;}
 if(GetHasSpell(SPELL_RESIST_ELEMENTS)) {ActionCastSpellAtObject(SPELL_RESIST_ELEMENTS,oTarget); return 1;}
 if(GetHasSpell(SPELL_RESISTANCE)) {ActionCastSpellAtObject(SPELL_RESISTANCE,oTarget); return 1;}
-if(GetHasSpell(SPELL_RESTORATION)) {ActionCastSpellAtObject(SPELL_RESTORATION,oTarget); return 1;}
-if(GetHasSpell(SPELL_RESURRECTION)) {ActionCastSpellAtObject(SPELL_RESURRECTION,oTarget); return 1;}
+
 if(GetHasSpell(SPELL_ROD_OF_WONDER)) {ActionCastSpellAtObject(SPELL_ROD_OF_WONDER,oTarget); return 1;}
 
 if(GetHasSpell(SPELL_SANCTUARY)) {ActionCastSpellAtObject(SPELL_SANCTUARY,oTarget); return 1;}
@@ -128,6 +138,7 @@ if(GetHasSpell(SPELL_PROTECTION_FROM_LAW)) {ActionCastSpellAtObject(SPELL_PROTEC
 if(GetHasSpell(SPELL_PROTECTION_FROM_SPELLS)) {ActionCastSpellAtObject(SPELL_PROTECTION_FROM_SPELLS,oTarget); return 1;}
 if(GetHasSpell(SPELL_AURA_OF_VITALITY)) {ActionCastSpellAtObject(SPELL_AURA_OF_VITALITY,oTarget); return 1;}
 if(GetHasSpell(SPELL_DISPLACEMENT)) {ActionCastSpellAtObject(SPELL_DISPLACEMENT,oTarget); return 1;}
+if(GetHasSpell(SPELL_VINE_MINE_CAMOUFLAGE)) {ActionCastSpellAtObject(SPELL_VINE_MINE_CAMOUFLAGE,oTarget); return 1;}
 
 return 0;
 }
@@ -211,6 +222,7 @@ if(GetHasSpell(SPELL_CONTAGION)) {ActionCastSpellAtObject(SPELL_CONTAGION,oTarge
 if(GetHasSpell(SPELL_GHOUL_TOUCH)) {ActionCastSpellAtObject(SPELL_GHOUL_TOUCH,oTarget); return 1;}
 if(GetHasSpell(SPELL_POISON)) {ActionCastSpellAtObject(SPELL_POISON,oTarget); return 1;}
 if(GetHasSpell(SPELL_CIRCLE_OF_DOOM)) {ActionCastSpellAtObject(SPELL_CIRCLE_OF_DOOM,oTarget); return 1;}
+if(GetHasSpell(SPELL_RAY_OF_ENFEEBLEMENT)) {ActionCastSpellAtObject(SPELL_RAY_OF_ENFEEBLEMENT,oTarget); return 1;}
 
 return 0;
 }
@@ -251,6 +263,8 @@ if(GetHasSpell(SPELL_SUMMON_CREATURE_VII)) {ActionCastSpellAtObject(SPELL_SUMMON
 if(GetHasSpell(SPELL_SUMMON_CREATURE_VIII)) {ActionCastSpellAtObject(SPELL_SUMMON_CREATURE_VIII,oTarget); return 1;}
 if(GetHasSpell(SPELL_SUMMON_CREATURE_IX)) {ActionCastSpellAtObject(SPELL_SUMMON_CREATURE_IX,oTarget); return 1;}
 if(GetHasSpell(SPELL_GATE)) {ActionCastSpellAtObject(SPELL_GATE,oTarget); return 1;}
+if(GetHasSpell(SPELL_SUMMON_SHADOW)) {ActionCastSpellAtObject(SPELL_SUMMON_SHADOW,oTarget); return 1;}
+
 return 0;
 }
 
@@ -272,13 +286,35 @@ if(GetHasSpell(SPELL_HOLD_MONSTER)) {ActionCastSpellAtObject(SPELL_HOLD_MONSTER,
 if(GetHasSpell(SPELL_HOLD_PERSON)) {ActionCastSpellAtObject(SPELL_HOLD_PERSON,oTarget); return 1;}
 if(GetHasSpell(SPELL_MASS_BLINDNESS_AND_DEAFNESS)) {ActionCastSpellAtObject(SPELL_MASS_BLINDNESS_AND_DEAFNESS,oTarget); return 1;}
 if(GetHasSpell(SPELL_MASS_CHARM)) {ActionCastSpellAtObject(SPELL_MASS_CHARM,oTarget); return 1;}
-if(GetHasSpell(SPELL_ENTANGLE)) {ActionCastSpellAtObject(SPELL_ENTANGLE,oTarget); return 1;}
 if(GetHasSpell(SPELL_COLOR_SPRAY)) {ActionCastSpellAtObject(SPELL_COLOR_SPRAY,oTarget); return 1;}
+if(GetHasSpell(SPELL_BLINDNESS_AND_DEAFNESS)) {ActionCastSpellAtObject(SPELL_BLINDNESS_AND_DEAFNESS,oTarget); return 1;}
+if(GetHasSpell(SPELL_PRISMATIC_SPRAY)) {ActionCastSpellAtObject(SPELL_PRISMATIC_SPRAY,oTarget); return 1;}
 
 return 0;
 }
 
-int CastSpellAtTarget(object oTarget)
+int CastHinderSpellAtTarget(object oTarget)
+{
+location loc = GetLocation(oTarget);
+if(GetHasSpell(SPELL_GREASE)) {ActionCastSpellAtObject(SPELL_GREASE,oTarget); return 1;}
+if(GetHasSpell(SPELL_ENTANGLE)) {ActionCastSpellAtObject(SPELL_ENTANGLE,oTarget); return 1;}
+if(GetHasSpell(SPELL_EVARDS_BLACK_TENTACLES)) {ActionCastSpellAtObject(SPELL_EVARDS_BLACK_TENTACLES,oTarget); return 1;}
+if(GetHasSpell(SPELL_BIGBYS_CLENCHED_FIST)) {ActionCastSpellAtObject(SPELL_BIGBYS_CLENCHED_FIST,oTarget); return 1;}
+if(GetHasSpell(SPELL_BIGBYS_CRUSHING_HAND)) {ActionCastSpellAtObject(SPELL_BIGBYS_CRUSHING_HAND,oTarget); return 1;}
+if(GetHasSpell(SPELL_BIGBYS_FORCEFUL_HAND)) {ActionCastSpellAtObject(SPELL_BIGBYS_FORCEFUL_HAND,oTarget); return 1;}
+if(GetHasSpell(SPELL_BIGBYS_GRASPING_HAND)) {ActionCastSpellAtObject(SPELL_BIGBYS_GRASPING_HAND,oTarget); return 1;}
+if(GetHasSpell(SPELL_BIGBYS_INTERPOSING_HAND)) {ActionCastSpellAtObject(SPELL_BIGBYS_INTERPOSING_HAND,oTarget); return 1;}
+if(GetHasSpell(SPELL_VINE_MINE)) {ActionCastSpellAtObject(SPELL_VINE_MINE,oTarget); return 1;}
+if(GetHasSpell(SPELL_VINE_MINE_ENTANGLE)) {ActionCastSpellAtObject(SPELL_VINE_MINE_ENTANGLE,oTarget); return 1;}
+if(GetHasSpell(SPELL_VINE_MINE_HAMPER_MOVEMENT)) {ActionCastSpellAtObject(SPELL_VINE_MINE_HAMPER_MOVEMENT,oTarget); return 1;}
+if(GetHasSpell(SPELL_TASHAS_HIDEOUS_LAUGHTER)) {ActionCastSpellAtObject(SPELL_TASHAS_HIDEOUS_LAUGHTER,oTarget); return 1;}
+if(GetHasSpell(SPELL_TYMORAS_SMILE)) {ActionCastSpellAtObject(SPELL_TYMORAS_SMILE,oTarget); return 1;}
+if(GetHasSpell(SPELL_WOUNDING_WHISPERS)) {ActionCastSpellAtObject(SPELL_WOUNDING_WHISPERS,oTarget); return 1;}
+
+}
+
+
+int CastOffensiveSpellAtTarget(object oTarget)
 {
 
 if(GetHasSpell(SPELL_ACID_SPLASH)) {ActionCastSpellAtObject(SPELL_ACID_SPLASH,oTarget); return 1;}
@@ -286,15 +322,10 @@ if(GetHasSpell(SPELL_BALAGARNSIRONHORN)) {ActionCastSpellAtObject(SPELL_BALAGARN
 if(GetHasSpell(SPELL_BALL_LIGHTNING)) {ActionCastSpellAtObject(SPELL_BALL_LIGHTNING,oTarget); return 1;}
 if(GetHasSpell(SPELL_BANISHMENT)) {ActionCastSpellAtObject(SPELL_BANISHMENT,oTarget); return 1;}
 
-if(GetHasSpell(SPELL_BIGBYS_CLENCHED_FIST)) {ActionCastSpellAtObject(SPELL_BIGBYS_CLENCHED_FIST,oTarget); return 1;}
-if(GetHasSpell(SPELL_BIGBYS_CRUSHING_HAND)) {ActionCastSpellAtObject(SPELL_BIGBYS_CRUSHING_HAND,oTarget); return 1;}
-if(GetHasSpell(SPELL_BIGBYS_FORCEFUL_HAND)) {ActionCastSpellAtObject(SPELL_BIGBYS_FORCEFUL_HAND,oTarget); return 1;}
-if(GetHasSpell(SPELL_BIGBYS_GRASPING_HAND)) {ActionCastSpellAtObject(SPELL_BIGBYS_GRASPING_HAND,oTarget); return 1;}
-if(GetHasSpell(SPELL_BIGBYS_INTERPOSING_HAND)) {ActionCastSpellAtObject(SPELL_BIGBYS_INTERPOSING_HAND,oTarget); return 1;}
 
 
 if(GetHasSpell(SPELL_BLADE_BARRIER)) {ActionCastSpellAtObject(SPELL_BLADE_BARRIER,oTarget); return 1;}
-if(GetHasSpell(SPELL_BLINDNESS_AND_DEAFNESS)) {ActionCastSpellAtObject(SPELL_BLINDNESS_AND_DEAFNESS,oTarget); return 1;}
+
 if(GetHasSpell(SPELL_BOMBARDMENT)) {ActionCastSpellAtObject(SPELL_BOMBARDMENT,oTarget); return 1;}
 if(GetHasSpell(SPELL_BURNING_HANDS)) {ActionCastSpellAtObject(SPELL_BURNING_HANDS,oTarget); return 1;}
 if(GetHasSpell(SPELL_CALL_LIGHTNING)) {ActionCastSpellAtObject(SPELL_CALL_LIGHTNING,oTarget); return 1;}
@@ -321,7 +352,7 @@ if(GetHasSpell(SPELL_ELEMENTAL_SWARM)) {ActionCastSpellAtObject(SPELL_ELEMENTAL_
 if(GetHasSpell(SPELL_ENERGY_DRAIN)) {ActionCastSpellAtObject(SPELL_ENERGY_DRAIN,oTarget); return 1;}
 if(GetHasSpell(SPELL_ENERVATION)) {ActionCastSpellAtObject(SPELL_ENERVATION,oTarget); return 1;}
 
-if(GetHasSpell(SPELL_EVARDS_BLACK_TENTACLES)) {ActionCastSpellAtObject(SPELL_EVARDS_BLACK_TENTACLES,oTarget); return 1;}
+
 
 if(GetHasSpell(SPELL_FINGER_OF_DEATH)) {ActionCastSpellAtObject(SPELL_FINGER_OF_DEATH,oTarget); return 1;}
 if(GetHasSpell(SPELL_FIRE_STORM)) {ActionCastSpellAtObject(SPELL_FIRE_STORM,oTarget); return 1;}
@@ -336,9 +367,6 @@ if(GetHasSpell(SPELL_FLYING_DEBRIS)) {ActionCastSpellAtObject(SPELL_FLYING_DEBRI
 if(GetHasSpell(SPELL_FREEDOM_OF_MOVEMENT)) {ActionCastSpellAtObject(SPELL_FREEDOM_OF_MOVEMENT,oTarget); return 1;}
 
 if(GetHasSpell(SPELL_GEDLEES_ELECTRIC_LOOP)) {ActionCastSpellAtObject(SPELL_GEDLEES_ELECTRIC_LOOP,oTarget); return 1;}
-
-
-if(GetHasSpell(SPELL_GREASE)) {ActionCastSpellAtObject(SPELL_GREASE,oTarget); return 1;}
 if(GetHasSpell(SPELL_GREAT_THUNDERCLAP)) {ActionCastSpellAtObject(SPELL_GREAT_THUNDERCLAP,oTarget); return 1;}
 
 if(GetHasSpell(SPELL_GREATER_SHADOW_CONJURATION_ACID_ARROW)) {ActionCastSpellAtObject(SPELL_GREATER_SHADOW_CONJURATION_ACID_ARROW,oTarget); return 1;}
@@ -391,10 +419,7 @@ if(GetHasSpell(SPELL_PHANTASMAL_KILLER)) {ActionCastSpellAtObject(SPELL_PHANTASM
 
 if(GetHasSpell(SPELL_POWER_WORD_KILL)) {ActionCastSpellAtObject(SPELL_POWER_WORD_KILL,oTarget); return 1;}
 if(GetHasSpell(SPELL_POWER_WORD_STUN)) {ActionCastSpellAtObject(SPELL_POWER_WORD_STUN,oTarget); return 1;}
-if(GetHasSpell(SPELL_PRISMATIC_SPRAY)) {ActionCastSpellAtObject(SPELL_PRISMATIC_SPRAY,oTarget); return 1;}
 
-
-if(GetHasSpell(SPELL_RAY_OF_ENFEEBLEMENT)) {ActionCastSpellAtObject(SPELL_RAY_OF_ENFEEBLEMENT,oTarget); return 1;}
 if(GetHasSpell(SPELL_RAY_OF_FROST)) {ActionCastSpellAtObject(SPELL_RAY_OF_FROST,oTarget); return 1;}
 
 if(GetHasSpell(SPELL_SCINTILLATING_SPHERE)) {ActionCastSpellAtObject(SPELL_SCINTILLATING_SPHERE,oTarget); return 1;}
@@ -426,29 +451,21 @@ if(GetHasSpell(SPELL_STINKING_CLOUD)) {ActionCastSpellAtObject(SPELL_STINKING_CL
 
 if(GetHasSpell(SPELL_STONEHOLD)) {ActionCastSpellAtObject(SPELL_STONEHOLD,oTarget); return 1;}
 if(GetHasSpell(SPELL_STORM_OF_VENGEANCE)) {ActionCastSpellAtObject(SPELL_STORM_OF_VENGEANCE,oTarget); return 1;}
-if(GetHasSpell(SPELL_SUMMON_SHADOW)) {ActionCastSpellAtObject(SPELL_SUMMON_SHADOW,oTarget); return 1;}
 if(GetHasSpell(SPELL_SUNBEAM)) {ActionCastSpellAtObject(SPELL_SUNBEAM,oTarget); return 1;}
 if(GetHasSpell(SPELL_SUNBURST)) {ActionCastSpellAtObject(SPELL_SUNBURST,oTarget); return 1;}
-if(GetHasSpell(SPELL_TASHAS_HIDEOUS_LAUGHTER)) {ActionCastSpellAtObject(SPELL_TASHAS_HIDEOUS_LAUGHTER,oTarget); return 1;}
 
-
-if(GetHasSpell(SPELL_TYMORAS_SMILE)) {ActionCastSpellAtObject(SPELL_TYMORAS_SMILE,oTarget); return 1;}
 
 if(GetHasSpell(SPELL_UNDEATH_TO_DEATH)) {ActionCastSpellAtObject(SPELL_UNDEATH_TO_DEATH,oTarget); return 1;}
 if(GetHasSpell(SPELL_UNDEATHS_ETERNAL_FOE)) {ActionCastSpellAtObject(SPELL_UNDEATHS_ETERNAL_FOE,oTarget); return 1;}
 
 if(GetHasSpell(SPELL_VAMPIRIC_TOUCH)) {ActionCastSpellAtObject(SPELL_VAMPIRIC_TOUCH,oTarget); return 1;}
-if(GetHasSpell(SPELL_VINE_MINE)) {ActionCastSpellAtObject(SPELL_VINE_MINE,oTarget); return 1;}
-if(GetHasSpell(SPELL_VINE_MINE_CAMOUFLAGE)) {ActionCastSpellAtObject(SPELL_VINE_MINE_CAMOUFLAGE,oTarget); return 1;}
-if(GetHasSpell(SPELL_VINE_MINE_ENTANGLE)) {ActionCastSpellAtObject(SPELL_VINE_MINE_ENTANGLE,oTarget); return 1;}
-if(GetHasSpell(SPELL_VINE_MINE_HAMPER_MOVEMENT)) {ActionCastSpellAtObject(SPELL_VINE_MINE_HAMPER_MOVEMENT,oTarget); return 1;}
 
 if(GetHasSpell(SPELL_WAIL_OF_THE_BANSHEE)) {ActionCastSpellAtObject(SPELL_WAIL_OF_THE_BANSHEE,oTarget); return 1;}
 if(GetHasSpell(SPELL_WALL_OF_FIRE)) {ActionCastSpellAtObject(SPELL_WALL_OF_FIRE,oTarget); return 1;}
 if(GetHasSpell(SPELL_WAR_CRY)) {ActionCastSpellAtObject(SPELL_WAR_CRY,oTarget); return 1;}
 
 if(GetHasSpell(SPELL_WEIRD)) {ActionCastSpellAtObject(SPELL_WEIRD,oTarget); return 1;}
-if(GetHasSpell(SPELL_WOUNDING_WHISPERS)) {ActionCastSpellAtObject(SPELL_WOUNDING_WHISPERS,oTarget); return 1;}
+
 return 0;
 }
 

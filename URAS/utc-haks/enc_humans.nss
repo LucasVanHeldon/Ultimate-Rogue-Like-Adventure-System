@@ -44,7 +44,7 @@ void Fill(int CR,object o = OBJECT_SELF)
 
 void main()
 {
-    SendMessageToPC(GetFirstPC(),"ENC Humans");
+    //SendMessageToPC(GetFirstPC(),"ENC Humans");
 
     PopulateVars(OBJECT_SELF,0,sCR0);
     Spawn();

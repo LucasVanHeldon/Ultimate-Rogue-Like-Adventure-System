@@ -1,0 +1,28 @@
+2DA V2.0                                                                                          
+                                                                                                  
+      ResRef               Minimum  Maximum  Treasure              TableLength 
+0     ****                 ****     ****     ****                  24
+1     NW_GOBLINA           1        6        t0                    
+2     NW_GOBLINB           1        6        t0                    
+3     NW_HOBGOBLIN001      1       6        t0                    
+4	NW_ORCA			1		6		t0		
+5	NW_ORCB			1		6		t0
+6	X2_GELCUBE		1		1		t0
+7	nw_grayooze		1		2		t0
+8	nw_ochrejellylrg		1		1		t0
+9	nw_ochrejellymed	1		1		t0
+10	nw_ochrejellysml	1		2		t0
+11 	sr_stirge			4		8		t0
+12	ZEP_LEECH_S		1		2		t0
+13	sr_carrioncrawle	1		4		t0
+14	NW_GHOUL		1		6		t0
+15	NW_ALLIP			1		2		t0
+16	NW_WERERAT		1		4		t0
+17	NW_SHADOW		1		4		t0
+18	NW_SKELETON		1		6		t0
+19	NW_SKELMAGE		1		2		t0
+20	NW_ZOMBIE01		1		6		t0
+21	NW_ZOMBIE02		1		6		t0
+22	NW_RATDIRE001	4	8	t0
+23	NW_BTLFIRE		4		12	t0
+24	NW_SPIDGIANT		1		4	t0

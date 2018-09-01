@@ -18,7 +18,7 @@ void main()
     switch(nCalledBy)
     {
     case 1011:
-        if(d6() < 6) MMPC_CastDispelMagic();
+        if(d6() < 5) MMPC_CastDispelMagic();
         break;
 
     }

@@ -18,7 +18,7 @@ void main()
         {
             SetLocalInt(OBJECT_SELF,"nPowers",nPowers+1);
         }
-        __TurnCombatRoundOn(TRUE);
+        __TurnCombatRoundOn(FALSE);
 
     }
 
