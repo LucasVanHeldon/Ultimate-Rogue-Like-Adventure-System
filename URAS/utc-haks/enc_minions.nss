@@ -45,6 +45,10 @@ void Fill(int CR,object o = OBJECT_SELF)
 
 void main()
 {
-       Fill(0);
-       SpawnMinions(0.0);
+   float fCR = GetLocalFloat(GetModule(),"fCR");
+   fCR -= 2.0;
+   Fill(0);
+   SpawnMinions(0.0);
+   SpawnTable();
+   SetLocalFloat(GetModule(),"fCR",fCR+2.0);
 }

@@ -9,6 +9,9 @@ void Fill(int nCR,object o = OBJECT_SELF);
 
 float CalcNumFromELCR(int el, float CR);
 
+// there are no arrays in NWScript
+// the number if the EL, and each function lookups the CR from the number given by the table.
+// even though the other formula works there are a few cases I do not understand why they shift it.
 float CR1(int num)
 {
     switch(num)
@@ -356,6 +359,8 @@ float CR19(int num)
     return 1.0;
 }
 
+// it simulates a 2-d array lookup, EL is the row number, num is the column, returns the CR for that amount.
+// I am not sure if I computer EL or just average level, I think it is confusing.
 float CRTableLookup(int EL, int num)
 {
     switch(EL)
@@ -434,6 +439,8 @@ void DoPop(object oC, int CR, string list)
     }
     SetLocalInt(oC,"nNum"+IntToString(CR),cnt);
 }
+
+
 void PopulateVars(object oC,int CR,string list)
 {
     if(GetLocalInt(oC,"nNum"+IntToString(CR)) == 0)
@@ -444,7 +451,8 @@ void PopulateVars(object oC,int CR,string list)
 }
 
 // this computes average of all nearby PCs, which I think is actually ECL, not EL.
-
+// this only works if spawned from a table. You can use the game engine to give you a CR, but you need
+// multiple objects for each CR level
 int CalcEL_nearby(object oC)
 {
     object oX = GetFirstObjectInShape(SHAPE_SPHERE,120.0,GetLocation(oC));
@@ -525,6 +533,7 @@ void SpawnTable()
     }
 }
 
+// This handed the CR
 void ENC_Spawner0(object oS, int EL, float CR, int dontlvl=0)
 {
     CR    += GetLocalFloat(GetModule(),"fCR");
@@ -591,6 +600,7 @@ void ENC_Spawner0(object oS, int EL, float CR, int dontlvl=0)
 }
 
 
+// a throwback, spawn given CR
 void SpawnCR(float CR, int difMod=-4, object oS=OBJECT_SELF)
 {
     int   EL = CalcEL(oS)+GetLocalInt(GetModule(),"difficulty")+difMod;
@@ -599,6 +609,7 @@ void SpawnCR(float CR, int difMod=-4, object oS=OBJECT_SELF)
     DestroyObject(oS);
 }
 
+// used only for generating hordes of weak canon fodders
 void SpawnMinions(float CR,object oS = OBJECT_SELF)
 {
     int   EL = CalcEL(oS);
@@ -607,6 +618,7 @@ void SpawnMinions(float CR,object oS = OBJECT_SELF)
 }
 
 
+// This generates an encounter of any number and the CR
 void ENC_Spawner(object oS, int EL, int dontlvl = FALSE, int bOneTime=FALSE)
 {
     int    rX = Random(50000);
@@ -710,7 +722,10 @@ void Spawn(object oS=OBJECT_SELF)
 
 
 
-
+// this is for tables where you have created a dummy object for the given CR.
+// you let the game engine calculate the appropriate CR. I do not have this implementerd anymore at the moment
+// because I severely broke some scripts and never bothered to fix them.
+// originally it is how i did it, you will find some things caleld like EL Bandits which do that.
 void ENC_SpawnFromCR(object oS, int EL, int dontlvl = FALSE, int once=FALSE)
 {
     float CR = GetChallengeRating(oS);

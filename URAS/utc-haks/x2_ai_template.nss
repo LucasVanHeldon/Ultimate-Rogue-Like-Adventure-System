@@ -1,4 +1,4 @@
-// this isn't meant to replace the game talent engine
+// this isn't meant to replace the game talent engine, it's just makes the game more interesting for soloers.
 
 #include "x0_i0_anims"
 #include "x0_i0_treasure"
@@ -21,8 +21,9 @@ void UpdateVar(string v)
 }
 
 
-int Template_SelfAbility(object oTarget)
+int Template_SelfAbility()
 {
+object oTarget= OBJECT_SELF;
 /*
  if(GetLocalInt(OBJECT_SELF,"bAS_GHOSTLY_VISAGE") > 0)
     if(d6() < 4)
@@ -46,6 +47,15 @@ if(GetLocalInt(OBJECT_SELF,"bAS_INVISIBILITY") > 0)
         return 1;
     }
 */
+
+if(GetLocalInt(OBJECT_SELF,"bROGUES_CUNNING") > 0)
+    if(d6() < 4)
+    {
+        UpdateVar("bROGUES_CUNNING");
+        MMPCAST_ROGUES_CUNNING(oTarget);
+        return 1;
+    }
+
 if(GetLocalInt(OBJECT_SELF,"bAURA_BLINDING") > 0)
     if(d6() < 4)
     {
@@ -1232,13 +1242,6 @@ if(GetLocalInt(OBJECT_SELF,"bREMOVE_DISEASE") > 0)
         MMPCAST_REMOVE_DISEASE(oTarget);
         return 1;
     }
-if(GetLocalInt(OBJECT_SELF,"bROGUES_CUNNING") > 0)
-    if(d6() < 4)
-    {
-        UpdateVar("bROGUES_CUNNING");
-        MMPCAST_ROGUES_CUNNING(oTarget);
-        return 1;
-    }
 */
 
 if(GetLocalInt(OBJECT_SELF,"bSEAHAG_EVILEYE") > 0)
@@ -1331,51 +1334,9 @@ if(GetLocalInt(OBJECT_SELF,"bWILD_SHAPE") > 0)
 return 0;
 }
 
-int Template_CastSpell(object oTarget)
+int Template_CastSpellSelf()
 {
-if( GetLocalInt(OBJECT_SELF,"bSPELL_ACID_FOG") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ACID_FOG") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_ACID_FOG,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_ACID_FOG");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_ACID_SPLASH") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ACID_SPLASH") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_ACID_SPLASH,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_ACID_SPLASH");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_ACTIVATE_ITEM_PORTAL") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ACTIVATE_ITEM_PORTAL") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_ACTIVATE_ITEM_PORTAL,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_ACTIVATE_ITEM_PORTAL");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_ACTIVATE_ITEM_SELF2") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ACTIVATE_ITEM_SELF2") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_ACTIVATE_ITEM_SELF2,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_ACTIVATE_ITEM_SELF2");
-        return 1;
-    }
-}
-
+object oTarget = OBJECT_SELF;
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_AID") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_AID") == -1)
 {
@@ -1385,41 +1346,8 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_AID") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL
         UpdateVar("bSPELL_AID");
         return 1;
     }
+
 }
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_ALL_SPELLS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ALL_SPELLS") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_ALL_SPELLS,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_ALL_SPELLS");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_AMPLIFY") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_AMPLIFY") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_AMPLIFY,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_AMPLIFY");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_ANIMATE_DEAD") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ANIMATE_DEAD") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_ANIMATE_DEAD,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_ANIMATE_DEAD");
-        return 1;
-    }
-}
-
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_AURA_OF_VITALITY") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_AURA_OF_VITALITY") == -1)
 {
@@ -1438,61 +1366,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_AURAOFGLORY") > 0 || GetLocalInt(OBJECT_SELF
     {
         ActionCastSpellAtObject(SPELL_AURAOFGLORY,oTarget,METAMAGIC_NONE,TRUE);
         UpdateVar("bSPELL_AURAOFGLORY");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_AWAKEN") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_AWAKEN") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_AWAKEN,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_AWAKEN");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_BALAGARNSIRONHORN") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_BALAGARNSIRONHORN") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_BALAGARNSIRONHORN,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_BALAGARNSIRONHORN");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_BALL_LIGHTNING") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_BALL_LIGHTNING") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_BALL_LIGHTNING,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_BALL_LIGHTNING");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_BANE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_BANE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_BANE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_BANE");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_BANISHMENT") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_BANISHMENT") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_BANISHMENT,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_BANISHMENT");
         return 1;
     }
 }
@@ -1518,6 +1391,1213 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_BATTLETIDE") > 0 || GetLocalInt(OBJECT_SELF,
         return 1;
     }
 }
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_BLADE_THIRST") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_BLADE_THIRST") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_BLADE_THIRST,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_BLADE_THIRST");
+        return 1;
+    }
+}
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_BLESS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_BLESS") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_BLESS,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_BLESS");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_BLESS_WEAPON") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_BLESS_WEAPON") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_BLESS_WEAPON,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_BLESS_WEAPON");
+        return 1;
+    }
+}
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_BULLS_STRENGTH") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_BULLS_STRENGTH") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_BULLS_STRENGTH,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_BULLS_STRENGTH");
+        return 1;
+    }
+}
+
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_CAMOFLAGE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CAMOFLAGE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_CAMOFLAGE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_CAMOFLAGE");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_CATS_GRACE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CATS_GRACE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_CATS_GRACE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_CATS_GRACE");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_CLAIRAUDIENCE_AND_CLAIRVOYANCE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CLAIRAUDIENCE_AND_CLAIRVOYANCE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_CLAIRAUDIENCE_AND_CLAIRVOYANCE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_CLAIRAUDIENCE_AND_CLAIRVOYANCE");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_CLARITY") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CLARITY") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_CLARITY,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_CLARITY");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_CLOAK_OF_CHAOS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CLOAK_OF_CHAOS") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_CLOAK_OF_CHAOS,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_CLOAK_OF_CHAOS");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_CONTINUAL_FLAME") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CONTINUAL_FLAME") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_CONTINUAL_FLAME,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_CONTINUAL_FLAME");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_CURE_CRITICAL_WOUNDS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CURE_CRITICAL_WOUNDS") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_CURE_CRITICAL_WOUNDS,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_CURE_CRITICAL_WOUNDS");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_CURE_LIGHT_WOUNDS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CURE_LIGHT_WOUNDS") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_CURE_LIGHT_WOUNDS,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_CURE_LIGHT_WOUNDS");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_CURE_MINOR_WOUNDS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CURE_MINOR_WOUNDS") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_CURE_MINOR_WOUNDS,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_CURE_MINOR_WOUNDS");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_CURE_MODERATE_WOUNDS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CURE_MODERATE_WOUNDS") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_CURE_MODERATE_WOUNDS,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_CURE_MODERATE_WOUNDS");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_CURE_SERIOUS_WOUNDS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CURE_SERIOUS_WOUNDS") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_CURE_SERIOUS_WOUNDS,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_CURE_SERIOUS_WOUNDS");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_DARKFIRE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_DARKFIRE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_DARKFIRE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_DARKFIRE");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_DARKVISION") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_DARKVISION") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_DARKVISION,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_DARKVISION");
+        return 1;
+    }
+}
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_DEATH_ARMOR") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_DEATH_ARMOR") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_DEATH_ARMOR,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_DEATH_ARMOR");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_DEATH_WARD") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_DEATH_WARD") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_DEATH_WARD,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_DEATH_WARD");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_DIVINE_FAVOR") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_DIVINE_FAVOR") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_DIVINE_FAVOR,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_DIVINE_FAVOR");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_DIVINE_MIGHT") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_DIVINE_MIGHT") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_DIVINE_MIGHT,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_DIVINE_MIGHT");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_DIVINE_POWER") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_DIVINE_POWER") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_DIVINE_POWER,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_DIVINE_POWER");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_DIVINE_SHIELD") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_DIVINE_SHIELD") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_DIVINE_SHIELD,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_DIVINE_SHIELD");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_EAGLE_SPLEDOR") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_EAGLE_SPLEDOR") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_EAGLE_SPLEDOR,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_EAGLE_SPLEDOR");
+        return 1;
+    }
+}
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_ELEMENTAL_SHIELD") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ELEMENTAL_SHIELD") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_ELEMENTAL_SHIELD,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_ELEMENTAL_SHIELD");
+        return 1;
+    }
+}
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_ENDURANCE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ENDURANCE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_ENDURANCE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_ENDURANCE");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_ENDURE_ELEMENTS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ENDURE_ELEMENTS") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_ENDURE_ELEMENTS,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_ENDURE_ELEMENTS");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_ENERGY_BUFFER") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ENERGY_BUFFER") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_ENERGY_BUFFER,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_ENERGY_BUFFER");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_ENTROPIC_SHIELD") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ENTROPIC_SHIELD") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_ENTROPIC_SHIELD,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_ENTROPIC_SHIELD");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_ETHEREAL_VISAGE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ETHEREAL_VISAGE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_ETHEREAL_VISAGE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_ETHEREAL_VISAGE");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_ETHEREALNESS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ETHEREALNESS") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_ETHEREALNESS,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_ETHEREALNESS");
+        return 1;
+    }
+}
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_EXPEDITIOUS_RETREAT") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_EXPEDITIOUS_RETREAT") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_EXPEDITIOUS_RETREAT,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_EXPEDITIOUS_RETREAT");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_FOXS_CUNNING") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_FOXS_CUNNING") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_FOXS_CUNNING,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_FOXS_CUNNING");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_FREEDOM_OF_MOVEMENT") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_FREEDOM_OF_MOVEMENT") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_FREEDOM_OF_MOVEMENT,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_FREEDOM_OF_MOVEMENT");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_GHOSTLY_VISAGE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GHOSTLY_VISAGE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_GHOSTLY_VISAGE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_GHOSTLY_VISAGE");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_GLOBE_OF_INVULNERABILITY") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GLOBE_OF_INVULNERABILITY") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_GLOBE_OF_INVULNERABILITY,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_GLOBE_OF_INVULNERABILITY");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_BULLS_STRENGTH") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_BULLS_STRENGTH") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_GREATER_BULLS_STRENGTH,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_GREATER_BULLS_STRENGTH");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_CATS_GRACE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_CATS_GRACE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_GREATER_CATS_GRACE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_GREATER_CATS_GRACE");
+        return 1;
+    }
+}
+
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_EAGLE_SPLENDOR") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_EAGLE_SPLENDOR") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_GREATER_EAGLE_SPLENDOR,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_GREATER_EAGLE_SPLENDOR");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_ENDURANCE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_ENDURANCE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_GREATER_ENDURANCE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_GREATER_ENDURANCE");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_FOXS_CUNNING") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_FOXS_CUNNING") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_GREATER_FOXS_CUNNING,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_GREATER_FOXS_CUNNING");
+        return 1;
+    }
+}
+
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_MAGIC_WEAPON") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_MAGIC_WEAPON") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_GREATER_MAGIC_WEAPON,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_GREATER_MAGIC_WEAPON");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_OWLS_WISDOM") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_OWLS_WISDOM") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_GREATER_OWLS_WISDOM,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_GREATER_OWLS_WISDOM");
+        return 1;
+    }
+}
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_RESTORATION") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_RESTORATION") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_GREATER_RESTORATION,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_GREATER_RESTORATION");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_SPELL_MANTLE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_SPELL_MANTLE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_GREATER_SPELL_MANTLE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_GREATER_SPELL_MANTLE");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_STONESKIN") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_STONESKIN") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_GREATER_STONESKIN,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_GREATER_STONESKIN");
+        return 1;
+    }
+}
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_HASTE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_HASTE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_HASTE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_HASTE");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_HEAL") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_HEAL") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_HEAL,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_HEAL");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_HEALING_CIRCLE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_HEALING_CIRCLE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_HEALING_CIRCLE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_HEALING_CIRCLE");
+        return 1;
+    }
+}
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_HOLY_AURA") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_HOLY_AURA") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_HOLY_AURA,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_HOLY_AURA");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_HOLY_SWORD") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_HOLY_SWORD") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_HOLY_SWORD,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_HOLY_SWORD");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_IMPROVED_INVISIBILITY") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_IMPROVED_INVISIBILITY") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_IMPROVED_INVISIBILITY,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_IMPROVED_INVISIBILITY");
+        return 1;
+    }
+}
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_DISPLACEMENT") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_DISPLACEMENT") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_DISPLACEMENT,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_DISPLACEMENT");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_FLAME_WEAPON") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_FLAME_WEAPON") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_FLAME_WEAPON,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_FLAME_WEAPON");
+        return 1;
+    }
+}
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_SHADOW_CONJURATION_MINOR_GLOBE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_SHADOW_CONJURATION_MINOR_GLOBE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_GREATER_SHADOW_CONJURATION_MINOR_GLOBE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_GREATER_SHADOW_CONJURATION_MINOR_GLOBE");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_SHADOW_CONJURATION_MIRROR_IMAGE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_SHADOW_CONJURATION_MIRROR_IMAGE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_GREATER_SHADOW_CONJURATION_MIRROR_IMAGE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_GREATER_SHADOW_CONJURATION_MIRROR_IMAGE");
+        return 1;
+    }
+}
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_INVISIBILITY") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_INVISIBILITY") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_INVISIBILITY,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_INVISIBILITY");
+        return 1;
+    }
+}
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_INVISIBILITY_SPHERE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_INVISIBILITY_SPHERE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_INVISIBILITY_SPHERE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_INVISIBILITY_SPHERE");
+        return 1;
+    }
+}
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_IRONGUTS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_IRONGUTS") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_IRONGUTS,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_IRONGUTS");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_KEEN_EDGE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_KEEN_EDGE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_KEEN_EDGE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_KEEN_EDGE");
+        return 1;
+    }
+}
+
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_LESSER_MIND_BLANK") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_LESSER_MIND_BLANK") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_LESSER_MIND_BLANK,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_LESSER_MIND_BLANK");
+        return 1;
+    }
+}
+
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_LESSER_RESTORATION") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_LESSER_RESTORATION") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_LESSER_RESTORATION,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_LESSER_RESTORATION");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_LESSER_SPELL_MANTLE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_LESSER_SPELL_MANTLE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_LESSER_SPELL_MANTLE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_LESSER_SPELL_MANTLE");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_LIGHT") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_LIGHT") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_LIGHT,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_LIGHT");
+        return 1;
+    }
+}
+
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_SHADES_STONESKIN") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SHADES_STONESKIN") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_SHADES_STONESKIN,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_SHADES_STONESKIN");
+        return 1;
+    }
+}
+
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_SHADOW_CONJURATION_INIVSIBILITY") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SHADOW_CONJURATION_INIVSIBILITY") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_SHADOW_CONJURATION_INIVSIBILITY,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_SHADOW_CONJURATION_INIVSIBILITY");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_SHADOW_CONJURATION_MAGE_ARMOR") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SHADOW_CONJURATION_MAGE_ARMOR") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_SHADOW_CONJURATION_MAGE_ARMOR,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_SHADOW_CONJURATION_MAGE_ARMOR");
+        return 1;
+    }
+}
+
+
+
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_SHADOW_SHIELD") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SHADOW_SHIELD") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_SHADOW_SHIELD,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_SHADOW_SHIELD");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_SHAPECHANGE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SHAPECHANGE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_SHAPECHANGE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_SHAPECHANGE");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_SHELGARNS_PERSISTENT_BLADE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SHELGARNS_PERSISTENT_BLADE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_SHELGARNS_PERSISTENT_BLADE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_SHELGARNS_PERSISTENT_BLADE");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_SHIELD") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SHIELD") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_SHIELD,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_SHIELD");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_SHIELD_OF_FAITH") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SHIELD_OF_FAITH") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_SHIELD_OF_FAITH,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_SHIELD_OF_FAITH");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_SHIELD_OF_LAW") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SHIELD_OF_LAW") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_SHIELD_OF_LAW,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_SHIELD_OF_LAW");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_SPELL_MANTLE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SPELL_MANTLE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_SPELL_MANTLE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_SPELL_MANTLE");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_SPELL_RESISTANCE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SPELL_RESISTANCE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_SPELL_RESISTANCE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_SPELL_RESISTANCE");
+        return 1;
+    }
+}
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_STONESKIN") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_STONESKIN") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_STONESKIN,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_STONESKIN");
+        return 1;
+    }
+}
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_I") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_I") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_SUMMON_CREATURE_I,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_SUMMON_CREATURE_I");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_II") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_II") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_SUMMON_CREATURE_II,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_SUMMON_CREATURE_II");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_III") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_III") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_SUMMON_CREATURE_III,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_SUMMON_CREATURE_III");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_IV") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_IV") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_SUMMON_CREATURE_IV,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_SUMMON_CREATURE_IV");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_V") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_V") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_SUMMON_CREATURE_V,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_SUMMON_CREATURE_V");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_VI") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_VI") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_SUMMON_CREATURE_VI,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_SUMMON_CREATURE_VI");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_VII") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_VII") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_SUMMON_CREATURE_VII,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_SUMMON_CREATURE_VII");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_VIII") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_VIII") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_SUMMON_CREATURE_VIII,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_SUMMON_CREATURE_VIII");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_IX") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_IX") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_SUMMON_CREATURE_IX,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_SUMMON_CREATURE_IX");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_SHADOW") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_SHADOW") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_SUMMON_SHADOW,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_SUMMON_SHADOW");
+        return 1;
+    }
+}
+
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_TENSERS_TRANSFORMATION") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_TENSERS_TRANSFORMATION") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_TENSERS_TRANSFORMATION,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_TENSERS_TRANSFORMATION");
+        return 1;
+    }
+}
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_TRUE_SEEING") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_TRUE_SEEING") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_TRUE_SEEING,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_TRUE_SEEING");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_TRUE_STRIKE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_TRUE_STRIKE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_TRUE_STRIKE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_TRUE_STRIKE");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_UNDEATHS_ETERNAL_FOE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_UNDEATHS_ETERNAL_FOE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_UNDEATHS_ETERNAL_FOE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_UNDEATHS_ETERNAL_FOE");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_UNHOLY_AURA") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_UNHOLY_AURA") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_UNHOLY_AURA,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_UNHOLY_AURA");
+        return 1;
+    }
+}
+if( GetLocalInt(OBJECT_SELF,"bSPELL_VINE_MINE_CAMOUFLAGE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_VINE_MINE_CAMOUFLAGE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_VINE_MINE_CAMOUFLAGE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_VINE_MINE_CAMOUFLAGE");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_VIRTUE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_VIRTUE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_VIRTUE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_VIRTUE");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_WAR_CRY") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_WAR_CRY") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_WAR_CRY,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_WAR_CRY");
+        return 1;
+    }
+}
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_WEB") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_WEB") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_WEB,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_WEB");
+        return 1;
+    }
+}
+
+return 0;
+}
+
+int Template_Psych(object oTarget)
+{
+if( GetLocalInt(OBJECT_SELF,"bSPELL_BLINDNESS_AND_DEAFNESS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_BLINDNESS_AND_DEAFNESS") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_BLINDNESS_AND_DEAFNESS,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_BLINDNESS_AND_DEAFNESS");
+        return 1;
+    }
+}
+return 0;
+}
+
+int Template_CastDebuff(object oTarget)
+{
+if( GetLocalInt(OBJECT_SELF,"bSPELL_BANE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_BANE") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_BANE,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_BANE");
+        return 1;
+    }
+}
+
+return 0;
+}
+
+int Template_CastSummon(object oTarget)
+{
+if( GetLocalInt(OBJECT_SELF,"bSPELL_ANIMATE_DEAD") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ANIMATE_DEAD") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_ANIMATE_DEAD,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_ANIMATE_DEAD");
+        return 1;
+    }
+}
+
+return 0;
+}
+
+int Template_CastSpell(object oTarget)
+{
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_ACID_FOG") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ACID_FOG") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_ACID_FOG,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_ACID_FOG");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_ACID_SPLASH") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ACID_SPLASH") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_ACID_SPLASH,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_ACID_SPLASH");
+        return 1;
+    }
+}
+
+
+/*
+if( GetLocalInt(OBJECT_SELF,"bSPELL_ACTIVATE_ITEM_PORTAL") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ACTIVATE_ITEM_PORTAL") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_ACTIVATE_ITEM_PORTAL,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_ACTIVATE_ITEM_PORTAL");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_ACTIVATE_ITEM_SELF2") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ACTIVATE_ITEM_SELF2") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_ACTIVATE_ITEM_SELF2,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_ACTIVATE_ITEM_SELF2");
+        return 1;
+    }
+}
+*/
+
+
+
+/*
+if( GetLocalInt(OBJECT_SELF,"bSPELL_ALL_SPELLS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ALL_SPELLS") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_ALL_SPELLS,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_ALL_SPELLS");
+        return 1;
+    }
+}
+*/
+
+
+/*
+if( GetLocalInt(OBJECT_SELF,"bSPELL_AMPLIFY") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_AMPLIFY") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_AMPLIFY,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_AMPLIFY");
+        return 1;
+    }
+}
+*/
+
+
+
+/*
+if( GetLocalInt(OBJECT_SELF,"bSPELL_AWAKEN") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_AWAKEN") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_AWAKEN,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_AWAKEN");
+        return 1;
+    }
+}
+*/
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_BALAGARNSIRONHORN") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_BALAGARNSIRONHORN") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_BALAGARNSIRONHORN,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_BALAGARNSIRONHORN");
+        return 1;
+    }
+}
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_BALL_LIGHTNING") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_BALL_LIGHTNING") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_BALL_LIGHTNING,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_BALL_LIGHTNING");
+        return 1;
+    }
+}
+
+
+
+
+if( GetLocalInt(OBJECT_SELF,"bSPELL_BANISHMENT") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_BANISHMENT") == -1)
+{
+    if(d6() < 4)
+    {
+        ActionCastSpellAtObject(SPELL_BANISHMENT,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_BANISHMENT");
+        return 1;
+    }
+}
+
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_BESTOW_CURSE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_BESTOW_CURSE") == -1)
@@ -1619,50 +2699,12 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_BLADE_BARRIER") > 0 || GetLocalInt(OBJECT_SE
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_BLADE_THIRST") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_BLADE_THIRST") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_BLADE_THIRST,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_BLADE_THIRST");
-        return 1;
-    }
-}
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_BLESS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_BLESS") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_BLESS,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_BLESS");
-        return 1;
-    }
-}
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_BLESS_WEAPON") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_BLESS_WEAPON") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_BLESS_WEAPON,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_BLESS_WEAPON");
-        return 1;
-    }
-}
 
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_BLINDNESS_AND_DEAFNESS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_BLINDNESS_AND_DEAFNESS") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_BLINDNESS_AND_DEAFNESS,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_BLINDNESS_AND_DEAFNESS");
-        return 1;
-    }
-}
-
-
+/*
 if( GetLocalInt(OBJECT_SELF,"bSPELL_BLOOD_FRENZY") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_BLOOD_FRENZY") == -1)
 {
     if(d6() < 4)
@@ -1672,7 +2714,7 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_BLOOD_FRENZY") > 0 || GetLocalInt(OBJECT_SEL
         return 1;
     }
 }
-
+*/
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_BOMBARDMENT") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_BOMBARDMENT") == -1)
 {
@@ -1685,15 +2727,7 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_BOMBARDMENT") > 0 || GetLocalInt(OBJECT_SELF
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_BULLS_STRENGTH") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_BULLS_STRENGTH") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_BULLS_STRENGTH,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_BULLS_STRENGTH");
-        return 1;
-    }
-}
+
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_BURNING_HANDS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_BURNING_HANDS") == -1)
@@ -1718,27 +2752,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_CALL_LIGHTNING") > 0 || GetLocalInt(OBJECT_S
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_CAMOFLAGE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CAMOFLAGE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_CAMOFLAGE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_CAMOFLAGE");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_CATS_GRACE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CATS_GRACE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_CATS_GRACE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_CATS_GRACE");
-        return 1;
-    }
-}
-
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_CHAIN_LIGHTNING") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CHAIN_LIGHTNING") == -1)
 {
@@ -1750,7 +2763,7 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_CHAIN_LIGHTNING") > 0 || GetLocalInt(OBJECT_
     }
 }
 
-
+/*
 if( GetLocalInt(OBJECT_SELF,"bSPELL_CHARGER") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CHARGER") == -1)
 {
     if(d6() < 4)
@@ -1760,6 +2773,7 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_CHARGER") > 0 || GetLocalInt(OBJECT_SELF,"bS
         return 1;
     }
 }
+*/
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_CHARM_MONSTER") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CHARM_MONSTER") == -1)
@@ -1817,37 +2831,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_CIRCLE_OF_DOOM") > 0 || GetLocalInt(OBJECT_S
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_CLAIRAUDIENCE_AND_CLAIRVOYANCE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CLAIRAUDIENCE_AND_CLAIRVOYANCE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_CLAIRAUDIENCE_AND_CLAIRVOYANCE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_CLAIRAUDIENCE_AND_CLAIRVOYANCE");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_CLARITY") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CLARITY") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_CLARITY,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_CLARITY");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_CLOAK_OF_CHAOS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CLOAK_OF_CHAOS") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_CLOAK_OF_CHAOS,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_CLOAK_OF_CHAOS");
-        return 1;
-    }
-}
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_CLOUD_OF_BEWILDERMENT") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CLOUD_OF_BEWILDERMENT") == -1)
@@ -1927,16 +2910,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_CONTAGION") > 0 || GetLocalInt(OBJECT_SELF,"
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_CONTINUAL_FLAME") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CONTINUAL_FLAME") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_CONTINUAL_FLAME,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_CONTINUAL_FLAME");
-        return 1;
-    }
-}
-
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_CONTROL_UNDEAD") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CONTROL_UNDEAD") == -1)
 {
@@ -2004,70 +2977,7 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_CRUMBLE") > 0 || GetLocalInt(OBJECT_SELF,"bS
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_CURE_CRITICAL_WOUNDS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CURE_CRITICAL_WOUNDS") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_CURE_CRITICAL_WOUNDS,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_CURE_CRITICAL_WOUNDS");
-        return 1;
-    }
-}
 
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_CURE_LIGHT_WOUNDS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CURE_LIGHT_WOUNDS") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_CURE_LIGHT_WOUNDS,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_CURE_LIGHT_WOUNDS");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_CURE_MINOR_WOUNDS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CURE_MINOR_WOUNDS") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_CURE_MINOR_WOUNDS,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_CURE_MINOR_WOUNDS");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_CURE_MODERATE_WOUNDS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CURE_MODERATE_WOUNDS") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_CURE_MODERATE_WOUNDS,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_CURE_MODERATE_WOUNDS");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_CURE_SERIOUS_WOUNDS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_CURE_SERIOUS_WOUNDS") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_CURE_SERIOUS_WOUNDS,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_CURE_SERIOUS_WOUNDS");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_DARKFIRE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_DARKFIRE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_DARKFIRE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_DARKFIRE");
-        return 1;
-    }
-}
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_DARKNESS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_DARKNESS") == -1)
@@ -2076,17 +2986,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_DARKNESS") > 0 || GetLocalInt(OBJECT_SELF,"b
     {
         ActionCastSpellAtObject(SPELL_DARKNESS,oTarget,METAMAGIC_NONE,TRUE);
         UpdateVar("bSPELL_DARKNESS");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_DARKVISION") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_DARKVISION") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_DARKVISION,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_DARKVISION");
         return 1;
     }
 }
@@ -2114,28 +3013,8 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_DEAFENING_CLANG") > 0 || GetLocalInt(OBJECT_
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_DEATH_ARMOR") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_DEATH_ARMOR") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_DEATH_ARMOR,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_DEATH_ARMOR");
-        return 1;
-    }
-}
 
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_DEATH_WARD") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_DEATH_WARD") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_DEATH_WARD,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_DEATH_WARD");
-        return 1;
-    }
-}
-
-
+/*
 if( GetLocalInt(OBJECT_SELF,"bSPELL_DECHARGER") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_DECHARGER") == -1)
 {
     if(d6() < 4)
@@ -2189,7 +3068,7 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_DECK_OF_MANY_THINGS") > 0 || GetLocalInt(OBJ
         return 1;
     }
 }
-
+*/
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_DELAYED_BLAST_FIREBALL") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_DELAYED_BLAST_FIREBALL") == -1)
 {
@@ -2246,59 +3125,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_DISPEL_MAGIC") > 0 || GetLocalInt(OBJECT_SEL
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_DISPLACEMENT") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_DISPLACEMENT") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_DISPLACEMENT,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_DISPLACEMENT");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_DIVINE_FAVOR") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_DIVINE_FAVOR") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_DIVINE_FAVOR,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_DIVINE_FAVOR");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_DIVINE_MIGHT") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_DIVINE_MIGHT") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_DIVINE_MIGHT,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_DIVINE_MIGHT");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_DIVINE_POWER") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_DIVINE_POWER") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_DIVINE_POWER,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_DIVINE_POWER");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_DIVINE_SHIELD") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_DIVINE_SHIELD") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_DIVINE_SHIELD,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_DIVINE_SHIELD");
-        return 1;
-    }
-}
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_DOMINATE_ANIMAL") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_DOMINATE_ANIMAL") == -1)
@@ -2356,16 +3182,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_DROWN") > 0 || GetLocalInt(OBJECT_SELF,"bSPE
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_EAGLE_SPLEDOR") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_EAGLE_SPLEDOR") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_EAGLE_SPLEDOR,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_EAGLE_SPLEDOR");
-        return 1;
-    }
-}
-
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_EARTHQUAKE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_EARTHQUAKE") == -1)
 {
@@ -2389,15 +3205,9 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_ELECTRIC_JOLT") > 0 || GetLocalInt(OBJECT_SE
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_ELEMENTAL_SHIELD") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ELEMENTAL_SHIELD") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_ELEMENTAL_SHIELD,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_ELEMENTAL_SHIELD");
-        return 1;
-    }
-}
+
+
+
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_ELEMENTAL_SUMMONING_ITEM") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ELEMENTAL_SUMMONING_ITEM") == -1)
@@ -2422,37 +3232,8 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_ELEMENTAL_SWARM") > 0 || GetLocalInt(OBJECT_
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_ENDURANCE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ENDURANCE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_ENDURANCE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_ENDURANCE");
-        return 1;
-    }
-}
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_ENDURE_ELEMENTS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ENDURE_ELEMENTS") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_ENDURE_ELEMENTS,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_ENDURE_ELEMENTS");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_ENERGY_BUFFER") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ENERGY_BUFFER") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_ENERGY_BUFFER,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_ENERGY_BUFFER");
-        return 1;
-    }
-}
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_ENERGY_DRAIN") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ENERGY_DRAIN") == -1)
@@ -2487,16 +3268,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_ENTANGLE") > 0 || GetLocalInt(OBJECT_SELF,"b
     }
 }
 
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_ENTROPIC_SHIELD") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ENTROPIC_SHIELD") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_ENTROPIC_SHIELD,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_ENTROPIC_SHIELD");
-        return 1;
-    }
-}
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_EPIC_DRAGON_KNIGHT") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_EPIC_DRAGON_KNIGHT") == -1)
@@ -2554,26 +3325,9 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_EPIC_RUIN") > 0 || GetLocalInt(OBJECT_SELF,"
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_ETHEREAL_VISAGE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ETHEREAL_VISAGE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_ETHEREAL_VISAGE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_ETHEREAL_VISAGE");
-        return 1;
-    }
-}
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_ETHEREALNESS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ETHEREALNESS") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_ETHEREALNESS,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_ETHEREALNESS");
-        return 1;
-    }
-}
+
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_EVARDS_BLACK_TENTACLES") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_EVARDS_BLACK_TENTACLES") == -1)
@@ -2587,15 +3341,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_EVARDS_BLACK_TENTACLES") > 0 || GetLocalInt(
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_EXPEDITIOUS_RETREAT") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_EXPEDITIOUS_RETREAT") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_EXPEDITIOUS_RETREAT,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_EXPEDITIOUS_RETREAT");
-        return 1;
-    }
-}
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_FEAR") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_FEAR") == -1)
@@ -2708,15 +3453,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_FLAME_STRIKE") > 0 || GetLocalInt(OBJECT_SEL
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_FLAME_WEAPON") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_FLAME_WEAPON") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_FLAME_WEAPON,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_FLAME_WEAPON");
-        return 1;
-    }
-}
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_FLARE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_FLARE") == -1)
@@ -2728,6 +3464,7 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_FLARE") > 0 || GetLocalInt(OBJECT_SELF,"bSPE
         return 1;
     }
 }
+
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_FLESH_TO_STONE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_FLESH_TO_STONE") == -1)
@@ -2752,26 +3489,11 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_FLYING_DEBRIS") > 0 || GetLocalInt(OBJECT_SE
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_FOXS_CUNNING") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_FOXS_CUNNING") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_FOXS_CUNNING,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_FOXS_CUNNING");
-        return 1;
-    }
-}
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_FREEDOM_OF_MOVEMENT") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_FREEDOM_OF_MOVEMENT") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_FREEDOM_OF_MOVEMENT,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_FREEDOM_OF_MOVEMENT");
-        return 1;
-    }
-}
+
+
+
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_GATE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GATE") == -1)
@@ -2796,16 +3518,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_GEDLEES_ELECTRIC_LOOP") > 0 || GetLocalInt(O
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_GHOSTLY_VISAGE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GHOSTLY_VISAGE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_GHOSTLY_VISAGE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_GHOSTLY_VISAGE");
-        return 1;
-    }
-}
-
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_GHOUL_TOUCH") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GHOUL_TOUCH") == -1)
 {
@@ -2817,16 +3529,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_GHOUL_TOUCH") > 0 || GetLocalInt(OBJECT_SELF
     }
 }
 
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_GLOBE_OF_INVULNERABILITY") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GLOBE_OF_INVULNERABILITY") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_GLOBE_OF_INVULNERABILITY,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_GLOBE_OF_INVULNERABILITY");
-        return 1;
-    }
-}
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_GLYPH_OF_WARDING") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GLYPH_OF_WARDING") == -1)
@@ -2862,72 +3564,9 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_GREAT_THUNDERCLAP") > 0 || GetLocalInt(OBJEC
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_BULLS_STRENGTH") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_BULLS_STRENGTH") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_GREATER_BULLS_STRENGTH,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_GREATER_BULLS_STRENGTH");
-        return 1;
-    }
-}
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_CATS_GRACE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_CATS_GRACE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_GREATER_CATS_GRACE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_GREATER_CATS_GRACE");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_DISPELLING") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_DISPELLING") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_GREATER_DISPELLING,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_GREATER_DISPELLING");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_EAGLE_SPLENDOR") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_EAGLE_SPLENDOR") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_GREATER_EAGLE_SPLENDOR,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_GREATER_EAGLE_SPLENDOR");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_ENDURANCE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_ENDURANCE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_GREATER_ENDURANCE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_GREATER_ENDURANCE");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_FOXS_CUNNING") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_FOXS_CUNNING") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_GREATER_FOXS_CUNNING,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_GREATER_FOXS_CUNNING");
-        return 1;
-    }
-}
-
-
+/*
 if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_MAGIC_FANG") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_MAGIC_FANG") == -1)
 {
     if(d6() < 4)
@@ -2937,28 +3576,8 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_MAGIC_FANG") > 0 || GetLocalInt(OBJE
         return 1;
     }
 }
+*/
 
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_MAGIC_WEAPON") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_MAGIC_WEAPON") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_GREATER_MAGIC_WEAPON,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_GREATER_MAGIC_WEAPON");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_OWLS_WISDOM") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_OWLS_WISDOM") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_GREATER_OWLS_WISDOM,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_GREATER_OWLS_WISDOM");
-        return 1;
-    }
-}
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_PLANAR_BINDING") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_PLANAR_BINDING") == -1)
@@ -2972,16 +3591,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_PLANAR_BINDING") > 0 || GetLocalInt(
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_RESTORATION") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_RESTORATION") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_GREATER_RESTORATION,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_GREATER_RESTORATION");
-        return 1;
-    }
-}
-
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_SHADOW_CONJURATION_ACID_ARROW") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_SHADOW_CONJURATION_ACID_ARROW") == -1)
 {
@@ -2994,26 +3603,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_SHADOW_CONJURATION_ACID_ARROW") > 0 
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_SHADOW_CONJURATION_MINOR_GLOBE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_SHADOW_CONJURATION_MINOR_GLOBE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_GREATER_SHADOW_CONJURATION_MINOR_GLOBE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_GREATER_SHADOW_CONJURATION_MINOR_GLOBE");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_SHADOW_CONJURATION_MIRROR_IMAGE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_SHADOW_CONJURATION_MIRROR_IMAGE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_GREATER_SHADOW_CONJURATION_MIRROR_IMAGE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_GREATER_SHADOW_CONJURATION_MIRROR_IMAGE");
-        return 1;
-    }
-}
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_SHADOW_CONJURATION_SUMMON_SHADOW") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_SHADOW_CONJURATION_SUMMON_SHADOW") == -1)
@@ -3049,26 +3638,18 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_SPELL_BREACH") > 0 || GetLocalInt(OB
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_SPELL_MANTLE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_SPELL_MANTLE") == -1)
+if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_DISPELLING") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_DISPELLING") == -1)
 {
     if(d6() < 4)
     {
-        ActionCastSpellAtObject(SPELL_GREATER_SPELL_MANTLE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_GREATER_SPELL_MANTLE");
+        ActionCastSpellAtObject(SPELL_GREATER_DISPELLING,oTarget,METAMAGIC_NONE,TRUE);
+        UpdateVar("bSPELL_GREATER_DISPELLING");
         return 1;
     }
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_STONESKIN") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GREATER_STONESKIN") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_GREATER_STONESKIN,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_GREATER_STONESKIN");
-        return 1;
-    }
-}
+
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_GRENADE_ACID") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_GRENADE_ACID") == -1)
@@ -3192,37 +3773,7 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_HARM") > 0 || GetLocalInt(OBJECT_SELF,"bSPEL
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_HASTE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_HASTE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_HASTE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_HASTE");
-        return 1;
-    }
-}
 
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_HEAL") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_HEAL") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_HEAL,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_HEAL");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_HEALING_CIRCLE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_HEALING_CIRCLE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_HEALING_CIRCLE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_HEALING_CIRCLE");
-        return 1;
-    }
-}
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_HEALING_STING") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_HEALING_STING") == -1)
@@ -3235,7 +3786,7 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_HEALING_STING") > 0 || GetLocalInt(OBJECT_SE
     }
 }
 
-
+/*
 if( GetLocalInt(OBJECT_SELF,"bSPELL_HEALINGKIT") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_HEALINGKIT") == -1)
 {
     if(d6() < 4)
@@ -3245,7 +3796,7 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_HEALINGKIT") > 0 || GetLocalInt(OBJECT_SELF,
         return 1;
     }
 }
-
+*/
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_HOLD_ANIMAL") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_HOLD_ANIMAL") == -1)
 {
@@ -3280,26 +3831,8 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_HOLD_PERSON") > 0 || GetLocalInt(OBJECT_SELF
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_HOLY_AURA") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_HOLY_AURA") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_HOLY_AURA,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_HOLY_AURA");
-        return 1;
-    }
-}
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_HOLY_SWORD") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_HOLY_SWORD") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_HOLY_SWORD,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_HOLY_SWORD");
-        return 1;
-    }
-}
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_HORIZIKAULS_BOOM") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_HORIZIKAULS_BOOM") == -1)
@@ -3323,7 +3856,7 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_HORRID_WILTING") > 0 || GetLocalInt(OBJECT_S
     }
 }
 
-
+/*
 if( GetLocalInt(OBJECT_SELF,"bSPELL_HORSE_ASSIGN_MOUNT") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_HORSE_ASSIGN_MOUNT") == -1)
 {
     if(d6() < 4)
@@ -3388,7 +3921,7 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_HORSE_PARTY_MOUNT") > 0 || GetLocalInt(OBJEC
         return 1;
     }
 }
-
+*/
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_ICE_DAGGER") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ICE_DAGGER") == -1)
 {
@@ -3412,6 +3945,7 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_ICE_STORM") > 0 || GetLocalInt(OBJECT_SELF,"
 }
 
 
+/*
 if( GetLocalInt(OBJECT_SELF,"bSPELL_IDENTIFY") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_IDENTIFY") == -1)
 {
     if(d6() < 4)
@@ -3421,6 +3955,7 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_IDENTIFY") > 0 || GetLocalInt(OBJECT_SELF,"b
         return 1;
     }
 }
+*/
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_IMPLOSION") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_IMPLOSION") == -1)
@@ -3433,16 +3968,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_IMPLOSION") > 0 || GetLocalInt(OBJECT_SELF,"
     }
 }
 
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_IMPROVED_INVISIBILITY") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_IMPROVED_INVISIBILITY") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_IMPROVED_INVISIBILITY,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_IMPROVED_INVISIBILITY");
-        return 1;
-    }
-}
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_INCENDIARY_CLOUD") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_INCENDIARY_CLOUD") == -1)
@@ -3533,16 +4058,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_INFLICT_SERIOUS_WOUNDS") > 0 || GetLocalInt(
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_INVISIBILITY") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_INVISIBILITY") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_INVISIBILITY,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_INVISIBILITY");
-        return 1;
-    }
-}
-
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_INVISIBILITY_PURGE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_INVISIBILITY_PURGE") == -1)
 {
@@ -3554,18 +4069,7 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_INVISIBILITY_PURGE") > 0 || GetLocalInt(OBJE
     }
 }
 
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_INVISIBILITY_SPHERE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_INVISIBILITY_SPHERE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_INVISIBILITY_SPHERE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_INVISIBILITY_SPHERE");
-        return 1;
-    }
-}
-
-
+/*
 if( GetLocalInt(OBJECT_SELF,"bSPELL_IOUN_STONE_BLUE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_IOUN_STONE_BLUE") == -1)
 {
     if(d6() < 4)
@@ -3641,17 +4145,7 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_IOUN_STONE_SCARLET_BLUE") > 0 || GetLocalInt
         return 1;
     }
 }
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_IRONGUTS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_IRONGUTS") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_IRONGUTS,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_IRONGUTS");
-        return 1;
-    }
-}
+*/
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_ISAACS_GREATER_MISSILE_STORM") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_ISAACS_GREATER_MISSILE_STORM") == -1)
@@ -3676,17 +4170,10 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_ISAACS_LESSER_MISSILE_STORM") > 0 || GetLoca
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_KEEN_EDGE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_KEEN_EDGE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_KEEN_EDGE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_KEEN_EDGE");
-        return 1;
-    }
-}
 
 
+
+/*
 if( GetLocalInt(OBJECT_SELF,"bSPELL_KNOCK") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_KNOCK") == -1)
 {
     if(d6() < 4)
@@ -3707,8 +4194,9 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_KOBOLD_JUMP") > 0 || GetLocalInt(OBJECT_SELF
         return 1;
     }
 }
+*/
 
-
+/*
 if( GetLocalInt(OBJECT_SELF,"bSPELL_LEGEND_LORE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_LEGEND_LORE") == -1)
 {
     if(d6() < 4)
@@ -3718,7 +4206,7 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_LEGEND_LORE") > 0 || GetLocalInt(OBJECT_SELF
         return 1;
     }
 }
-
+*/
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_LESSER_DISPEL") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_LESSER_DISPEL") == -1)
 {
@@ -3730,16 +4218,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_LESSER_DISPEL") > 0 || GetLocalInt(OBJECT_SE
     }
 }
 
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_LESSER_MIND_BLANK") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_LESSER_MIND_BLANK") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_LESSER_MIND_BLANK,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_LESSER_MIND_BLANK");
-        return 1;
-    }
-}
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_LESSER_PLANAR_BINDING") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_LESSER_PLANAR_BINDING") == -1)
@@ -3753,16 +4231,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_LESSER_PLANAR_BINDING") > 0 || GetLocalInt(O
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_LESSER_RESTORATION") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_LESSER_RESTORATION") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_LESSER_RESTORATION,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_LESSER_RESTORATION");
-        return 1;
-    }
-}
-
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_LESSER_SPELL_BREACH") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_LESSER_SPELL_BREACH") == -1)
 {
@@ -3770,28 +4238,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_LESSER_SPELL_BREACH") > 0 || GetLocalInt(OBJ
     {
         ActionCastSpellAtObject(SPELL_LESSER_SPELL_BREACH,oTarget,METAMAGIC_NONE,TRUE);
         UpdateVar("bSPELL_LESSER_SPELL_BREACH");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_LESSER_SPELL_MANTLE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_LESSER_SPELL_MANTLE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_LESSER_SPELL_MANTLE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_LESSER_SPELL_MANTLE");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_LIGHT") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_LIGHT") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_LIGHT,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_LIGHT");
         return 1;
     }
 }
@@ -4600,17 +5046,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_SHADES_FIREBALL") > 0 || GetLocalInt(OBJECT_
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_SHADES_STONESKIN") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SHADES_STONESKIN") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_SHADES_STONESKIN,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_SHADES_STONESKIN");
-        return 1;
-    }
-}
-
-
 if( GetLocalInt(OBJECT_SELF,"bSPELL_SHADES_SUMMON_SHADOW") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SHADES_SUMMON_SHADOW") == -1)
 {
     if(d6() < 4)
@@ -4642,29 +5077,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_SHADOW_CONJURATION_DARKNESS") > 0 || GetLoca
         return 1;
     }
 }
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_SHADOW_CONJURATION_INIVSIBILITY") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SHADOW_CONJURATION_INIVSIBILITY") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_SHADOW_CONJURATION_INIVSIBILITY,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_SHADOW_CONJURATION_INIVSIBILITY");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_SHADOW_CONJURATION_MAGE_ARMOR") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SHADOW_CONJURATION_MAGE_ARMOR") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_SHADOW_CONJURATION_MAGE_ARMOR,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_SHADOW_CONJURATION_MAGE_ARMOR");
-        return 1;
-    }
-}
-
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_SHADOW_CONJURATION_MAGIC_MISSILE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SHADOW_CONJURATION_MAGIC_MISSILE") == -1)
 {
@@ -4708,73 +5120,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_SHADOW_EVADE") > 0 || GetLocalInt(OBJECT_SEL
         return 1;
     }
 }
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_SHADOW_SHIELD") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SHADOW_SHIELD") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_SHADOW_SHIELD,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_SHADOW_SHIELD");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_SHAPECHANGE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SHAPECHANGE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_SHAPECHANGE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_SHAPECHANGE");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_SHELGARNS_PERSISTENT_BLADE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SHELGARNS_PERSISTENT_BLADE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_SHELGARNS_PERSISTENT_BLADE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_SHELGARNS_PERSISTENT_BLADE");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_SHIELD") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SHIELD") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_SHIELD,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_SHIELD");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_SHIELD_OF_FAITH") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SHIELD_OF_FAITH") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_SHIELD_OF_FAITH,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_SHIELD_OF_FAITH");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_SHIELD_OF_LAW") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SHIELD_OF_LAW") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_SHIELD_OF_LAW,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_SHIELD_OF_LAW");
-        return 1;
-    }
-}
-
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_SILENCE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SILENCE") == -1)
 {
@@ -4831,28 +5176,8 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_SOUND_BURST") > 0 || GetLocalInt(OBJECT_SELF
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_SPELL_MANTLE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SPELL_MANTLE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_SPELL_MANTLE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_SPELL_MANTLE");
-        return 1;
-    }
-}
 
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_SPELL_RESISTANCE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SPELL_RESISTANCE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_SPELL_RESISTANCE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_SPELL_RESISTANCE");
-        return 1;
-    }
-}
-
-
+/*
 if( GetLocalInt(OBJECT_SELF,"bSPELL_SPELLSTAFF") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SPELLSTAFF") == -1)
 {
     if(d6() < 4)
@@ -4862,6 +5187,7 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_SPELLSTAFF") > 0 || GetLocalInt(OBJECT_SELF,
         return 1;
     }
 }
+*/
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_SPHERE_OF_CHAOS") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SPHERE_OF_CHAOS") == -1)
@@ -4896,7 +5222,7 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_STINKING_CLOUD") > 0 || GetLocalInt(OBJECT_S
     }
 }
 
-
+/* only works on undead
 if( GetLocalInt(OBJECT_SELF,"bSPELL_STONE_BONES") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_STONE_BONES") == -1)
 {
     if(d6() < 4)
@@ -4906,6 +5232,7 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_STONE_BONES") > 0 || GetLocalInt(OBJECT_SELF
         return 1;
     }
 }
+*/
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_STONE_TO_FLESH") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_STONE_TO_FLESH") == -1)
@@ -4930,16 +5257,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_STONEHOLD") > 0 || GetLocalInt(OBJECT_SELF,"
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_STONESKIN") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_STONESKIN") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_STONESKIN,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_STONESKIN");
-        return 1;
-    }
-}
-
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_STORM_OF_VENGEANCE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_STORM_OF_VENGEANCE") == -1)
 {
@@ -4952,114 +5269,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_STORM_OF_VENGEANCE") > 0 || GetLocalInt(OBJE
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_I") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_I") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_SUMMON_CREATURE_I,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_SUMMON_CREATURE_I");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_II") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_II") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_SUMMON_CREATURE_II,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_SUMMON_CREATURE_II");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_III") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_III") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_SUMMON_CREATURE_III,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_SUMMON_CREATURE_III");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_IV") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_IV") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_SUMMON_CREATURE_IV,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_SUMMON_CREATURE_IV");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_V") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_V") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_SUMMON_CREATURE_V,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_SUMMON_CREATURE_V");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_VI") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_VI") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_SUMMON_CREATURE_VI,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_SUMMON_CREATURE_VI");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_VII") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_VII") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_SUMMON_CREATURE_VII,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_SUMMON_CREATURE_VII");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_VIII") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_VIII") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_SUMMON_CREATURE_VIII,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_SUMMON_CREATURE_VIII");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_IX") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_CREATURE_IX") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_SUMMON_CREATURE_IX,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_SUMMON_CREATURE_IX");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_SHADOW") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SUMMON_SHADOW") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_SUMMON_SHADOW,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_SUMMON_SHADOW");
-        return 1;
-    }
-}
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_SUNBEAM") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SUNBEAM") == -1)
@@ -5072,7 +5281,8 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_SUNBEAM") > 0 || GetLocalInt(OBJECT_SELF,"bS
     }
 }
 
-
+/*
+// this only works on undead
 if( GetLocalInt(OBJECT_SELF,"bSPELL_SUNBURST") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_SUNBURST") == -1)
 {
     if(d6() < 4)
@@ -5082,7 +5292,7 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_SUNBURST") > 0 || GetLocalInt(OBJECT_SELF,"b
         return 1;
     }
 }
-
+*/
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_TASHAS_HIDEOUS_LAUGHTER") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_TASHAS_HIDEOUS_LAUGHTER") == -1)
 {
@@ -5090,17 +5300,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_TASHAS_HIDEOUS_LAUGHTER") > 0 || GetLocalInt
     {
         ActionCastSpellAtObject(SPELL_TASHAS_HIDEOUS_LAUGHTER,oTarget,METAMAGIC_NONE,TRUE);
         UpdateVar("bSPELL_TASHAS_HIDEOUS_LAUGHTER");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_TENSERS_TRANSFORMATION") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_TENSERS_TRANSFORMATION") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_TENSERS_TRANSFORMATION,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_TENSERS_TRANSFORMATION");
         return 1;
     }
 }
@@ -5116,7 +5315,7 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_TIME_STOP") > 0 || GetLocalInt(OBJECT_SELF,"
     }
 }
 
-
+/*
 if( GetLocalInt(OBJECT_SELF,"bSPELL_TRAP_ARROW") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_TRAP_ARROW") == -1)
 {
     if(d6() < 4)
@@ -5159,30 +5358,10 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_TRAP_SHURIKEN") > 0 || GetLocalInt(OBJECT_SE
         return 1;
     }
 }
+*/
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_TRUE_SEEING") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_TRUE_SEEING") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_TRUE_SEEING,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_TRUE_SEEING");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_TRUE_STRIKE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_TRUE_STRIKE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_TRUE_STRIKE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_TRUE_STRIKE");
-        return 1;
-    }
-}
-
-
+/* don't know what this is
 if( GetLocalInt(OBJECT_SELF,"bSPELL_TYMORAS_SMILE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_TYMORAS_SMILE") == -1)
 {
     if(d6() < 4)
@@ -5192,8 +5371,10 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_TYMORAS_SMILE") > 0 || GetLocalInt(OBJECT_SE
         return 1;
     }
 }
+*/
 
-
+/*
+// this only works on undead...
 if( GetLocalInt(OBJECT_SELF,"bSPELL_UNDEATH_TO_DEATH") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_UNDEATH_TO_DEATH") == -1)
 {
     if(d6() < 4)
@@ -5203,28 +5384,7 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_UNDEATH_TO_DEATH") > 0 || GetLocalInt(OBJECT
         return 1;
     }
 }
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_UNDEATHS_ETERNAL_FOE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_UNDEATHS_ETERNAL_FOE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_UNDEATHS_ETERNAL_FOE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_UNDEATHS_ETERNAL_FOE");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_UNHOLY_AURA") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_UNHOLY_AURA") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_UNHOLY_AURA,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_UNHOLY_AURA");
-        return 1;
-    }
-}
+*/
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_VAMPIRIC_TOUCH") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_VAMPIRIC_TOUCH") == -1)
@@ -5249,15 +5409,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_VINE_MINE") > 0 || GetLocalInt(OBJECT_SELF,"
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_VINE_MINE_CAMOUFLAGE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_VINE_MINE_CAMOUFLAGE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_VINE_MINE_CAMOUFLAGE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_VINE_MINE_CAMOUFLAGE");
-        return 1;
-    }
-}
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_VINE_MINE_ENTANGLE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_VINE_MINE_ENTANGLE") == -1)
@@ -5277,17 +5428,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_VINE_MINE_HAMPER_MOVEMENT") > 0 || GetLocalI
     {
         ActionCastSpellAtObject(SPELL_VINE_MINE_HAMPER_MOVEMENT,oTarget,METAMAGIC_NONE,TRUE);
         UpdateVar("bSPELL_VINE_MINE_HAMPER_MOVEMENT");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_VIRTUE") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_VIRTUE") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_VIRTUE,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_VIRTUE");
         return 1;
     }
 }
@@ -5315,26 +5455,6 @@ if( GetLocalInt(OBJECT_SELF,"bSPELL_WALL_OF_FIRE") > 0 || GetLocalInt(OBJECT_SEL
 }
 
 
-if( GetLocalInt(OBJECT_SELF,"bSPELL_WAR_CRY") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_WAR_CRY") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_WAR_CRY,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_WAR_CRY");
-        return 1;
-    }
-}
-
-
-if( GetLocalInt(OBJECT_SELF,"bSPELL_WEB") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_WEB") == -1)
-{
-    if(d6() < 4)
-    {
-        ActionCastSpellAtObject(SPELL_WEB,oTarget,METAMAGIC_NONE,TRUE);
-        UpdateVar("bSPELL_WEB");
-        return 1;
-    }
-}
 
 
 if( GetLocalInt(OBJECT_SELF,"bSPELL_WEIRD") > 0 || GetLocalInt(OBJECT_SELF,"bSPELL_WEIRD") == -1)
@@ -5377,11 +5497,12 @@ void main()
 
     __TurnCombatRoundOn(TRUE);
     if(!Template_UseAbility(oEnemy))
+    if(!Template_AbilitySummon())
+    if(!Template_SelfAbility())
+    // spells are sorted before being selected on creature.
+    if(!Template_CastSpell(oEnemy))
     {
-        if(!Template_CastSpell(oEnemy))
-        {
-
-        }
+            // failed
     }
     __TurnCombatRoundOn(FALSE);
 }

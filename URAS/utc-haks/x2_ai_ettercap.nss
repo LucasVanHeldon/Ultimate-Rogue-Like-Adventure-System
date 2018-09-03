@@ -43,7 +43,6 @@ void MMP_Attack()
     }
     if(GetIsObjectValid(oBest))
     {
-        ClearAllActions(TRUE);
         ActionAttack(oBest);
     }
 }
